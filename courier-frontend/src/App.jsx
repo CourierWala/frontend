@@ -3,7 +3,7 @@ import React from 'react'
 const App = () => {
   return (
     <div>
-      <h1>HEllo</h1>
+      <h1 className='flex justify-center items-center font-bold text-3xl h-screen'>COURIER MANAGEMENT SYSTEM</h1>
     </div>
   )
 }
