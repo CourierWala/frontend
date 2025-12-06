@@ -1,9 +1,17 @@
 import React from 'react'
+import './App.css'
+import { AuthProvider } from './context/AuthContext'
+import AppRoutes from './router/AppRoutes'
 
-const App = () => {
+function App() {
+
   return (
     <div>
-      <h1 className='flex justify-center items-center font-bold text-3xl h-screen'>COURIER MANAGEMENT SYSTEM</h1>
+
+      {/* <h1>Hello</h1> */}
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </div>
   )
 }
