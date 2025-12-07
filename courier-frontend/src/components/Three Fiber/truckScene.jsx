@@ -130,7 +130,7 @@ function CameraLookAtTruck({ truckRef }) {
 
   // camera starting position (from your Canvas)
   const startPos = useRef([0, 1.6, 5]);
-  const endPos = [-4, 1, 10]; // <--- final camera position you asked for
+  const endPos = [0, 3, 10]; // <--- final camera position you asked for
   const duration = 4.0; // seconds for camera movement (adjust if needed)
 
   useEffect(() => {
@@ -165,7 +165,7 @@ function CameraLookAtTruck({ truckRef }) {
     }
 
     // ---------- ALWAYS LOOK AT TRUCK ----------
-    camera.lookAt(target.x - 4, target.y + 2, target.z);
+    camera.lookAt(target.x, target.y + 3, target.z);
   });
 
   return null;
@@ -202,8 +202,8 @@ export default function TruckScene({ modelPath = "/models/orangeTruck.fbx" }) {
 
         <CameraLookAtTruck truckRef={truckRef} />
         {/* Clouds and bird - small number to create illusion of movement */}
-        <Cloud startX={8} z={-15} speed={0.2} />
-        <Cloud startX={20} z={-16} speed={0.55} />
+        <Cloud startX={8} z={-22} speed={0.2} />
+        <Cloud startX={20} z={-20} speed={0.55} />
         <Cloud startX={0} z={-18} speed={1} />
         <Bird start={[-19, 8.5, -2]} speed={2.6} />
         {/* <Bird start={[-20, 9, -3]} speed={2.6} />
