@@ -12,7 +12,7 @@ const NavBar = () => {
         {/* LOGO + ICON */}
         <Link to="/" className="flex items-center gap-2">
           <HiOutlineCube className="text-orange-500 text-3xl" />
-          <span className="text-2xl font-extrabold text-gray-900">SwiftShip</span>
+          <span className="text-2xl font-extrabold text-gray-900">Courier wala</span>
         </Link>
 
         {/* DESKTOP MENU */}

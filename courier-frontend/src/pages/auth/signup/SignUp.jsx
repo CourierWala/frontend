@@ -14,7 +14,7 @@ const SignUp = () => {
       <div className="w-full flex justify-between items-center py-4 px-6 border-b bg-white">
         <div className="flex items-center gap-2">
           <span className="bg-orange-600 text-white p-2 rounded-lg text-xl">📦</span>
-          <h1 className="text-xl font-bold">SwiftShip</h1>
+          <h1 className="text-xl font-bold">Courier wala</h1>
         </div>
 
         <Link to="/" className="text-gray-500 hover:text-black">
@@ -37,7 +37,7 @@ const SignUp = () => {
         {/* SIGNUP CARD */}
         <div className="w-full max-w-md bg-white border rounded-xl p-8 shadow-sm">
           <h2 className="text-xl font-semibold mb-1">Sign Up</h2>
-          <p className="text-gray-500 mb-6">Create your free SwiftShip account</p>
+          <p className="text-gray-500 mb-6">Create your free Courier wala account</p>
 
           {/* FULL NAME */}
           <Input

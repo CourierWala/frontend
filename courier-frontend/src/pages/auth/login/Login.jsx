@@ -17,7 +17,7 @@ const Login = () => {
       <div className="w-full flex justify-between items-center py-4 px-6 border-b bg-white">
         <div className="flex items-center gap-2">
           <span className="bg-orange-600 text-white p-2 rounded-lg text-xl">📦</span>
-          <h1 className="text-xl font-bold">SwiftShip</h1>
+          <h1 className="text-xl font-bold">Courier wala</h1>
         </div>
 
         <Link to="/" className="text-gray-500 hover:text-black">

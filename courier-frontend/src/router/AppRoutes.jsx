@@ -13,6 +13,9 @@ import NewShipment from '../pages/customer/NewShipment'
 import TrackPackage from '../pages/customer/TrackPackage'
 import ShipmentHistory from '../pages/customer/ShipmentHistory'
 import ProfileSettings from '../pages/customer/ProfileSettings'
+import ManageStaff from '../pages/manager/ManageStaff'
+import MonitorDeliveries from '../pages/manager/MonitorDeliveries'
+import ManagerProfileSettings from '../pages/manager/ManagerProfileSettings'
 
 
 const AppRoutes = () => {
@@ -104,6 +107,42 @@ const AppRoutes = () => {
                             // <ProtectedRoute>
                             // <RoleBasedRoute allowedRoles={["manager"]}>
                             <ManagerDashboard />
+                            /* </RoleBasedRoute> */
+                            // </ProtectedRoute>
+                        }
+                    />
+
+                    {/* Manager Routes */}
+                    <Route
+                        path="/manager/staff"
+                        element={
+                            // <ProtectedRoute>
+                            // <RoleBasedRoute allowedRoles={["manager"]}>
+                            <ManageStaff />
+                            /* </RoleBasedRoute> */
+                            // </ProtectedRoute>
+                        }
+                    />
+
+                    {/* Manager deliveries route */}
+                    <Route
+                        path="/manager/analytics"
+                        element={
+                            // <ProtectedRoute>
+                            // <RoleBasedRoute allowedRoles={["manager"]}>
+                            <MonitorDeliveries />
+                            /* </RoleBasedRoute> */
+                            // </ProtectedRoute>
+                        }
+                    />
+
+                    {/* Manager profile route */}
+                    <Route
+                        path="/manager/profile"
+                        element={
+                            // <ProtectedRoute>
+                            // <RoleBasedRoute allowedRoles={["manager"]}>
+                            <ManagerProfileSettings />
                             /* </RoleBasedRoute> */
                             // </ProtectedRoute>
                         }
