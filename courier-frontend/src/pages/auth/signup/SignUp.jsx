@@ -37,7 +37,7 @@ const SignUp = () => {
         {/* SIGNUP CARD */}
         <div className="w-full max-w-md bg-white border rounded-xl p-8 shadow-sm">
           <h2 className="text-xl font-semibold mb-1">Sign Up</h2>
-          <p className="text-gray-500 mb-6">Create your free SwiftShip account</p>
+          <p className="text-gray-500 mb-6">Create your free Courier wala account</p>
 
           {/* FULL NAME */}
           <Input

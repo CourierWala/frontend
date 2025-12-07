@@ -33,7 +33,7 @@ const LandingPage = () => {
           </h1>
 
           <p className="text-gray-700 mt-4 text-lg leading-relaxed">
-            SwiftShip ensures safe and lightning-fast delivery with real-time
+            Courier wala ensures safe and lightning-fast delivery with real-time
             tracking and seamless customer experience.
           </p>
 
@@ -109,7 +109,7 @@ const LandingPage = () => {
           <Testimonial
             name="Rohit Sharma"
             role="E-commerce Seller"
-            review="SwiftShip delivers faster than any courier I’ve tried. My customers love the speed!"
+            review="Courier wala delivers faster than any courier I’ve tried. My customers love the speed!"
             animation="fade-right"
           />
 
@@ -132,7 +132,7 @@ const LandingPage = () => {
       {/* ---------------- FOOTER ---------------- */}
       <footer className="mt-20 py-6 bg-black text-center text-gray-300">
         © {new Date().getFullYear()}{" "}
-        <span className="text-orange-500">SwiftShip</span>. All rights reserved.
+        <span className="text-orange-500">Courier wala</span>. All rights reserved.
       </footer>
     </div>
   );
