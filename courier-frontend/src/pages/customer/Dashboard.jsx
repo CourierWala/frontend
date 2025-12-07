@@ -2,20 +2,26 @@ import React from "react";
 import StatCard from "../customer/StatCard"
 import DeliveryList from "../customer/DeliveryList";
 import CustomerLayout from "../../layouts/CustomerLayout";
+import { useNavigate } from "react-router-dom";
 
 
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  const onCleateNewShipMent = () => {
+    navigate("/customer/book")
+  }
   return (
     <CustomerLayout>
       
       {/* ORANGE WELCOME BANNER */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-8 rounded-xl shadow mb-8">
-        <h1 className="text-3xl font-bold">Welcome back, John!</h1>
+        <h1 className="text-3xl font-bold">Welcome back, .... !</h1>
         <p className="mt-2 text-orange-100">
           You have 3 packages in transit and 2 pending pickups
         </p>
-        <button className="mt-4 bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold shadow hover:bg-orange-50">
+        <button onClick={onCleateNewShipMent} className="mt-4 bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold shadow hover:bg-orange-50">
           + Create New Shipment
         </button>
       </div>

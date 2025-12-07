@@ -31,28 +31,28 @@ const ProfileTab = () => {
         {/* FIRST NAME */}
         <InputField
           label="First Name"
-          defaultValue="John"
+          defaultValue=""
           icon={<FiUser />}
         />
 
         {/* LAST NAME */}
         <InputField
           label="Last Name"
-          defaultValue="Doe"
+          defaultValue=""
           icon={<FiUser />}
         />
 
         {/* EMAIL */}
         <InputField
           label="Email"
-          defaultValue="john@example.com"
+          defaultValue=""
           icon={<FiMail />}
         />
 
         {/* PHONE */}
         <InputField
           label="Phone Number"
-          defaultValue="+1 (555) 123-4567"
+          defaultValue=""
           icon={<FiPhone />}
         />
 
@@ -60,7 +60,7 @@ const ProfileTab = () => {
         <div className="md:col-span-2">
           <InputField
             label="Address"
-            defaultValue="123 Main St, New York, NY 10001"
+            defaultValue=""
             icon={<FiMapPin />}
           />
         </div>

@@ -24,7 +24,7 @@ const CustomerLayout = ({ children }) => {
       <div className="md:hidden flex items-center justify-between p-4 bg-black text-white w-full fixed top-0 left-0 z-30">
         <div className="flex items-center gap-2">
           <HiOutlineCube className="text-orange-500 text-2xl" />
-          <h2 className="text-xl font-bold">SwiftShip</h2>
+          <h2 className="text-xl font-bold">Courier Wall</h2>
         </div>
 
         <button onClick={() => setIsOpen(true)}>
@@ -51,7 +51,7 @@ const CustomerLayout = ({ children }) => {
         <div>
           <div className="flex items-center gap-3 mb-6">
             <HiOutlineCube className="text-orange-500 text-3xl" />
-            <h2 className="text-2xl font-bold">SwiftShip</h2>
+            <h2 className="text-2xl font-bold">Courier Wala</h2>
           </div>
 
           {/* Divider */}

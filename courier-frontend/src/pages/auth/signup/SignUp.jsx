@@ -14,7 +14,7 @@ const SignUp = () => {
       <div className="w-full flex justify-between items-center py-4 px-6 border-b bg-white">
         <div className="flex items-center gap-2">
           <span className="bg-orange-600 text-white p-2 rounded-lg text-xl">📦</span>
-          <h1 className="text-xl font-bold">SwiftShip</h1>
+          <h1 className="text-xl font-bold">Courier Wala</h1>
         </div>
 
         <Link to="/" className="text-gray-500 hover:text-black">
@@ -42,7 +42,7 @@ const SignUp = () => {
           {/* FULL NAME */}
           <Input
             label="Full Name"
-            placeholder="John Doe"
+            placeholder="Your Name"
             icon={<FiUser />}
           />
 

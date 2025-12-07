@@ -5,22 +5,29 @@ import { FiTruck, FiShield, FiActivity, FiStar } from "react-icons/fi";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+import TruckScene from "../../components/Three Fiber/truckScene" // 🚚 your 3D truck component
+
 const LandingPage = () => {
   useEffect(() => {
     AOS.init({ duration: 900, easing: "ease-in-out" });
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF7EE]">
+    <div className="relative min-h-screen flex flex-col bg-[#FFF7EE] overflow-hidden">
+      {/* Navbar */}
       <NavBar />
 
-      {/* HERO SECTION */}
-      <section className="flex flex-col pt-10 md:flex-row items-center justify-between px-10 md:px-20 mt-16">
-        {/* LEFT TEXT BLOCK */}
+      {/* 🚚 BACKGROUND TRUCK ANIMATION */}
+      <div className="absolute hidden md:block top-28 right-0 w-full h-[200px] mb-20 opacity-90 pointer-events-none">
+        <TruckScene />
+      </div>
+
+      {/* ---------------- HERO SECTION ---------------- */}
+      <section className="flex flex-col pt-10 md:flex-row items-center justify-between px-10 md:px-20 mt-28 relative z-10">
+        {/* LEFT TEXT */}
         <div className="max-w-xl" data-aos="fade-right">
           <h1 className="text-6xl font-extrabold leading-tight text-gray-900">
-            Fast. Secure.
-            <br />
+            Fast. Secure. <br />
             <span className="text-orange-600">Swift Deliveries.</span>
           </h1>
 
@@ -45,28 +52,15 @@ const LandingPage = () => {
             </Link>
           </div>
         </div>
-
-        {/* HERO IMAGE */}
-        {/* <img
-          src="https://cdn-icons-png.flaticon.com/512/3235/3235050.png"
-          alt="Swift Delivery"
-          className="w-full max-w-lg md:max-w-xl mt-10 md:mt-0 object-contain"
-        /> */}
-
-
-
-
-
-
       </section>
 
-      {/* FEATURES SECTION */}
-      <section className="mt-24 px-10 md:px-20">
+      {/* ---------------- FEATURES SECTION ---------------- */}
+      <section className="mt-24 px-10  md:px-20 ">
         <h2
           className="text-4xl font-bold text-center text-gray-900"
           data-aos="fade-up"
         >
-          Why Choose <span className="text-orange-600">SwiftShip?</span>
+          Why Choose <span className="text-orange-600">Courier Wala?</span>
         </h2>
 
         <p className="text-gray-600 text-center mt-2" data-aos="fade-up">
@@ -97,7 +91,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* ⭐ TESTIMONIALS SECTION ⭐ */}
+      {/* ---------------- TESTIMONIALS SECTION ---------------- */}
       <section className="mt-28 px-10 md:px-20">
         <h2
           className="text-4xl font-bold text-center text-gray-900"
@@ -134,7 +128,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* ---------------- FOOTER ---------------- */}
       <footer className="mt-20 py-6 bg-black text-center text-gray-300">
         © {new Date().getFullYear()}{" "}
         <span className="text-orange-500">SwiftShip</span>. All rights reserved.
@@ -162,11 +156,11 @@ const Testimonial = ({ name, role, review, animation }) => (
     className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100"
   >
     <div className="flex justify-center mb-3 text-orange-500">
-      <FiStar size={24} />
-      <FiStar size={24} />
-      <FiStar size={24} />
-      <FiStar size={24} />
-      <FiStar size={24} />
+      <FiStar size={22} />
+      <FiStar size={22} />
+      <FiStar size={22} />
+      <FiStar size={22} />
+      <FiStar size={22} />
     </div>
 
     <p className="text-gray-700 italic text-center mb-4">“{review}”</p>
