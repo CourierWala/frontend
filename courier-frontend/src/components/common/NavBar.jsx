@@ -60,12 +60,28 @@ const NavBar = () => {
             Login
           </Link>
 
+           <Link
+            onClick={() => setOpen(false)}
+            className="block text-gray-700 text-lg hover:text-orange-600"
+            to="/staff/dashboard"
+          >
+            Staff
+          </Link>
+
+           <Link
+            onClick={() => setOpen(false)}
+            className="block text-gray-700 text-lg hover:text-orange-600"
+            to="/manager/dashboard"
+          >
+            Manager
+          </Link>
+
           <Link
             onClick={() => setOpen(false)}
             className="block px-4 py-2 bg-orange-600 text-white rounded-lg text-center hover:bg-orange-700"
             to="/register"
           >
-            Register
+            Sign Up
           </Link>
         </div>
       )}
