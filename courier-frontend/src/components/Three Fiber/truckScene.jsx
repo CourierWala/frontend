@@ -76,7 +76,7 @@ function Cloud({ startX = 10, z = -150, speed = 0.6 }) {
   useFrame((state, delta) => {
     if (!ref.current) return;
     ref.current.position.x -= delta * speed;
-    if (ref.current.position.x < -12) ref.current.position.x = startX;
+    if (ref.current.position.x < -40) ref.current.position.x = startX;
   });
   return (
     <group ref={ref} position={[startX, 18 + Math.random() * 0.8, z]}>
@@ -202,12 +202,15 @@ export default function TruckScene({ modelPath = "/models/orangeTruck.fbx" }) {
 
         <CameraLookAtTruck truckRef={truckRef} />
         {/* Clouds and bird - small number to create illusion of movement */}
-        <Cloud startX={8} z={-22} speed={0.2} />
-        <Cloud startX={20} z={-20} speed={0.55} />
-        <Cloud startX={0} z={-18} speed={1} />
+        <Cloud startX={26} z={-22} speed={0.2} />
+        <Cloud startX={18} z={-22} speed={0.2} />
+        <Cloud startX={40} z={-20} speed={0.55} />
+        <Cloud startX={20} z={-18} speed={1} />
+        <Bird start={[-19.8, 8, -2]} speed={2.6} />
+        <Bird start={[-19.5, 8.25, -2]} speed={2.6} />
         <Bird start={[-19, 8.5, -2]} speed={2.6} />
-        {/* <Bird start={[-20, 9, -3]} speed={2.6} />
-        <Bird start={[-21, 9, -2]} speed={2.6} /> */}
+        <Bird start={[-19.5, 8.75, -2]} speed={2.6} />
+        <Bird start={[-20.2, 9, -2]} speed={2.6} />
 
         <OrbitControls enabled={false} />
       </Suspense>
