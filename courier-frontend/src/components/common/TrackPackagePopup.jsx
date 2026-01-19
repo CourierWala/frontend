@@ -38,14 +38,14 @@ const TrackPackagePopup = () => {
           "
                 />
 
-                <button
+                <Button
                     className="
             w-full mt-3 bg-orange-600 hover:bg-orange-700 
             text-white py-2 rounded-lg text-sm
           "
                 >
                     Track Now
-                </button>
+                </Button>
             </div>
         </div>
     );
