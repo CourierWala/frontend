@@ -29,15 +29,7 @@ export default function Profile(){
       <div className="grid md:grid-cols-1 gap-6 ">
         <div className="bg-white rounded-xl shadow-sm border p-6 space-y-4">
           <div className="flex items-center gap-4">
-            {/* <div className="h-14 w-14 rounded-full bg-orange-600 flex items-center justify-center text-white font-bold text-xl">
-              
-            </div>
-            <div>
-              <p className="font-semibold"></p>
-              <button className="text-xs text-orange-600 font-medium">
-                
-              </button>
-            </div> */}
+            
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">

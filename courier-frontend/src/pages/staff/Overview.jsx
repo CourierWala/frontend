@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchOrders, handoverOrder, pickupOrder } from "../../api/staff";
 
-/* ---------------- STATIC DATA (MOCK DB) ---------------- */
+
 const mockOrders = [
   {
     id: "ORDER-284",
@@ -47,7 +47,7 @@ export default function Overview() {
     // loadOrders();        // enable when backend ready
   }, []);
 
-  /* ---------------- DERIVED ORDERS ---------------- */
+  /*  DERIVED ORDERS  */
   const availableOrders = orders.filter((o) => o.status === "BOOKED");
   const acceptedOrders = orders.filter((o) => o.status === "CONFIRMED");
 
@@ -63,7 +63,7 @@ export default function Overview() {
   };
 
 
-  /* ---------------- HANDOVER ---------------- */
+  /*  HANDOVER */
   const handleHandover = (orderid) => {
     try {
        //await handoverOrder(orderId); // real API
@@ -90,7 +90,7 @@ export default function Overview() {
           onClick={() => setTab("available")}
           className={`flex-1 py-2.5 text-sm font-medium ${
             tab === "available"
-              ? "bg-white border-b-2 border-orange-600"
+              ? "bg-white border-b-2 border-orange-600 rounded-l-xl"
               : "text-slate-500"
           }`}
         >
@@ -101,7 +101,7 @@ export default function Overview() {
           onClick={() => setTab("accepted")}
           className={`flex-1 py-2.5 text-sm font-medium ${
             tab === "accepted"
-              ? "bg-white border-b-2 border-orange-600"
+              ? "bg-white border-b-2 border-orange-600 rounded-r-xl"
               : "text-slate-500"
           }`}
         >
