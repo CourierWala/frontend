@@ -21,6 +21,13 @@ import Profile from '../pages/staff/Profile'
 
 import Overview from '../pages/staff/Overview'
 import StaffShipmentHistory from '../pages/staff/StaffShipmentHistory'
+import AdminPricing from '../pages/admin/AdminPricing'
+import AdminProfile from './../pages/admin/AdminProfile';
+import AdminAnalytics from '../pages/admin/AdminAnalytics'
+import AdminStaffManagement from '../pages/admin/AdminStaffManagement'
+import AdminHubManagement from './../pages/admin/AdminHubManagement';
+import AdminInvestorRelations from '../pages/admin/AdminInvestorRelations'
+import Admin from '../pages/admin/Admin'
 
 
 const AppRoutes = () => {
@@ -177,6 +184,34 @@ const AppRoutes = () => {
                     {/* <Route path="/" element={<LandingPage />}
                     /> */}
                     {/* {<div>Page Not Found</div>}  */}
+
+                
+                {/* // staff routes */}
+                <Route path="/admin" element={<Admin />}>
+
+                    <Route 
+                        path="dashboard" 
+                        element={<AdminDashboard />} />
+                    <Route 
+                        path="analytics" 
+                        element={<AdminAnalytics />} />
+                    <Route 
+                        path="pricing" 
+                        element={<AdminPricing />} />
+                    <Route 
+                        path="staff-management" 
+                        element={<AdminStaffManagement />} />
+                    <Route 
+                        path="hub-management" 
+                        element={<AdminHubManagement />} />
+                    <Route 
+                        path="investor-relations" 
+                        element={<AdminInvestorRelations />} />
+                    <Route 
+                        path="profile" 
+                        element={<AdminProfile />} />
+                </Route>
+
 
                 </Routes>
             </BrowserRouter>

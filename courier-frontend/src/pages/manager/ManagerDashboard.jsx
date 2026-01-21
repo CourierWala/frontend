@@ -13,6 +13,8 @@ import {
   Cell,
 } from "recharts";
 import ManagerLayout from "../../layouts/ManagerLayout";
+import ChartCard from './../../components/common/ChartCard';
+// import ManagerLayout from "./ManagerSidebar";
 
 const staffByLocation = [
   { location: "New York", count: 25 },
@@ -216,12 +218,7 @@ export default function ManagerDashboard() {
 
 // ---------------------- Reusable Components ----------------------
 
-const ChartCard = ({ title, children }) => (
-  <div className="bg-white rounded-xl p-4 md:p-6 shadow-sm">
-    <h3 className="mb-4">{title}</h3>
-    {children}
-  </div>
-);
+
 
 const LegendItem = ({ color, label }) => (
   <div className="flex items-center gap-2">
