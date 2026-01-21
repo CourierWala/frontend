@@ -4,8 +4,6 @@ import ManagerLayout from "../../layouts/ManagerLayout";
 import ProfileTab from "../../components/manager/ProfileTab";
 import SecurityTab from "../../components/manager/SecurityTab";
 import NotificationsTab from "../../components/manager/NotificationsTab";
-import BillingTab from "../../components/manager/BillingTab";
-import PermissionsTab from "../../components/manager/PermissionsTab";
 
 const ManagerProfileSettings = () => {
   const [activeTab, setActiveTab] = useState("Profile");
@@ -18,10 +16,6 @@ const ManagerProfileSettings = () => {
         return <SecurityTab />;
       case "Notifications":
         return <NotificationsTab />;
-      case "Billing":
-        return <BillingTab />;
-      case "Roles and Permissions":
-        return <PermissionsTab />;
       default:
         return <ProfileTab />;
     }
@@ -37,7 +31,7 @@ const ManagerProfileSettings = () => {
 
         {/* TABS */}
         <div className="flex justify-between sm:justify-center gap-3 mb-8">
-          {["Profile", "Security", "Notifications", "Billing", "Roles and Permissions"].map((tab) => (
+          {["Profile", "Security", "Notifications"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
