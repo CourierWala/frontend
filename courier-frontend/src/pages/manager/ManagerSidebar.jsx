@@ -1,5 +1,5 @@
-
-import { Package, Users, TruckIcon, AlertCircle } from 'lucide-react';
+import React from 'react';
+import { Package, Users, TruckIcon, AlertCircle, Import } from 'lucide-react';
 import Sidebar from '../../components/common/sidebar';
 
 const managerLinks = [
@@ -11,8 +11,14 @@ const managerLinks = [
 
 export default function ManagerLayout(){
   return (
-    <div className="flex">
-      <Sidebar links={managerLinks} />
+    <div className="flex min-h-screen">
+      <aside className="w-64 shrink-0">
+        <Sidebar links={managerLinks} />
+      </aside>
+
+      <main className="flex-1 p-6 bg-gray-50 overflow-x-hidden">
+        {children}
+      </main>
     </div>
   );
 }

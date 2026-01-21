@@ -20,6 +20,7 @@ const NavBar = () => {
           <Link className="hover:text-orange-600 transition" to="/">Home</Link>
           <Link className="hover:text-orange-600 transition" to="/staff/dashboard">Staff</Link>
           <Link className="hover:text-orange-600 transition" to="/Manager/Dashboard">Manager</Link>
+          <Link className="hover:text-orange-600 transition" to="/admin/dashboard">Admin</Link>
 
           <Link className="hover:text-orange-600 transition" to="/login">
             Login
