@@ -1,5 +1,6 @@
 import React from "react";
 import {BarChart,Bar,LineChart,Line,XAxis,YAxis,Tooltip,ResponsiveContainer} from "recharts";
+import EarningsDetails from "./EarningsDetails";
 
 
 // Daily earnings (weekly)
@@ -90,6 +91,10 @@ export default function Earnings() {
           </div>
         </div>
       </div>
+
+
+      <EarningsDetails
+      />
 
       {/* Transactions Table */}
       <div className="bg-white rounded-xl border shadow-sm p-4 overflow-x-auto">

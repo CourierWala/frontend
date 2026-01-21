@@ -59,3 +59,15 @@ export async function fetchShipmentHistory() {
   }
 }
 
+export async function changePassword(staffid,currentPassword,newPassword){
+  try {
+        const url = `${config.server}/staff/Profile/changepassword`;
+        const body ={staffid,currentPassword,newPassword} 
+        const response = await axios.post(url,body);
+        return response.data;
+  } catch (error){
+    console.error("Error in changing password", error);
+  }
+
+}
+
