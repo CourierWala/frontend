@@ -30,20 +30,20 @@ export default function Profile() {
         Security
       </button>
 
-      <button
+      {/* <button
         onClick={() => setTab("notifications")}
         className={`px-6 py-2 rounded-full text-sm font-medium transition ${
           tab === "notifications" ? "bg-orange-600 text-white" : "bg-white border text-slate-600 hover:bg-slate-50"
         }`}>
         Notifications
-      </button>
+      </button> */}
 </div>
 
 
       {/* Tabs */}
       {tab === "profile" && <ProfileTab />}
       {tab === "security" && <SecurityTab />}
-      {tab === "notifications" && <NotificationTab />}
+      {/* {tab === "notifications" && <NotificationTab />} */}
     </div>
   );
 }

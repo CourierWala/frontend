@@ -28,6 +28,7 @@ import AdminStaffManagement from '../pages/admin/AdminStaffManagement'
 import AdminHubManagement from './../pages/admin/AdminHubManagement';
 import AdminInvestorRelations from '../pages/admin/AdminInvestorRelations'
 import Admin from '../pages/admin/Admin'
+import NotificationTab from '../pages/staff/NotificationTab'
 
 
 const AppRoutes = () => {
@@ -116,6 +117,10 @@ const AppRoutes = () => {
                     <Route 
                         path="StaffShipmentHistory" 
                         element={<StaffShipmentHistory />} />
+
+                    <Route 
+                        path="notifications" 
+                        element={<NotificationTab />} />    
                 </Route>
 
 

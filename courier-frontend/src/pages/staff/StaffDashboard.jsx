@@ -1,7 +1,9 @@
 import React from 'react'
 import Overview from './Overview'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import Sidebar from '../../components/common/sidebar';
 
 
@@ -19,10 +21,15 @@ const StaffDashboard = () => {
       <Sidebar links={staffLinks}/>
 
       <div className="flex-1 md:ml-64 flex flex-col min-w-0">
-        <header className="h-14 flex items-center px-6 bg-white border-b shadow-sm">
+        <header className="h-14 flex items-center justify-between px-6 bg-white border-b shadow-sm">
           <h1 className="text-sm font-semibold text-slate-700">
             Delivery Staff Dashboard
           </h1>
+          <div className='text-lg'>
+           
+           <Link to="/staff/notifications"><FontAwesomeIcon icon={faBell} /></Link>
+
+          </div>
         </header>
         <main className="flex-1 w-full overflow-x-hidden">
           {/* childpages */}
