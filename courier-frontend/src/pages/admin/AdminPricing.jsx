@@ -36,7 +36,7 @@ export default function AdminPricing() {
         </div>
 
         <button className="bg-orange-600 text-white px-4 py-2 rounded-md">
-          Save Pricing
+          Update Pricing
         </button>
       </div>
     </div>

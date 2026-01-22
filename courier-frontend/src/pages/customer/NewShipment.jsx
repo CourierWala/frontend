@@ -1,22 +1,25 @@
 import React, { useState } from "react";
-import CustomerLayout from "../../layouts/CustomerLayout"
+import CustomerLayout from "../../layouts/CustomerLayout";
 import { HiLocationMarker, HiOutlineCube } from "react-icons/hi";
 import { MdLocalShipping } from "react-icons/md";
+import OlaAutocomplete from "../../components/common/OlaAutocomplete";
 
 const NewShipment = () => {
   const [form, setForm] = useState({
-    pickupAddress: "",
+    pickupLocation: null,
+    deliveryLocation: null,
     pickupCity: "",
-    pickupZip: "",
-    pickupDate: "",
-    deliveryAddress: "",
     deliveryCity: "",
-    deliveryZip: "",
+    pickupHouseNo: "",
+    pickupDate: "",
+    deliveryHouseNo: "",
     packageSize: "",
     weight: "",
     serviceType: "",
     description: "",
   });
+
+  const CITY_OPTIONS = ["Mumbai", "Pune", "Bangalore", "Delhi", "Chennai"];
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,7 +33,6 @@ const NewShipment = () => {
   return (
     <CustomerLayout>
       <div className="max-w-4xl mx-auto">
-
         {/* PAGE HEADER */}
         <h1 className="text-3xl font-bold mb-2">Create New Shipment</h1>
         <p className="text-gray-600 mb-8">
@@ -38,34 +40,36 @@ const NewShipment = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-10">
-
           {/* SECTION: PICKUP INFO */}
           <SectionCard
             icon={<HiLocationMarker className="text-orange-500 text-2xl" />}
             title="Pickup Information"
           >
             <TwoColumn>
-              <InputField
-                label="Street Address"
-                name="pickupAddress"
-                value={form.pickupAddress}
-                onChange={handleChange}
+              <OlaAutocomplete
+                label="Pickup Address"
+                value={form.pickupLocation?.address || ""}
+                onSelect={(data) =>
+                  setForm((prev) => ({ ...prev, pickupLocation: data }))
+                }
               />
               <InputField
-                label="ZIP Code"
-                name="pickupZip"
-                value={form.pickupZip}
+                label="House no."
+                name="pickupHouseNo"
+                value={form.pickupHouseNo}
                 onChange={handleChange}
               />
             </TwoColumn>
 
             <TwoColumn>
-              <InputField
-                label="City"
+              <SelectField
+                label="Pickup City"
                 name="pickupCity"
+                options={CITY_OPTIONS}
                 value={form.pickupCity}
                 onChange={handleChange}
               />
+
               <InputField
                 label="Pickup Date"
                 name="pickupDate"
@@ -82,24 +86,26 @@ const NewShipment = () => {
             title="Delivery Information"
           >
             <TwoColumn>
-              <InputField
-                label="Street Address"
-                name="deliveryAddress"
-                value={form.deliveryAddress}
-                onChange={handleChange}
+              <OlaAutocomplete
+                label="Delivery Address"
+                value={form.deliveryLocation?.address || ""}
+                onSelect={(data) =>
+                  setForm((prev) => ({ ...prev, deliveryLocation: data }))
+                }
               />
               <InputField
-                label="ZIP Code"
-                name="deliveryZip"
+                label="House no."
+                name="deliveryHouseNo"
                 value={form.deliveryZip}
                 onChange={handleChange}
               />
             </TwoColumn>
 
             <TwoColumn>
-              <InputField
-                label="City"
+              <SelectField
+                label="Delivery City"
                 name="deliveryCity"
+                options={CITY_OPTIONS}
                 value={form.deliveryCity}
                 onChange={handleChange}
               />
@@ -156,6 +162,7 @@ const NewShipment = () => {
             <button
               type="submit"
               className="flex-1 sm:flex-none px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 shadow"
+              onClick={handleSubmit}
             >
               Book Shipment →
             </button>
@@ -174,7 +181,6 @@ export default NewShipment;
 
 const SectionCard = ({ icon, title, children }) => (
   <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-
     {/* TITLE */}
     <div className="flex items-center gap-2 mb-4">
       {icon}
@@ -235,3 +241,24 @@ const TextareaField = ({ label, name, value, onChange, placeholder }) => (
     />
   </label>
 );
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  const payload = {
+    ...form,
+    pickupLocation: {
+      address: form.pickupLocation.address,
+      lat: form.pickupLocation.lat,
+      lng: form.pickupLocation.lng,
+    },
+    deliveryLocation: {
+      address: form.deliveryLocation.address,
+      lat: form.deliveryLocation.lat,
+      lng: form.deliveryLocation.lng,
+    },
+  };
+
+  console.dir("FINAL PAYLOAD:\n", payload);
+};
+
