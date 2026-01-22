@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import { save } from "../../api/staff";
+import { toast } from "react-toastify";
 
 export default function ProfileTab(){
 
@@ -14,8 +15,27 @@ export default function ProfileTab(){
   const [vehicleNumber ,setVehicleNumber] = useState('')
 
   const savechanges = async()=>{
-    window.alert("save changes sucessfully");
-    // const response = await save(firstName,lastName,email,phone,vehicleType,vehicleNumber);
+
+
+    const rules = [
+    [firstName, "First name is required"],
+    [lastName, "Last name is required"],
+    [email, "Email is required"],
+    [/^\S+@\S+\.\S+$/.test(email), "Invalid email format"],
+    [phone, "Phone number is required"],
+    [/^\d{10}$/.test(phone), "Phone must be 10 digits"],
+    [vehicleType, "Select vehicle type"],
+    [vehicleNumber, "Vehicle number is required"],
+  ];
+
+  for (const [condition, message] of rules){
+        if (!condition) {
+        toast.warning(message);
+        return; 
+        }
+    }
+    toast.success("Profile updated successfully");
+      // const response = await save(firstName,lastName,email,phone,vehicleType,vehicleNumber);
 
     // if (response['status'] === 'success') {
         

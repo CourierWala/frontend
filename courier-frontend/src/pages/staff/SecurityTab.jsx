@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { changePassword } from "../../api/staff";
+import { toast } from "react-toastify";
 
 export default function SecurityTab() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -8,16 +9,35 @@ export default function SecurityTab() {
 
 
   const handleChangePassword = () => {
-      alert("New password and confirm password do not match");
-      //validation
-        // staffid from session
+      const passwordRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            const rules = [
+                [currentPassword, "Current password is required"],
+                [newPassword, "New password is required"],
+                [
+                    passwordRegex.test(newPassword),
+                    "Password must be at least 8 characters and include uppercase, lowercase, number & special character",
+                ],
+                [confirmPassword, "Confirm password is required"],
+                [newPassword === confirmPassword, "Passwords do not match"],
+            ];
+    for (const [condition, message] of rules){
+      if (!condition) {
+        toast.warning(message);
+        return; 
+      }
+    }
+    toast.success("Password changed successfully");
+    // staffid from session
        // const response = await changePassword(staffid,currentPassword,newPassword);
 
     //     if (response['status'] === 'success') {
     //         console.log("sucessful");
     //    }
-     
-    }
+
+   
+  };
   
   return (
     <div className="grid md:grid-cols-1 gap-6">
