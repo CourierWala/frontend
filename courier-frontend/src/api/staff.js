@@ -18,6 +18,7 @@ export async function save(firstName,lastName,email,phone,vehicleType,vehicleNum
 }
 export async function fetchOrders(){
   try {
+    // staff id from seession
     const url = `${config.server}/staff/dashboard`;
     const response = await axios.get(url);
     return response.data;
@@ -28,9 +29,9 @@ export async function fetchOrders(){
 
 export async function pickupOrder(orderId){
     try {
-        const url = `${config.server}/staff/dashboard/order/pickup`;
+        const url = `${config.server}/staff/order/pickup`;
         const body ={orderId} 
-        const response = await axios.post(url,body);
+        const response = await axios.patch(url,body);
         return response.data;
   } catch (error) {
     console.error("Error fetching orders", error);
@@ -39,15 +40,25 @@ export async function pickupOrder(orderId){
 
 export async function handoverOrder(orderId){
     try {
-        const url = `${config.server}/staff/dashboard/order/handover`;
+        const url = `${config.server}/staff/order/handover`;
         const body ={orderId} 
-        const response = await axios.post(url,body);
+        const response = await axios.patch(url,body);
         return response.data;
   } catch (error) {
     console.error("Error fetching orders", error);
   }
 }
 
+export async function getOrderDetails(orderId){
+    try {
+        const url = `${config.server}/staff/orderDetails`;
+        //orderId as path varaible 
+        const response = await axios.get(url);
+        return response.data;
+  } catch (error) {
+    console.error("Error fetching orders", error);
+  }
+}
 
 export async function fetchShipmentHistory() {
   try {
@@ -68,6 +79,16 @@ export async function changePassword(staffid,currentPassword,newPassword){
   } catch (error){
     console.error("Error in changing password", error);
   }
+}
 
+export async function staff_signup(name,email,phone,password,vehicleType,vehicleNumber,licenseNumber,hubId){
+  try {
+        const url = `${config.server}/staff/signup`;
+        const body ={name,email,phone,password,vehicleType,vehicleNumber,licenseNumber,hubId} 
+        const response = await axios.post(url,body);
+        return response.data;
+  } catch (error){
+    console.error("Error in changing password", error);
+  }
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchOrders, handoverOrder, pickupOrder } from "../../api/staff";
+import { fetchOrders, getOrderDetails, handoverOrder, pickupOrder } from "../../api/staff";
 
 
 const mockOrders = [
@@ -11,7 +11,7 @@ const mockOrders = [
     distance: "100 km",
     weight: "2.5 kg",
     amount: 45,
-    status: "BOOKED",
+    status: "IN_TRANSEIT",
   },
   {
     id: "ORDER-2846",
@@ -21,7 +21,7 @@ const mockOrders = [
     distance: "150 km",
     weight: "1.8 kg",
     amount: 52,
-    status: "CONFIRMED",
+    status: "OUT_FOR_DELIVERY",
   },
 ];
 
@@ -48,8 +48,8 @@ export default function Overview() {
   }, []);
 
   /*  DERIVED ORDERS  */
-  const availableOrders = orders.filter((o) => o.status === "BOOKED");
-  const acceptedOrders = orders.filter((o) => o.status === "CONFIRMED");
+  const availableOrders = orders.filter((o) => o.status === "IN_TRANSEIT");
+  const acceptedOrders = orders.filter((o) => o.status === "OUT_FOR_DELIVERY");
 
   
   const handlePickup = async (orderId) => {
@@ -73,6 +73,17 @@ export default function Overview() {
       window.alert("handover failed");
     }
   };
+  const onOverview = (orderid) => {
+    try {
+      // await getOrderDetails(orderId); // real API
+      
+      window.alert("order overview" + orderid);
+    } catch (error) {
+      window.alert("order fetch fails");
+    } 
+  };
+
+  
 
   return (
     <div className="p-4 md:p-8">

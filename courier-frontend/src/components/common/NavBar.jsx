@@ -18,7 +18,7 @@ const NavBar = () => {
         {/* DESKTOP MENU */}
         <nav className="hidden md:flex items-center gap-8 text-gray-700 font-medium">
           <Link className="hover:text-orange-600 transition" to="/">Home</Link>
-          <Link className="hover:text-orange-600 transition" to="/staff/dashboard">Staff</Link>
+          {/* <Link className="hover:text-orange-600 transition" to="/staff/dashboard">Staff</Link> */}
           <Link className="hover:text-orange-600 transition" to="/Manager/Dashboard">Manager</Link>
           <Link className="hover:text-orange-600 transition" to="/admin/dashboard">Admin</Link>
 
@@ -31,6 +31,13 @@ const NavBar = () => {
             className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
           >
             Sign Up
+          </Link>
+          <Link
+            onClick={() => setOpen(false)}
+            className="block px-4 py-2 bg-orange-600 text-white rounded-lg text-center hover:bg-orange-700"
+            to="/staffsignup"
+          >
+            Apply For JOb
           </Link>
         </nav>
         {/* MOBILE MENU BUTTON */}
@@ -61,13 +68,13 @@ const NavBar = () => {
             Login
           </Link>
 
-           <Link
+           {/* <Link
             onClick={() => setOpen(false)}
             className="block text-gray-700 text-lg hover:text-orange-600"
             to="/staff/dashboard"
           >
             Staff
-          </Link>
+          </Link> */}
 
            <Link
             onClick={() => setOpen(false)}
@@ -83,6 +90,13 @@ const NavBar = () => {
             to="/register"
           >
             Sign Up
+          </Link>
+           <Link
+            onClick={() => setOpen(false)}
+            className="block px-4 py-2 bg-orange-600 text-white rounded-lg text-center hover:bg-orange-700"
+            to="/staffsignup"
+          >
+             Apply For JOb
           </Link>
         </div>
       )}
