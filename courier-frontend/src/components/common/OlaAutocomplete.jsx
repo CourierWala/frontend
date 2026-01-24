@@ -46,11 +46,12 @@ const styles = {
   },
 };
 
-const OlaAutocomplete = ({ label, value, onSelect }) => {
-  const [query, setQuery] = useState(value || "");
+const OlaAutocomplete = (props) => {
+  const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
   const debounceRef = useRef(null);
+  
 
   useEffect(() => {
     if (isSelected) return;
@@ -65,7 +66,6 @@ const OlaAutocomplete = ({ label, value, onSelect }) => {
           "http://localhost:8080/api/customer/location/autocomplete",
           { params: { input: query } }
         );
-
         setSuggestions(res.data.predictions || []);
       } catch (err) {
         console.error(err);
@@ -82,8 +82,8 @@ const OlaAutocomplete = ({ label, value, onSelect }) => {
     setSuggestions([]);
     setIsSelected(true);
 
-    onSelect({
-      address: selectedAddress,
+    props?.setLocation({
+      address: item.terms[0]?.value,
       lat: item.geometry?.location?.lat,
       lng: item.geometry?.location?.lng,
     });
@@ -91,7 +91,7 @@ const OlaAutocomplete = ({ label, value, onSelect }) => {
 
   return (
     <div className="relative">
-      <p className="text-gray-700 mb-1">{label}</p>
+      <p className="text-gray-700 mb-2">{props?.placeholder}</p>
       <input
         value={query}
         onChange={(e) => {
@@ -99,7 +99,7 @@ const OlaAutocomplete = ({ label, value, onSelect }) => {
           setIsSelected(false); // 🔁 allow searching again
         }}
         className="w-full border rounded-lg p-2 focus:ring focus:ring-orange-200"
-        placeholder="Start typing address..."
+        placeholder="Search area, landmark, street, city.."
       />
 
       {suggestions.length > 0 && (
