@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./StaffManagerFormStyles.css";
 import OlaAutocomplete from "./../../components/common/OlaAutocomplete";
+import { toast } from "react-toastify";
 
 const StaffManagerModal = ({
   isOpen,
@@ -15,7 +16,7 @@ const StaffManagerModal = ({
     phone: "",
     role: "ROLE_STAFF_MANAGER",
     status: "ACTIVE",
-    addresses: "",
+    address: "",
   });
 
   const ROLES = ["ROLE_STAFF_MANAGER"];
@@ -40,6 +41,45 @@ const StaffManagerModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const rules = [
+      [formData.name, "Name is required"],
+      [formData.email, "Email is required"],
+      [/^\S+@\S+\.\S+$/.test(formData.email), "Invalid email format"],
+      [
+        formData.password.length < 8,
+        "Your password must be at least 8 characters long.",
+      ],
+      [
+        !/[a-z]/.test(formData.password),
+        "Your password must contain at least one lowercase letter.",
+      ],
+      [
+        !/[A-Z]/.test(formData.password),
+        "Your password must contain at least one uppercase letter.",
+      ],
+      [
+        !/[0-9]/.test(formData.password),
+        "Your password must contain at least one digit.",
+      ],
+      [
+        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(
+          formData.password,
+        ),
+        "Your password must contain at least one special character.",
+      ],
+      [formData.phone, "Phone number is required"],
+      [!/^\d{10}$/.test(formData.phone), "Phone must be 10 digits"],
+      [formData.address, "Address is required"],
+    ];
+
+    for (const [condition, message] of rules) {
+      if (!condition) {
+        toast.warning(message);
+        return;
+      }
+    }
+
     onSubmit(formData);
   };
 
@@ -64,6 +104,7 @@ const StaffManagerModal = ({
           onSubmit={handleSubmit}
           className="px-6 py-4 space-y-4 max-h-[70vh] overflow-y-auto"
         >
+          <label htmlFor="name">Name</label>
           <input
             type="text"
             name="name"
@@ -74,6 +115,7 @@ const StaffManagerModal = ({
             required
           />
 
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             name="email"
@@ -84,6 +126,7 @@ const StaffManagerModal = ({
             required
           />
 
+          <label htmlFor="password">Password</label>
           {!initialData && (
             <input
               type="password"
@@ -96,6 +139,7 @@ const StaffManagerModal = ({
             />
           )}
 
+          <label htmlFor="phone">Phone</label>
           <input
             type="tel"
             name="phone"
@@ -105,6 +149,11 @@ const StaffManagerModal = ({
             className="w-full input"
             required
           />
+
+          <div className="grid grid-cols-2 gap-4">
+            <label htmlFor="role">Role</label>
+            <label htmlFor="status">Status</label>
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             <select
@@ -134,14 +183,15 @@ const StaffManagerModal = ({
             </select>
           </div>
 
+          <label htmlFor="address">Address</label>
           <textarea
-            name="addresses"
-            placeholder="Addresses"
+            name="address"
+            placeholder="Address"
             value={formData.addresses}
             onChange={handleChange}
             className="w-full input min-h-[80px]"
           />
-          
+
           {/* Footer */}
           <div className="flex justify-end gap-3 pt-4 border-t">
             <button type="button" onClick={onClose} className="btn-secondary">

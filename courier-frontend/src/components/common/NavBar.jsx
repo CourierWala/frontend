@@ -19,7 +19,7 @@ const NavBar = () => {
         <nav className="hidden md:flex items-center gap-8 text-gray-700 font-medium">
           <Link className="hover:text-orange-600 transition" to="/">Home</Link>
           {/* <Link className="hover:text-orange-600 transition" to="/staff/dashboard">Staff</Link> */}
-          <Link className="hover:text-orange-600 transition" to="/Manager/Dashboard">Manager</Link>
+          <Link className="hover:text-orange-600 transition" to="/manager/dashboard">Manager</Link>
           <Link className="hover:text-orange-600 transition" to="/admin/dashboard">Admin</Link>
 
           <Link className="hover:text-orange-600 transition" to="/login">

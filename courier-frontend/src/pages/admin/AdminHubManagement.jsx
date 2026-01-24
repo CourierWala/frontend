@@ -1,7 +1,7 @@
 import React from "react";
 import { Plus, Pencil } from "lucide-react";
 import { useState } from "react";
-import HubManagerModal from "./HubManagerModal";
+import AddHubModal from "./AddHubModal";
 
 export default function AdminHubManagement() {
   const [hubs, setHubs] = useState([
@@ -34,7 +34,9 @@ export default function AdminHubManagement() {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = (hubData) => {
+  const handleSubmit = (hubData, managerData) => {
+    console.dir(hubData);
+    console.dir(managerData);
     if (selectedHub) {
       // UPDATE
       setHubs((prev) =>
@@ -91,7 +93,7 @@ export default function AdminHubManagement() {
         </table>
       </div>
 
-      <HubManagerModal
+      <AddHubModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         initialData={selectedHub}

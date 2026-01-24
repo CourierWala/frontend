@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Plus, Pencil } from "lucide-react";
 import StaffManagerModal from "./StaffManagerModal";
+import { save } from "../../api/admin";
 
 export default function AdminStaffManagement() {
   const [managers, setManagers] = useState([
@@ -41,14 +42,34 @@ export default function AdminStaffManagement() {
   };
 
   // Create or Update handler
-  const handleSubmit = (data) => {
-    if (selectedManager) {
+  const handleSubmit = async (data) => {
+    // const response = await save(
+    //   selectedManager.id,
+    //   data.name,
+    //   data.email,
+    //   data.password,
+    //   data.phone,
+    //   data.role,
+    //   data.status,
+    //   data.address,
+    // );
+
+    // if (response["status"] === "success") {
+    //   window.alert("save changes successfully");
+    // }
+
+    if (selectedManager /*&& response["status"] === "success"*/) {
       // UPDATE
+      toast.success("Profile updated successfully");
       setManagers((prev) =>
+        // Go through all managers. If this manager is the one I edited, replace its data. Otherwise, leave alone.
         prev.map((m) => (m.id === selectedManager.id ? { ...m, ...data } : m)),
       );
     } else {
       // CREATE
+      toast.success(
+        "Profile created successfully" /*&& response["status"] === "success"*/,
+      );
       setManagers((prev) => [...prev, { ...data, id: Date.now() }]);
     }
     setIsModalOpen(false);
@@ -78,7 +99,7 @@ export default function AdminStaffManagement() {
               <th className="text-right p-4">Action</th>
             </tr>
           </thead>
-          
+
           <tbody>
             {managers.map((m) => (
               <tr key={m.id} className="border-t">

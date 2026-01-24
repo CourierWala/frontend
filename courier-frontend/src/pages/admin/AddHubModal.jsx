@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import OlaAutocomplete from './../../components/common/OlaAutocomplete';
+import OlaAutocomplete from '../../components/common/OlaAutocomplete';
 
-export default function HubManagerModal({
+export default function AddHubModal({
   isOpen,
   onClose,
   initialData,
@@ -12,7 +12,6 @@ export default function HubManagerModal({
     hubName: "",
     address: "",
     city: "",
-    managerName: "",
     latitude: null,
     longitude: null,
   });
@@ -29,7 +28,9 @@ export default function HubManagerModal({
         hubName: initialData.hubName,
         address: initialData.address,
         city: initialData.city,
-        managerName: initialData.managerName,
+      });
+      setManagerForm({
+        name: initialData.managerName,
       });
     }
   }, [initialData]);
@@ -99,13 +100,6 @@ export default function HubManagerModal({
               required
             />
 
-            <input
-              name="managerName"
-              placeholder="Manager Name"
-              value={hubForm.managerName}
-              onChange={handleHubChange}
-              className="input w-full"
-            />
           </div>
 
           {/* Manager Form */}
