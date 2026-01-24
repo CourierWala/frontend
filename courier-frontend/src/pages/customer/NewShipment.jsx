@@ -4,20 +4,21 @@ import { HiLocationMarker, HiOutlineCube } from "react-icons/hi";
 import { MdLocalShipping } from "react-icons/md";
 import OlaAutocomplete from "../../components/common/OlaAutocomplete";
 import { toast } from "react-toastify";
+import { createShipment } from "../../api/customer";
 
 const NewShipment = () => {
   const [form, setForm] = useState({
-    pickupAddress: "",
-    pickupCity: "",
-    pickupPincode: "",
+    pickupAddress: "satara",
+    pickupCity: "satara",
+    pickupPincode: "415519",
     pickupDate: "",
-    deliveryAddress: "",
-    deliveryCity: "",
-    deliveryPincode: "",
-    packageSize: "",
-    weight: "",
-    deliveryType: "",
-    description: "",
+    deliveryAddress: "delhi",
+    deliveryCity: "delhi",
+    deliveryPincode: "500600",
+    packageSize: "MEDIUM",
+    weight: "22",
+    deliveryType: "STANDARD",
+    description: "this is deleivery",
     pickupLatitude: "",
     pickupLongitude: "",
     deliveryLatitude: "",
@@ -119,7 +120,8 @@ const NewShipment = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -133,9 +135,23 @@ const NewShipment = () => {
     };
 
     console.log(shipmentData);
+    try {
+      const res = await createShipment(shipmentData);
 
-    // axios.post(...)
-    toast.success("Shipment booked successfully 🚚");
+
+      console.log("res :", res)
+
+      toast.success(
+        res.data?.message || "Shipment booked successfully 🚚"
+      );
+
+    } catch (error) {
+      console.log(error)
+      toast.error(
+        error.response?.data?.message || "Booking failed"
+      );
+    }
+
   };
 
 
