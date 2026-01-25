@@ -5,6 +5,8 @@ import { MdLocalShipping } from "react-icons/md";
 import OlaAutocomplete from "../../components/common/OlaAutocomplete";
 import { toast } from "react-toastify";
 import { createShipment } from "../../api/customer";
+import { loadRazorpay } from "../../utils/loadRazorpay";
+import axios from "axios";
 
 const NewShipment = () => {
   const [form, setForm] = useState({
@@ -114,7 +116,7 @@ const NewShipment = () => {
     return true;
   };
 
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = async (order_id) => {
     // 1. Load Razorpay script
     const isLoaded = await loadRazorpay();
     if (!isLoaded) {
@@ -126,7 +128,7 @@ const NewShipment = () => {
     const paymentRes = await axios.post(
       "http://localhost:8080/payments/create",
       null,
-      { params: { amount: 500 } }, // example amount
+      { params: { amount: 100, order_id: order_id } },
     );
 
     console.log("PaymentRes", paymentRes);
@@ -138,7 +140,7 @@ const NewShipment = () => {
       key: "rzp_test_S7hQkOvlt6yfQ1", // TEST KEY ID (safe on frontend)
       amount: amount * 100, // paise
       currency: "INR",
-      name: "Prashantkumar",
+      name: "CourierWala",
       recript: "dudhmalprashantkumar@gmail.com",
       description: "Courier Delivery Payment",
       order_id: razorpayOrderId,
@@ -151,7 +153,6 @@ const NewShipment = () => {
           razorpaySignature: response.razorpay_signature,
         });
 
-        alert("Payment successful");
       },
 
       prefill: {
@@ -186,12 +187,11 @@ const NewShipment = () => {
     console.log(shipmentData);
     try {
       const res = await createShipment(shipmentData);
-
-      handlePlaceOrder();
-
       console.log("res :", res);
+      res.data.order_id;
+      handlePlaceOrder(res.data.order_id);
 
-      toast.success(res.data?.message || "Shipment booked successfully 🚚");
+      toast.success("Shipment booked successfully 🚚");
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Booking failed");
