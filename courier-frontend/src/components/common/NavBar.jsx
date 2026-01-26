@@ -7,7 +7,7 @@ const NavBar = () => {
 
   return (
     <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="truck-hover max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
         {/* LOGO + ICON */}
         <Link to="/" className="flex items-center gap-2">
@@ -68,7 +68,7 @@ const NavBar = () => {
             Login
           </Link>
 
-           {/* <Link
+          {/* <Link
             onClick={() => setOpen(false)}
             className="block text-gray-700 text-lg hover:text-orange-600"
             to="/staff/dashboard"
@@ -76,7 +76,7 @@ const NavBar = () => {
             Staff
           </Link> */}
 
-           <Link
+          <Link
             onClick={() => setOpen(false)}
             className="block text-gray-700 text-lg hover:text-orange-600"
             to="/manager/dashboard"
@@ -91,12 +91,12 @@ const NavBar = () => {
           >
             Sign Up
           </Link>
-           <Link
+          <Link
             onClick={() => setOpen(false)}
             className="block px-4 py-2 bg-orange-600 text-white rounded-lg text-center hover:bg-orange-700"
             to="/staffsignup"
           >
-             Apply For JOb
+            Apply For JOb
           </Link>
         </div>
       )}

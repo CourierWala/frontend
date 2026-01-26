@@ -7,11 +7,10 @@ export default function Sidebar({ links, title = "Courier Wala" }) {
 
   const linkClass = ({ isActive }) =>
     `block px-6 py-2.5 text-sm font-medium rounded-xl transition
-     ${
-       isActive
-         ? "bg-orange-600 text-white"
-         : "text-slate-300 hover:bg-slate-800"
-     }`;
+     ${isActive
+      ? "bg-orange-600 text-white"
+      : "text-slate-300 hover:bg-slate-800"
+    }`;
 
   const onSignOut = () => {
     window.alert("signout successful");
@@ -20,7 +19,7 @@ export default function Sidebar({ links, title = "Courier Wala" }) {
   return (
     <>
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 bg-slate-900 text-white">
+      <div className="truck-hover md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 bg-slate-900 text-white">
         <span className="text-lg font-semibold">{title}</span>
         <button onClick={() => setIsOpen(true)}>
           <FiMenu className="text-2xl" />
@@ -30,14 +29,14 @@ export default function Sidebar({ links, title = "Courier Wala" }) {
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="truck-hover fixed inset-0 bg-black/50 z-40 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* SIDEBAR */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 bg-slate-900 text-slate-100 flex flex-col z-50
+        className={`truck-hover fixed inset-y-0 left-0 w-64 bg-slate-900 text-slate-100 flex flex-col z-50
         transform transition-transform duration-300
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
         md:translate-x-0`}
