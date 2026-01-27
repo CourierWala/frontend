@@ -1,11 +1,11 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Pencil } from "lucide-react";
 import StaffManagerModal from "./StaffManagerModal";
-// import { save } from "../../api/admin";
+import { getAllManagers, createManager, updateManager} from "../../api/admin";
 
 export default function AdminStaffManagement() {
-  const [managers, setManagers] = useState([
+  const dummyMangers = [
     {
       id: 1,
       name: "Rahul Sharma",
@@ -24,10 +24,36 @@ export default function AdminStaffManagement() {
       status: "ACTIVE",
       addresses: "Delhi Hub",
     },
-  ]);
+  ];
 
+  const [managers, setManagers] = useState(dummyMangers);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedManager, setSelectedManager] = useState(null);
+
+  /*
+  ================================
+     GET all managers data
+  ================================
+  */
+
+  useEffect(() => {
+    fetchManagers();
+  }, []);
+
+  const fetchManagers = async () => {
+    try {
+      // const response = await getAllManagers();
+      // setManagers(response.data);
+    } catch (error) {
+      console.error("Failed to fetch managers", error);
+    }
+  };
+
+  /* 
+  ================================
+     MODAL HANDLERS
+  ================================ 
+  */
 
   // Open modal for CREATE
   const openCreateModal = () => {
@@ -41,38 +67,48 @@ export default function AdminStaffManagement() {
     setIsModalOpen(true);
   };
 
-  // Create or Update handler
+  /* 
+  ===============================
+     CREATE / UPDATE manager
+  ================================ 
+  */
   const handleSubmit = async (data) => {
-    // const response = await save(
-    //   selectedManager.id,
-    //   data.name,
-    //   data.email,
-    //   data.password,
-    //   data.phone,
-    //   data.role,
-    //   data.status,
-    //   data.address,
-    // );
+    try {
+      let response;
+      if (selectedManager) {
+        // UPDATE
+        // response = await updateManager(selectedManager.id, data);
+      } else {
+        // CREATE
+        // response = await createManager(data);
+      }
 
-    // if (response["status"] === "success") {
-    //   window.alert("save changes successfully");
-    // }
+      if (response["status"] === "success") {
+        window.alert("save changes successfully");
+      }
 
-    if (selectedManager /*&& response["status"] === "success"*/) {
-      // UPDATE
-      toast.success("Profile updated successfully");
-      setManagers((prev) =>
-        // Go through all managers. If this manager is the one I edited, replace its data. Otherwise, leave alone.
-        prev.map((m) => (m.id === selectedManager.id ? { ...m, ...data } : m)),
-      );
-    } else {
-      // CREATE
-      toast.success(
-        "Profile created successfully" /*&& response["status"] === "success"*/,
-      );
-      setManagers((prev) => [...prev, { ...data, id: Date.now() }]);
+      if (selectedManager?.id && response["status"] === "success") {
+        // UPDATE
+        toast.success("Profile updated successfully");
+        setManagers((prev) =>
+          // Go through all managers. If this manager is the one I edited, replace its data. Otherwise, leave alone.
+          prev.map((m) =>
+            m.id === selectedManager.id ? { ...m, ...data } : m,
+          ),
+        );
+      } else {
+        // CREATE
+        toast.success(
+          "Profile created successfully" && response["status"] === "success",
+        );
+        setManagers((prev) => [...prev, { ...data, id: Date.now() }]);
+      }
+
+      // await fetchManagers(); // refresh list
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error("Save failed", err);
     }
-    setIsModalOpen(false);
   };
 
   return (

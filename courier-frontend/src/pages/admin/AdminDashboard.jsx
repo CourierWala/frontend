@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { IndianRupee, Warehouse, Users, AlertTriangle } from "lucide-react";
 
 import {
@@ -21,30 +20,90 @@ import {
 import AdminLayout from "../../layouts/AdminLayout";
 import ChartCard from "../../components/common/ChartCard";
 
-export default function AdminDashboard() {
-  /* ================= DATA ================= */
+import {
+  getFinanceByHub,
+  getParcelDeliveryStats,
+  getEmployeesByHub,
+  getAdminDashboardSummary,
+} from "../../api/admin";
 
-  const financeData = [
+export default function AdminDashboard() {
+  const dummyFinanceData = [
     { hub: "Mumbai", revenue: 420000, expenses: 310000 },
     { hub: "Delhi", revenue: 380000, expenses: 260000 },
     { hub: "Bangalore", revenue: 450000, expenses: 300000 },
     { hub: "Hyderabad", revenue: 290000, expenses: 210000 },
   ];
 
-  const parcelStatus = [
+  const dummyParcelStatus = [
     { name: "Successful", value: 82, color: "#10b981" },
     { name: "Failed", value: 18, color: "#ef4444" },
   ];
 
-  const employeesByHub = [
+  const dummyEmployeesByHub = [
     { hub: "Mumbai", delivery: 60, warehouse: 30, support: 20 },
     { hub: "Delhi", delivery: 55, warehouse: 25, support: 18 },
     { hub: "Bangalore", delivery: 70, warehouse: 35, support: 22 },
     { hub: "Hyderabad", delivery: 40, warehouse: 20, support: 15 },
   ];
 
+  /* ================= STATE ================= */
+
+  const [financeData, setFinanceData] = useState(dummyFinanceData);
+  const [parcelStatus, setParcelStatus] = useState(dummyParcelStatus);
+  const [employeesByHub, setEmployeesByHub] = useState(dummyEmployeesByHub);
+  const [summary, setSummary] = useState({
+    totalRevenue: 0,
+    totalExpenses: 0,
+    activeHubs: 0,
+    managers: 0,
+  });
+
   const totalRevenue = financeData.reduce((s, h) => s + h.revenue, 0);
   const totalExpenses = financeData.reduce((s, h) => s + h.expenses, 0);
+
+  /* ================= FETCH DASHBOARD DATA ================= */
+
+  useEffect(() => {
+    // fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      const financeRes = getFinanceByHub();
+      const parcelRes = getParcelDeliveryStats();
+      const employeesRes = getEmployeesByHub();
+      const summaryRes = getAdminDashboardSummary();
+
+      /* -------- normalize responses -------- */
+
+      setFinanceData(financeRes?.data ?? []);
+
+      setParcelStatus([
+        {
+          name: "Successful",
+          value: parcelRes?.data?.successful ?? 0,
+          color: "#10b981",
+        },
+        {
+          name: "Failed",
+          value: parcelRes?.data?.failed ?? 0,
+          color: "#ef4444",
+        },
+      ]);
+
+      setEmployeesByHub(employeesRes?.data ?? []);
+
+      setSummary({
+        totalRevenue: summaryRes?.data?.totalRevenue ?? 0,
+        totalExpenses: summaryRes?.data?.totalExpenses ?? 0,
+        activeHubs: summaryRes?.data?.activeHubs ?? 0,
+        managers: summaryRes?.data?.managers ?? 0,
+      });
+    } catch (error) {
+      console.error("Failed to load admin dashboard data", error);
+    }
+  };
 
   return (
     <AdminLayout>
@@ -53,25 +112,25 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
             title="Total Revenue"
-            value={`₹${totalRevenue}`}
+            value={`₹${summary.totalRevenue == 0 ? totalRevenue : summary.totalRevenue}`}
             icon={<IndianRupee className="text-green-500" />}
           />
 
           <MetricCard
             title="Total Expenses"
-            value={`₹${totalExpenses}`}
+            value={`₹${summary.totalExpenses == 0 ? totalExpenses : summary.totalExpenses}`}
             icon={<AlertTriangle className="text-red-500" />}
           />
 
           <MetricCard
             title="Active Hubs"
-            value="4"
+            value={summary.activeHubs}
             icon={<Warehouse className="text-orange-500" />}
           />
 
           <MetricCard
             title="Managers"
-            value="12"
+            value={summary.managers}
             icon={<Users className="text-blue-500" />}
           />
         </div>
@@ -127,7 +186,7 @@ export default function AdminDashboard() {
   );
 }
 
-/* ================= REUSABLE COMPONENTS ================= */
+/* ================= METRIC CARD ================= */
 
 const MetricCard = ({ title, value, icon }) => (
   <div className="bg-white rounded-xl p-6 shadow-sm">

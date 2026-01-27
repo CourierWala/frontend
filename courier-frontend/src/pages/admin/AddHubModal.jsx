@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import OlaAutocomplete from '../../components/common/OlaAutocomplete';
+import { toast } from "react-toastify";
+import OlaAutocomplete from "../../components/common/OlaAutocomplete";
 
 export default function AddHubModal({
   isOpen,
@@ -20,23 +21,55 @@ export default function AddHubModal({
     name: "",
     email: "",
     phone: "",
+    role: "ROLE_STAFF_MANAGER",
+    status: "ACTIVE",
   });
 
+  /* ===============================
+     PREFILL DATA (EDIT MODE)
+  ================================ */
   useEffect(() => {
     if (initialData) {
       setHubForm({
-        hubName: initialData.hubName,
-        address: initialData.address,
-        city: initialData.city,
+        hubName: initialData.hubName || "",
+        address: initialData.address || "",
+        city: initialData.city || "",
+        latitude: initialData.latitude || null,
+        longitude: initialData.longitude || null,
       });
+
       setManagerForm({
-        name: initialData.managerName,
+        name: initialData.managerName || "",
+        email: initialData.managerEmail || "",
+        phone: initialData.managerPhone || "",
+        role: "ROLE_STAFF_MANAGER",
+        status: "ACTIVE",
+      });
+    } else {
+      // Reset form when opening create modal
+      setHubForm({
+        hubName: "",
+        address: "",
+        city: "",
+        latitude: null,
+        longitude: null,
+      });
+
+      setManagerForm({
+        name: "",
+        email: "",
+        phone: "",
+        role: "ROLE_STAFF_MANAGER",
+        status: "ACTIVE",
       });
     }
-  }, [initialData]);
+  }, [initialData, isOpen]);
 
   if (!isOpen) return null;
 
+  /* ===============================
+     HANDLERS
+  ================================ */
   const handleHubChange = (e) => {
     const { name, value } = e.target;
     setHubForm((prev) => ({ ...prev, [name]: value }));
@@ -47,9 +80,42 @@ export default function AddHubModal({
     setManagerForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  /* ===============================
+     SUBMIT
+  ================================ */
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(hubForm);
+
+    const rules = [
+      [hubForm.hubName, "Hub name is required"],
+      [hubForm.address, "Address is required"],
+      [hubForm.city, "City is required"],
+      [managerForm.name, "Manager name is required"],
+      [managerForm.email, "Email is required"],
+      [/^\S+@\S+\.\S+$/.test(managerForm.email), "Invalid email format"],
+      [managerForm.phone, "Phone number is required"],
+      [/^\d{10}$/.test(managerForm.phone), "Phone must be 10 digits"],
+    ];
+
+    for (const [condition, message] of rules) {
+      if (!condition) {
+        toast.warning(message);
+        return;
+      }
+    }
+
+    /* ✅ Build payloads directly (NO setState before submit) */
+    const finalHubData = {
+      ...hubForm,
+    };
+
+    const finalManagerData = {
+      ...managerForm,
+      password: "CwHub@1234",
+      addresses: hubForm.hubName,
+    };
+
+    onSubmit(finalHubData, finalManagerData);
   };
 
   return (
@@ -69,13 +135,13 @@ export default function AddHubModal({
           <div className="space-y-4">
             <h3 className="font-medium text-gray-700">Hub Details</h3>
 
+            <label>Hub name</label>
             <input
               name="hubName"
-              placeholder="Hub Name"
               value={hubForm.hubName}
               onChange={handleHubChange}
               className="input w-full"
-              required
+              placeholder="Hub Name"
             />
 
             <OlaAutocomplete
@@ -91,43 +157,47 @@ export default function AddHubModal({
               }
             />
 
+            <label>City</label>
             <input
               name="city"
-              placeholder="City"
               value={hubForm.city}
               onChange={handleHubChange}
               className="input w-full"
-              required
+              placeholder="City, PIN code"
             />
-
           </div>
 
           {/* Manager Form */}
           <div className="space-y-4">
-            <h3 className="font-medium text-gray-700">Add / Update Manager</h3>
+            <h3 className="font-medium text-gray-700">
+              Add / Update Manager
+            </h3>
 
+            <label>Name</label>
             <input
               name="name"
-              placeholder="Manager Name"
               value={managerForm.name}
               onChange={handleManagerChange}
               className="input w-full"
+              placeholder="Manager Name"
             />
 
+            <label>Email</label>
             <input
               name="email"
-              placeholder="Email"
               value={managerForm.email}
               onChange={handleManagerChange}
               className="input w-full"
+              placeholder="Email"
             />
 
+            <label>Phone</label>
             <input
               name="phone"
-              placeholder="Phone"
               value={managerForm.phone}
               onChange={handleManagerChange}
               className="input w-full"
+              placeholder="Phone"
             />
           </div>
 

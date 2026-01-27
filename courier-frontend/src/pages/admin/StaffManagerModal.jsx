@@ -9,15 +9,17 @@ const StaffManagerModal = ({
   initialData = null,
   onSubmit,
 }) => {
-  const [formData, setFormData] = useState({
+  const EMPTY_FORM = {
     name: "",
     email: "",
     password: "",
     phone: "",
     role: "ROLE_STAFF_MANAGER",
     status: "ACTIVE",
-    address: "",
-  });
+    addresses: "",
+  };
+
+  const [formData, setFormData] = useState(EMPTY_FORM);
 
   const ROLES = ["ROLE_STAFF_MANAGER"];
 
@@ -25,10 +27,14 @@ const StaffManagerModal = ({
 
   useEffect(() => {
     if (initialData != null) {
+      // UPDATE -> populate form
       setFormData({
         ...initialData,
         password: "",
       });
+    } else {
+      // CREATE -> reset form
+      setFormData(EMPTY_FORM);
     }
   }, [initialData]);
 
@@ -39,47 +45,64 @@ const StaffManagerModal = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const validateForm = (formData, isEditMode) => {
     const rules = [
       [formData.name, "Name is required"],
       [formData.email, "Email is required"],
       [/^\S+@\S+\.\S+$/.test(formData.email), "Invalid email format"],
-      [
-        formData.password.length < 8,
-        "Your password must be at least 8 characters long.",
-      ],
-      [
-        !/[a-z]/.test(formData.password),
-        "Your password must contain at least one lowercase letter.",
-      ],
-      [
-        !/[A-Z]/.test(formData.password),
-        "Your password must contain at least one uppercase letter.",
-      ],
-      [
-        !/[0-9]/.test(formData.password),
-        "Your password must contain at least one digit.",
-      ],
-      [
-        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(
-          formData.password,
-        ),
-        "Your password must contain at least one special character.",
-      ],
       [formData.phone, "Phone number is required"],
-      [!/^\d{10}$/.test(formData.phone), "Phone must be 10 digits"],
-      [formData.address, "Address is required"],
+      [/^\d{10}$/.test(formData.phone), "Phone must be 10 digits"],
+      [formData.addresses, "Address is required"],
     ];
+
+    //  Password rules
+    // CREATE  → required
+    // EDIT    → optional (only if filled)
+    if (!isEditMode || formData.password) {
+      rules.push(
+        [
+          formData.password.length >= 8,
+          "Your password must be at least 8 characters long.",
+        ],
+        [
+          /[a-z]/.test(formData.password),
+          "Your password must contain at least one lowercase letter.",
+        ],
+        [
+          /[A-Z]/.test(formData.password),
+          "Your password must contain at least one uppercase letter.",
+        ],
+        [
+          /[0-9]/.test(formData.password),
+          "Your password must contain at least one digit.",
+        ],
+        [
+          /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(formData.password),
+          "Your password must contain at least one special character.",
+        ],
+      );
+    }
 
     for (const [condition, message] of rules) {
       if (!condition) {
-        toast.warning(message);
-        return;
+        return message; // return first error
       }
     }
 
+    return null; // valid
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const isEditMode = Boolean(initialData?.id);
+
+    const error = validateForm(formData, isEditMode);
+    if (error) {
+      toast.warning(error);
+      return;
+    }
+    window.alert("success");
     onSubmit(formData);
   };
 
@@ -112,31 +135,33 @@ const StaffManagerModal = ({
             value={formData.name}
             onChange={handleChange}
             className="w-full input"
-            required
+            // required
           />
 
           <label htmlFor="email">Email</label>
           <input
-            type="email"
+            type="text"
             name="email"
             placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
             className="w-full input"
-            required
+            // required
           />
 
-          <label htmlFor="password">Password</label>
           {!initialData && (
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full input"
-              required
-            />
+            <>
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full input"
+                // required
+              />
+            </>
           )}
 
           <label htmlFor="phone">Phone</label>
@@ -147,7 +172,7 @@ const StaffManagerModal = ({
             value={formData.phone}
             onChange={handleChange}
             className="w-full input"
-            required
+            // required
           />
 
           <div className="grid grid-cols-2 gap-4">
@@ -185,7 +210,7 @@ const StaffManagerModal = ({
 
           <label htmlFor="address">Address</label>
           <textarea
-            name="address"
+            name="addresses"
             placeholder="Address"
             value={formData.addresses}
             onChange={handleChange}
