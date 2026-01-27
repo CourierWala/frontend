@@ -1,4 +1,3 @@
-import axios from "axios";
 import { config } from "./config";
 import axiosInstance from "./axiosInstance";
 
@@ -140,6 +139,68 @@ export const updateHubStatus = (hubId, status) => {
   } catch (ex) {
     console.error(
       `Exception in PATCH changing status (${status}) of hub by ID (${hubId}) in admin.js\n`,
+    );
+  }
+};
+
+
+/* =====================================================
+   ADMIN DASHBOARD APIs
+===================================================== */
+
+/* ---------- GET ---------- */
+
+// Get revenue & expenses per hub
+export const getFinanceByHub = async () => {
+  try {
+    const response = await axiosInstance.get("/admin/dashboard/finance");
+    return response.data;
+  } catch (ex) {
+    console.error("Exception in GET finance data for admin dashboard");
+  }
+};
+
+
+// Get parcel delivery status ratio
+export const getParcelDeliveryStats = async () => {
+  try {
+    const response = await axiosInstance.get(
+      "/admin/dashboard/parcel-status"
+    );
+    return response.data;
+  } catch (ex) {
+    console.error(
+      "Exception in GET parcel delivery stats for admin dashboard"
+    );
+  }
+};
+
+
+// Get employees count per hub
+export const getEmployeesByHub = async () => {
+  try {
+    const response = await axiosInstance.get(
+      "/admin/dashboard/employees"
+    );
+    return response.data;
+  } catch (ex) {
+    console.error(
+      "Exception in GET employees by hub for admin dashboard"
+    );
+  }
+};
+
+
+// Get admin dashboard summary metrics
+export const getAdminDashboardSummary = async () => {
+  try {
+    const response = await axiosInstance.get(
+      "/admin/dashboard/summary"
+    );
+    return response.data;
+  } catch (ex) {
+    console.error(
+      "Exception in GET admin dashboard summary metrics"
     );
   }
 };
