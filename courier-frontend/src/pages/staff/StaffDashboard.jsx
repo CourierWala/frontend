@@ -11,6 +11,7 @@ import Sidebar from '../../components/common/sidebar';
 const StaffDashboard = () => {
   const staffLinks = [
     { to: '/staff/dashboard', label: 'Overview' },
+    { to: '/staff/Hub-orders', label: 'HubOrders' },
     { to: '/staff/profile', label: 'Profile' },
     { to: '/staff/earnings', label: 'Current Earnings' },
     { to: '/staff/StaffShipmentHistory', label: 'Shipment History' },
@@ -18,7 +19,7 @@ const StaffDashboard = () => {
 
   return (
     <div className="min-h-screen flex bg-slate-100">
-      {/* sidebar     */}
+      {/* //sidebar */}
       <Sidebar links={staffLinks}/>
 
       <div className="flex-1 md:ml-64 flex flex-col min-w-0">

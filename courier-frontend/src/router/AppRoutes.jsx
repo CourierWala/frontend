@@ -30,6 +30,7 @@ import AdminInvestorRelations from '../pages/admin/AdminInvestorRelations'
 import Admin from '../pages/admin/Admin'
 import NotificationTab from '../pages/staff/NotificationTab'
 import StaffSignUp from '../pages/auth/signup/Staffsignup'
+import HubOrders from '../pages/staff/Huborders'
 
 
 const AppRoutes = () => {
@@ -110,6 +111,9 @@ const AppRoutes = () => {
                     <Route 
                         path="dashboard" 
                         element={<Overview />} />
+                    <Route 
+                        path="Hub-orders" 
+                        element={<HubOrders />} />
                     <Route 
                         path="profile" 
                         element={<Profile />} />
