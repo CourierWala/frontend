@@ -10,8 +10,8 @@ import axiosInstance from "./axiosInstance";
 // Get all managers
 export const getAllManagers = () => {
   try {
-    const response = axiosInstance.get("/admin/manager");
-    return response.data;
+    const response = axiosInstance.get("/admin/managers");
+    return response;
   } catch (ex) {
     console.error("Exception in GET all managers in admin.js");
   }
@@ -36,7 +36,8 @@ export const getManagerById = (managerId) => {
 export const createManager = (data) => {
   try {
     const response = axiosInstance.post("/admin/manager", data);
-    return response.data;
+    console.dir("From axios : " + response)
+    return response;
   } catch (ex) {
     console.error(
       `Exception in POST creating NEW manager in admin.js\n Received data is : \n`,
@@ -51,7 +52,7 @@ export const createManager = (data) => {
 export const updateManager = (managerId, data) => {
   try {
     const response = axiosInstance.put(`/admin/manager/${managerId}`, data);
-    return response.data;
+    return response;
   } catch (ex) {
     console.error(
       `Exception in PUT updating manager by ID (${managerId}) in admin.js\n Received data is : \n`,

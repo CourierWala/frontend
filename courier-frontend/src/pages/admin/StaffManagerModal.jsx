@@ -1,39 +1,31 @@
 import React, { useEffect, useState } from "react";
 import "./StaffManagerFormStyles.css";
-import OlaAutocomplete from "./../../components/common/OlaAutocomplete";
 import { toast } from "react-toastify";
 
-const StaffManagerModal = ({
-  isOpen,
-  onClose,
-  initialData = null,
-  onSubmit,
-}) => {
+const StaffManagerModal = ({ isOpen, onClose, initialData, onSubmit }) => {
   const EMPTY_FORM = {
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    role: "ROLE_STAFF_MANAGER",
-    status: "ACTIVE",
-    addresses: "",
+    managerName: "",
+    managerEmail: "",
+    managerPhone: "",
+    managerRole: "ROLE_STAFF_MANAGER",
+    managerStatus: "ACTIVE",
   };
 
   const [formData, setFormData] = useState(EMPTY_FORM);
 
-  const ROLES = ["ROLE_STAFF_MANAGER"];
-
-  const STATUSES = ["ACTIVE", "INACTIVE"];
+  // const STATUSES = ["ACTIVE", "INACTIVE"];
+  const STATUSES = ["ACTIVE"];
 
   useEffect(() => {
-    if (initialData != null) {
-      // UPDATE -> populate form
+    if (initialData) {
       setFormData({
-        ...initialData,
-        password: "",
+        managerName: initialData.managerName ?? "",
+        managerEmail: initialData.managerEmail ?? "",
+        managerPhone: initialData.managerPhone ?? "",
+        managerRole: initialData.managerRole ?? "ROLE_STAFF_MANAGER",
+        managerStatus: initialData.managerStatus ?? "ACTIVE",
       });
     } else {
-      // CREATE -> reset form
       setFormData(EMPTY_FORM);
     }
   }, [initialData]);
@@ -45,43 +37,14 @@ const StaffManagerModal = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateForm = (formData, isEditMode) => {
+  const validateForm = (formData) => {
     const rules = [
-      [formData.name, "Name is required"],
-      [formData.email, "Email is required"],
-      [/^\S+@\S+\.\S+$/.test(formData.email), "Invalid email format"],
-      [formData.phone, "Phone number is required"],
-      [/^\d{10}$/.test(formData.phone), "Phone must be 10 digits"],
-      [formData.addresses, "Address is required"],
+      [formData.managerName, "Name is required"],
+      [formData.managerEmail, "Email is required"],
+      [/^\S+@\S+\.\S+$/.test(formData.managerEmail), "Invalid email format"],
+      [formData.managerPhone, "Phone number is required"],
+      [/^\d{10}$/.test(formData.managerPhone), "Phone must be 10 digits"],
     ];
-
-    //  Password rules
-    // CREATE  → required
-    // EDIT    → optional (only if filled)
-    if (!isEditMode || formData.password) {
-      rules.push(
-        [
-          formData.password.length >= 8,
-          "Your password must be at least 8 characters long.",
-        ],
-        [
-          /[a-z]/.test(formData.password),
-          "Your password must contain at least one lowercase letter.",
-        ],
-        [
-          /[A-Z]/.test(formData.password),
-          "Your password must contain at least one uppercase letter.",
-        ],
-        [
-          /[0-9]/.test(formData.password),
-          "Your password must contain at least one digit.",
-        ],
-        [
-          /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(formData.password),
-          "Your password must contain at least one special character.",
-        ],
-      );
-    }
 
     for (const [condition, message] of rules) {
       if (!condition) {
@@ -95,14 +58,14 @@ const StaffManagerModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const isEditMode = Boolean(initialData?.id);
+    const isEditMode = Boolean(initialData?.managerId);
 
     const error = validateForm(formData, isEditMode);
     if (error) {
       toast.warning(error);
       return;
     }
-    window.alert("success");
+    // window.alert("success");
     onSubmit(formData);
   };
 
@@ -127,95 +90,73 @@ const StaffManagerModal = ({
           onSubmit={handleSubmit}
           className="px-6 py-4 space-y-4 max-h-[70vh] overflow-y-auto"
         >
-          <label htmlFor="name">Name</label>
+          <label htmlFor="managerName">Name</label>
           <input
             type="text"
-            name="name"
+            name="managerName"
             placeholder="Full Name"
-            value={formData.name}
+            value={formData.managerName}
             onChange={handleChange}
             className="w-full input"
             // required
           />
 
-          <label htmlFor="email">Email</label>
+          <label htmlFor="managerEmail">Email</label>
           <input
             type="text"
-            name="email"
+            name="managerEmail"
             placeholder="Email Address"
-            value={formData.email}
+            value={formData.managerEmail}
+            onChange={handleChange}
+            className="w-full input"
+            // required
+          />
+
+          <label htmlFor="managerPhone">Phone</label>
+          <input
+            type="tel"
+            name="managerPhone"
+            placeholder="Phone Number"
+            value={formData.managerPhone}
             onChange={handleChange}
             className="w-full input"
             // required
           />
 
           {!initialData && (
-            <>
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full input"
-                // required
-              />
-            </>
+            <div className="grid grid-cols-2 gap-4">
+              <label htmlFor="managerRole">Role</label>
+              <label htmlFor="managerStatus">Status</label>
+            </div>
           )}
-
-          <label htmlFor="phone">Phone</label>
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full input"
-            // required
-          />
-
           <div className="grid grid-cols-2 gap-4">
-            <label htmlFor="role">Role</label>
-            <label htmlFor="status">Status</label>
+            {!initialData && (
+              <>
+                <input
+                  type="text"
+                  name="managerRole"
+                  placeholder="Role"
+                  value={formData.managerRole}
+                  onChange={handleChange}
+                  className="w-full input"
+                  readOnly
+                />
+
+                <select
+                  name="managerStatus"
+                  value={formData.managerStatus}
+                  onChange={handleChange}
+                  className="input"
+                >
+                  {STATUSES.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="input"
-            >
-              {ROLES.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </select>
-
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="input"
-            >
-              {STATUSES.map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <label htmlFor="address">Address</label>
-          <textarea
-            name="addresses"
-            placeholder="Address"
-            value={formData.addresses}
-            onChange={handleChange}
-            className="w-full input min-h-[80px]"
-          />
 
           {/* Footer */}
           <div className="flex justify-end gap-3 pt-4 border-t">
