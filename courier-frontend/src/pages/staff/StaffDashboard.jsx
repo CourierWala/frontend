@@ -1,9 +1,5 @@
 import React from 'react'
-import Overview from './Overview'
-
 import { FiBell } from "react-icons/fi";
-
-
 import { Link, Outlet } from 'react-router-dom'
 import Sidebar from '../../components/common/sidebar';
 

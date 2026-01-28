@@ -1,7 +1,7 @@
 import React from 'react'
-export default function OrderCard({order,tab,onPickup,onHandover}) 
+export default function OrderCard({order,tab,onPickup,onHandover,btnInfo}) 
 {
-  return (
+  return(
     <div className="bg-white rounded-xl border p-4 space-y-2 mb-4">
 
       {/* // order id and name */}
@@ -43,18 +43,18 @@ export default function OrderCard({order,tab,onPickup,onHandover})
         {tab === "customer" && (
           <button
             onClick={onPickup}
-            className="flex-1 py-2 rounded-lg bg-orange-600 text-white text-sm"
+            className={`flex-1 py-2 rounded-lg  ${btnInfo?.color1} text-white text-sm`}
           >
-            Accept
+            {btnInfo?.label1}
           </button>
         )}
 
         {tab === "Hub" && (
           <button
             onClick={onHandover}
-            className="flex-1 py-2 rounded-lg bg-orange-600 text-white text-sm"
+            className= {`flex-1 py-2 rounded-lg ${btnInfo?.color2} text-white text-sm`}
           >
-            Accept
+            {btnInfo?.label2}
           </button>
         )}
 

@@ -11,6 +11,7 @@ export default function ProfileTab() {
   const [vehicleNumber, setVehicleNumber] = useState("");
 
   useEffect(() => {
+    console.log("staffprofile");
     const loadProfile = async () => {
       try {
         const staff_id = 1;

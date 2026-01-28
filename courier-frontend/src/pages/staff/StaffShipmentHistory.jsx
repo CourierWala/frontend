@@ -31,6 +31,7 @@ export default function StaffShipmentHistory() {
 
 
   useEffect(() => {
+    console.log("staffshipmentHistory");
      const deliveredOrders = ordersData.filter(
       (o) => o.status === "DELIVERED"
     );

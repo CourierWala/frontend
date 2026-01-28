@@ -62,7 +62,8 @@ export default function CurrentOrders() {
           tab={tab}
           onPickup={() => handlePickup(order.id)}
           onHandover={() => handleHandover(order.id)}
-        //   onOverview={() => alert(order.id)}
+          btnInfo = {{ label1:"Handover",label2:"Handover",color1 :"bg-green-600",color2 :"bg-green-600"}}
+        
         />
       ))}
     </div>

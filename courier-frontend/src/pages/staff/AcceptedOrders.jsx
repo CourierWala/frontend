@@ -41,7 +41,7 @@ export default function AcceptedOrders() {
               ? "bg-white border-b-2 border-orange-600"
               : "text-slate-500"
           }`}>
-          Hub Orders
+           Accepted Customers Orders
         </button>
 
         <button
@@ -62,7 +62,8 @@ export default function AcceptedOrders() {
           tab={tab}
           onPickup={() => handlePickup(order.id)}
           onHandover={() => handleHandover(order.id)}
-          // onOverview={() => alert(order.id)}
+          btnInfo = {{ label1:"Pickup",color1 :"bg-orange-600"}}
+    
         />
       ))}
     </div>
