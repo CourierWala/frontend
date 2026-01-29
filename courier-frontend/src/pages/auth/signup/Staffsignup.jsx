@@ -25,6 +25,7 @@ const StaffSignUp = () => {
   };
 
   const onSignUp = async() => {
+    
     const rules = [
       [form.name.trim(), "Full name is required"],
       [form.email.trim(), "Email is required"],
@@ -47,8 +48,9 @@ const StaffSignUp = () => {
         return;
       }
     }
+    
     const response = await staff_signup(form.name,form.email,form.phone,form.password,form.vehicleType,form.vehicleNumber,form.licenseNumber,form.hubId);
-    console.log(response);
+    console.log("yes2");
     if(response.data.status === "success"){
         toast.success(response.data.message);
         navigate("/staff/dashboard");

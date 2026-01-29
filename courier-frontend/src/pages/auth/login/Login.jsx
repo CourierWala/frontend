@@ -10,8 +10,8 @@ import { useAuth } from "../../../context/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("omkar@gmail.com");
-  const [password, setPassword] = useState("Pass@123");
+  const [email, setEmail] = useState("prajwal@gmail.com");
+  const [password, setPassword] = useState("prajwal@123");
   const [remember, setRemember] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { login, } = useAuth();
@@ -25,7 +25,7 @@ const Login = () => {
       [password.length >= 6, "Password must be at least 6 characters"],
     ];
 
-    for (const [condition, message] of rules) {
+    for (const [condition, message] of rules){
       if (!condition) {
         toast.warning(message);
         return;
