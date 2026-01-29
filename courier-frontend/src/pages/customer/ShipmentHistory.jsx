@@ -100,6 +100,8 @@ const ShipmentHistory = () => {
             <option>All Status</option>
             <option>CREATED</option>
             <option>IN_TRANSIT</option>
+            <option >PICKUP_ASSIGNED</option>
+            <option >PICKUP</option>
             <option>DELIVERED</option>
             <option>CANCELLED</option>
           </select>
@@ -174,6 +176,8 @@ const ShipmentCard = ({ item }) => {
     IN_TRANSIT: "bg-orange-500",
     DELIVERED: "bg-green-500",
     CANCELLED: "bg-gray-500",
+    PICKUP_ASSIGNED: "bg-green-300",
+    PICKUP: "bg-green-100"
   };
 
   return (

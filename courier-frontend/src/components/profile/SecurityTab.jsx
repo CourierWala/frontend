@@ -24,12 +24,12 @@ const SecurityTab = () => {
       </Button>
 
       {/* 2FA */}
-      <div className="mt-10 p-6 bg-white border rounded-xl">
+      {/* <div className="mt-10 p-6 bg-white border rounded-xl">
         <h2 className="text-lg font-semibold mb-2">Two-Factor Authentication</h2>
         <p className="text-gray-500 mb-4">
           Add an extra layer of security to your account
-        </p>
-
+        </p> */}
+{/* 
         <div className="flex justify-between items-center">
           <div>
             <p className="font-medium">Enable 2FA</p>
@@ -37,8 +37,8 @@ const SecurityTab = () => {
           </div>
 
           <input type="checkbox" className="toggle-checkbox" />
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </div>
   );
 };
