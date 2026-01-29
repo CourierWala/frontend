@@ -10,8 +10,8 @@ import { useAuth } from "../../../context/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("Enter your email");
-  const [password, setPassword] = useState("Enter password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { login } = useAuth();
@@ -93,7 +93,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border rounded-lg pl-10 pr-3 py-2"
-              placeholder="********"
+              placeholder="enter password"
             />
           </div>
 
