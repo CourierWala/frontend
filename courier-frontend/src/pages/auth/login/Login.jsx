@@ -10,7 +10,7 @@ import { useAuth } from "../../../context/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("omkar@gmail.com");
+  const [email, setEmail] = useState("mandar@gmail.com");
   const [password, setPassword] = useState("Pass@123");
   const [remember, setRemember] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -36,10 +36,10 @@ const Login = () => {
       console.log(response)
       const currRole = response.data.role.slice(1, -1);
 
-      const user = { email : response?.data.email, id : response.data.id, role : currRole }
+      const user = { email: response?.data.email, id: response.data.id, role: currRole }
       login(user);
       toast.success("Login successful");
-      console.log("curr role : " , currRole)
+      console.log("curr role : ", currRole)
       if (currRole == "ROLE_CUSTOMER") navigate("/customer/dashboard");
       else if (currRole == "ROLE_ADMIN") navigate("/admin/dashboard");
       else if (currRole == "ROLE_DELIVERY_STAFF") navigate("/staff/dashboard");

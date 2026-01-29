@@ -1,178 +1,150 @@
 import React, { useEffect, useState } from "react";
 import CustomerLayout from "../../layouts/CustomerLayout";
 import { HiOutlineCube } from "react-icons/hi";
-import { FiSearch, FiEye } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 import { callShipmentHistory } from "../../api/customer";
-
-const shipmentData = [
-  {
-    id: "TRK-8932",
-    from: "New York, NY",
-    to: "Los Angeles, CA",
-    status: "In Transit",
-    service: "Express",
-    date: "Nov 14, 2025",
-    price: "$12.99",
-  },
-  {
-    id: "TRK-8891",
-    from: "Chicago, IL",
-    to: "Miami, FL",
-    status: "In Transit",
-    service: "Express",
-    date: "Nov 13, 2025",
-    price: "$12.99",
-  },
-  {
-    id: "TRK-8850",
-    from: "Seattle, WA",
-    to: "Boston, MA",
-    status: "Delivered",
-    service: "Same Day",
-    date: "Nov 12, 2025",
-    price: "$24.99",
-  },
-  {
-    id: "TRK-8820",
-    from: "Austin, TX",
-    to: "Denver, CO",
-    status: "Delivered",
-    service: "Standard",
-    date: "Nov 11, 2025",
-    price: "$5.99",
-  },
-  {
-    id: "TRK-8789",
-    from: "Portland, OR",
-    to: "San Diego, CA",
-    status: "Delivered",
-    service: "Express",
-    date: "Nov 10, 2025",
-    price: "$12.99",
-  },
-  {
-    id: "TRK-8756",
-    from: "Phoenix, AZ",
-    to: "Dallas, TX",
-    status: "Cancelled",
-    service: "Standard",
-    date: "Nov 9, 2025",
-    price: "$5.99",
-  },
-  {
-    id: "TRK-8723",
-    from: "Atlanta, GA",
-    to: "Nashville, TN",
-    status: "Delivered",
-    service: "Standard",
-    date: "Nov 8, 2025",
-    price: "$5.99",
-  },
-  {
-    id: "TRK-8692",
-    from: "San Francisco, CA",
-    to: "Las Vegas, NV",
-    status: "Delivered",
-    service: "Express",
-    date: "Nov 7, 2025",
-    price: "$12.99",
-  },
-];
 
 const ShipmentHistory = () => {
 
-  useEffect(() => {
-         getShipmentHistory();
-  }, [])
-
-  async function getShipmentHistory(){
-    const response = await callShipmentHistory(); 
-    console.log("after calling !!")
-    console.log(response.data);
-  }
-
+  /* ================= STATE ================= */
+  const [shipments, setShipments] = useState([]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
-  const [serviceFilter, setServiceFilter] = useState("All Services");
+  const [loading, setLoading] = useState(true);
 
-  const filtered = shipmentData.filter((item) => {
-    const matchesSearch = item.id.toLowerCase().includes(search.toLowerCase());
+  /* ================= API CALL ================= */
+  useEffect(() => {
+    getShipmentHistory();
+  }, []);
+
+  async function getShipmentHistory() {
+    try {
+      const response = await callShipmentHistory();
+      setShipments(response.data || []);
+    } catch (error) {
+      console.error("Failed to fetch shipment history", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  /* ================= FILTER ================= */
+  const filtered = shipments.filter((item) => {
+    const matchesSearch =
+      item.trackingNumber
+        ?.toLowerCase()
+        .includes(search.toLowerCase());
+
     const matchesStatus =
-      statusFilter === "All Status" || item.status === statusFilter;
-    const matchesService =
-      serviceFilter === "All Services" || item.service === serviceFilter;
+      statusFilter === "All Status" ||
+      item.orderStatus === statusFilter;
 
-    return matchesSearch && matchesStatus && matchesService;
+    return matchesSearch && matchesStatus;
   });
 
+  /* ================= SUMMARY CALC ================= */
+  const totalShipments = shipments.length;
+
+  const totalSpent = shipments.reduce(
+    (sum, item) => sum + (item.price || 0),
+    0
+  );
+
+  const deliveredCount = shipments.filter(
+    (item) => item.orderStatus === "DELIVERED"
+  ).length;
+
+  const successRate =
+    totalShipments === 0
+      ? 0
+      : Math.round((deliveredCount / totalShipments) * 100);
+
+  /* ================= UI ================= */
   return (
     <CustomerLayout>
       <div className="max-w-6xl mx-auto">
 
         {/* TITLE */}
         <h1 className="text-3xl font-bold mb-2">Shipment History</h1>
-        <p className="text-gray-600 mb-8">View and manage all your past shipments</p>
+        <p className="text-gray-600 mb-8">
+          View and manage all your past shipments
+        </p>
 
         {/* FILTER BAR */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col sm:flex-row gap-3 sm:items-center">
+        <div className="bg-white p-4 rounded-xl shadow-sm border flex flex-col sm:flex-row gap-3">
 
           <input
             type="text"
             placeholder="Search by tracking number..."
-            className="flex-1 border rounded-lg px-4 py-2 outline-none focus:ring focus:ring-orange-200"
+            className="flex-1 border rounded-lg px-4 py-2"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          {/* STATUS DROPDOWN */}
           <select
-            className="border rounded-lg px-4 py-2 bg-white"
+            className="border rounded-lg px-4 py-2"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <option>All Status</option>
-            <option>Delivered</option>
-            <option>In Transit</option>
-            <option>Cancelled</option>
-          </select>
-
-          {/* SERVICE DROPDOWN */}
-          <select
-            className="border rounded-lg px-4 py-2 bg-white"
-            value={serviceFilter}
-            onChange={(e) => setServiceFilter(e.target.value)}
-          >
-            <option>All Services</option>
-            <option>Standard</option>
-            <option>Express</option>
-            <option>Same Day</option>
+            <option>CREATED</option>
+            <option>IN_TRANSIT</option>
+            <option>DELIVERED</option>
+            <option>CANCELLED</option>
           </select>
         </div>
 
         {/* SHIPMENTS LIST */}
-        <div className="bg-white mt-8 p-4 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">All Shipments ({filtered.length})</h2>
+        <div className="bg-white mt-8 p-4 rounded-xl border shadow-sm">
 
-            <button className="flex items-center gap-2 text-orange-600 font-medium hover:text-orange-700">
-              ⬇ Export
-            </button>
-          </div>
+          <h2 className="text-xl font-semibold mb-4">
+            All Shipments ({filtered.length})
+          </h2>
+
+          {loading && (
+            <p className="text-center text-gray-500 py-6">
+              Loading shipments...
+            </p>
+          )}
+
+          {!loading && filtered.length === 0 && (
+            <p className="text-center text-gray-500 py-6">
+              No shipments found
+            </p>
+          )}
 
           <div className="space-y-4">
             {filtered.map((item) => (
-              <ShipmentCard key={item.id} item={item} />
+              <ShipmentCard
+                key={item.orderId}
+                item={item}
+              />
             ))}
           </div>
         </div>
 
-        {/* SUMMARY STATS */}
+        {/* SUMMARY CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
 
-          <SummaryCard label="Total Spent" value="$142.89" />
-          <SummaryCard label="Total Shipments" value="8" />
-          <SummaryCard label="Success Rate" value="95%" />
-          <SummaryCard label="Avg Delivery Time" value="2.3 days" />
+          <SummaryCard
+            label="Total Spent"
+            value={`₹ ${totalSpent.toFixed(2)}`}
+          />
+
+          <SummaryCard
+            label="Total Shipments"
+            value={totalShipments}
+          />
+
+          <SummaryCard
+            label="Success Rate"
+            value={`${successRate}%`}
+          />
+
+          <SummaryCard
+            label="Avg Delivery Time"
+            value="N/A"
+          />
 
         </div>
       </div>
@@ -182,61 +154,64 @@ const ShipmentHistory = () => {
 
 export default ShipmentHistory;
 
-/*****************************
-     REUSABLE COMPONENTS
-******************************/
+/* ==================================================
+                    COMPONENTS
+================================================== */
 
 const ShipmentCard = ({ item }) => {
+
   const statusColor = {
-    Delivered: "bg-green-500",
-    "In Transit": "bg-orange-500",
-    Cancelled: "bg-gray-500",
+    CREATED: "bg-blue-500",
+    IN_TRANSIT: "bg-orange-500",
+    DELIVERED: "bg-green-500",
+    CANCELLED: "bg-gray-500",
   };
 
   return (
-    <div className="flex justify-between items-center bg-white p-4 rounded-xl border shadow-sm">
+    <div className="flex justify-between items-center p-4 rounded-xl border shadow-sm">
 
-      {/* Left area */}
+      {/* LEFT */}
       <div className="flex items-center gap-3">
 
-        <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-white ${statusColor[item.status]}`}>
+        <div
+          className={`w-10 h-10 rounded-lg flex items-center justify-center text-white 
+          ${statusColor[item.orderStatus] || "bg-gray-400"}`}
+        >
           <HiOutlineCube />
         </div>
 
         <div>
-          <h3 className="font-semibold">{item.id}</h3>
+          <h3 className="font-semibold">
+            {item.trackingNumber}
+          </h3>
 
-          <div className="flex items-center gap-1 text-sm text-gray-600">
-            <span>📍 {item.from}</span>
-            <span className="mx-1">→</span>
-            <span>{item.to}</span>
-          </div>
+          <p className="text-sm text-gray-600">
+            📍 {item.pickupCity} → {item.deliveryCity}
+          </p>
 
-          {/* Labels */}
-          <div className="flex gap-2 mt-1">
-            <span className={`text-white text-xs px-2 py-0.5 rounded ${statusColor[item.status]}`}>
-              {item.status}
-            </span>
-
-            <span className="bg-gray-200 text-gray-700 text-xs px-2 py-0.5 rounded">
-              {item.service}
-            </span>
-          </div>
+          <span
+            className={`inline-block mt-1 text-xs text-white px-2 py-0.5 rounded 
+            ${statusColor[item.orderStatus]}`}
+          >
+            {item.orderStatus}
+          </span>
         </div>
       </div>
 
-      {/* Right area */}
+      {/* RIGHT */}
       <div className="text-right">
-        <p className="font-semibold">{item.price}</p>
+        <p className="font-semibold">
+          ₹ {item.price?.toFixed(2)}
+        </p>
 
-        <p className="text-sm text-gray-500">📅 {item.date}</p>
+        <p className="text-sm text-gray-500">
+          📅 {item.pickupDate}
+        </p>
 
-        <button className="flex items-center gap-1 text-orange-600 text-sm font-medium mt-1 hover:text-orange-700">
-          <FiEye />
-          View
+        <button className="flex items-center gap-1 text-orange-600 text-sm mt-1">
+          <FiEye /> View
         </button>
       </div>
-
     </div>
   );
 };
