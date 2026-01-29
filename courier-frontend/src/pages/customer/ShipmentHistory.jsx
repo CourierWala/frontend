@@ -2,34 +2,45 @@ import React, { useEffect, useState } from "react";
 import CustomerLayout from "../../layouts/CustomerLayout";
 import { HiOutlineCube } from "react-icons/hi";
 import { FiEye } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 import { callShipmentHistory } from "../../api/customer";
+import { setShipments } from "../../store/slices/shipmentSlice";
 
 const ShipmentHistory = () => {
 
-  /* ================= STATE ================= */
-  const [shipments, setShipments] = useState([]);
+  /* ================= REDUX ================= */
+  const dispatch = useDispatch();
+
+  const { list: shipments, loaded } = useSelector(
+    (state) => state.shipments
+  );
+
+  /* ================= LOCAL UI STATE ================= */
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  /* ================= API CALL ================= */
+  /* ================= FETCH ONLY ONCE ================= */
   useEffect(() => {
-    getShipmentHistory();
-  }, []);
+    if (!loaded) {
+      fetchShipments();
+    }
+  }, [loaded]);
 
-  async function getShipmentHistory() {
+  async function fetchShipments() {
     try {
+      setLoading(true);
       const response = await callShipmentHistory();
-      setShipments(response.data || []);
+      dispatch(setShipments(response.data || []));
     } catch (error) {
-      console.error("Failed to fetch shipment history", error);
+      console.error("Failed to load shipment history", error);
     } finally {
       setLoading(false);
     }
   }
 
   /* ================= FILTER ================= */
-  const filtered = shipments.filter((item) => {
+  const filteredShipments = shipments.filter((item) => {
     const matchesSearch =
       item.trackingNumber
         ?.toLowerCase()
@@ -42,7 +53,7 @@ const ShipmentHistory = () => {
     return matchesSearch && matchesStatus;
   });
 
-  /* ================= SUMMARY CALC ================= */
+  /* ================= SUMMARY ================= */
   const totalShipments = shipments.length;
 
   const totalSpent = shipments.reduce(
@@ -98,7 +109,7 @@ const ShipmentHistory = () => {
         <div className="bg-white mt-8 p-4 rounded-xl border shadow-sm">
 
           <h2 className="text-xl font-semibold mb-4">
-            All Shipments ({filtered.length})
+            All Shipments ({filteredShipments.length})
           </h2>
 
           {loading && (
@@ -107,18 +118,15 @@ const ShipmentHistory = () => {
             </p>
           )}
 
-          {!loading && filtered.length === 0 && (
+          {!loading && filteredShipments.length === 0 && (
             <p className="text-center text-gray-500 py-6">
               No shipments found
             </p>
           )}
 
           <div className="space-y-4">
-            {filtered.map((item) => (
-              <ShipmentCard
-                key={item.orderId}
-                item={item}
-              />
+            {filteredShipments.map((item) => (
+              <ShipmentCard key={item.orderId} item={item} />
             ))}
           </div>
         </div>
@@ -147,6 +155,7 @@ const ShipmentHistory = () => {
           />
 
         </div>
+
       </div>
     </CustomerLayout>
   );
@@ -212,6 +221,7 @@ const ShipmentCard = ({ item }) => {
           <FiEye /> View
         </button>
       </div>
+
     </div>
   );
 };
