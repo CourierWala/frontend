@@ -48,7 +48,7 @@ const ManagerLayout = ({ children }) => {
         transition-transform duration-300
         md:translate-x-0 md:static md:flex md:flex-col md:justify-between`}
       >
-        <div>
+        <div className="sticky top-0 pt-[15px] ...">
           <div className="flex items-center gap-3 mb-6">
             <HiOutlineCube className="text-orange-500 text-3xl" />
             <h2 className="text-2xl font-bold">Courier wala</h2>

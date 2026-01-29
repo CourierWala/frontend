@@ -13,7 +13,6 @@ const AdminLayout = ({ children }) => {
     document.body.classList.toggle("overflow-hidden", isOpen);
   }, [isOpen]);
 
-
   const links = [
     { to: "/admin/dashboard", label: "Dashboard" },
     { to: "/admin/staff-management", label: "Staff Management" },
@@ -21,7 +20,7 @@ const AdminLayout = ({ children }) => {
     { to: "/admin/pricing", label: "Pricing Control" },
     { to: "/admin/analytics", label: "Analytics" },
     { to: "/admin/profile", label: "Profile" },
-    { to: "/admin/investor-relations", label: "Investor Relations" }
+    { to: "/admin/investor-relations", label: "Investor Relations" },
   ];
 
   return (
@@ -52,7 +51,7 @@ const AdminLayout = ({ children }) => {
         transition-transform duration-300
         md:translate-x-0 md:static md:flex md:flex-col md:justify-between`}
       >
-        <div>
+        <div className="sticky top-0 pt-[15px] ...">
           <div className="flex items-center gap-3 mb-6">
             <HiOutlineCube className="text-orange-500 text-3xl" />
             <h2 className="text-2xl font-bold">Courier wala</h2>
@@ -80,9 +79,7 @@ const AdminLayout = ({ children }) => {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 p-6 mt-16 md:mt-0">
-        {children}
-        </main>
+      <main className="flex-1 p-6 mt-16 md:mt-0">{children}</main>
     </div>
   );
 };

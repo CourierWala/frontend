@@ -24,7 +24,7 @@ const StaffSignUp = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onSignUp = () => {
+  const onSignUp = async() => {
     const rules = [
       [form.name.trim(), "Full name is required"],
       [form.email.trim(), "Email is required"],
@@ -41,15 +41,19 @@ const StaffSignUp = () => {
       [form.hubId, "Select hub"],
     ];
 
-    // for (const [condition, message] of rules) {
-    //   if (!condition) {
-    //     toast.warning(message);
-    //     return;
-    //   }
-    // }
-    //const response = await staff_signup(form.name,form.email,form.phone,form.password,form.vehicleType,form.vehicleNumber,form.licenseNumber,form.hubId);
-    toast.success("Staff registered successfully");
-    navigate("/staff/dashboard");
+    for (const [condition, message] of rules){
+      if (!condition) {
+        toast.warning(message);
+        return;
+      }
+    }
+    const response = await staff_signup(form.name,form.email,form.phone,form.password,form.vehicleType,form.vehicleNumber,form.licenseNumber,form.hubId);
+    console.log(response);
+    if(response.data.status === "success"){
+        toast.success(response.data.message);
+        navigate("/staff/dashboard");
+    }
+      
   };
 
   return(

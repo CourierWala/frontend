@@ -31,7 +31,9 @@ import AdminInvestorRelations from '../pages/admin/AdminInvestorRelations'
 import Admin from '../pages/admin/Admin'
 import NotificationTab from '../pages/staff/NotificationTab'
 import StaffSignUp from '../pages/auth/signup/Staffsignup'
-import HubOrders from '../pages/staff/Huborders'
+import HubOrders from '../pages/staff/AcceptedOrders'
+import AcceptedOrders from '../pages/staff/AcceptedOrders'
+import CurrentOrders from '../pages/staff/CurrentOrders'
 
 
 const AppRoutes = () => {
@@ -122,6 +124,39 @@ const AppRoutes = () => {
                         <Route path="notifications" element={<NotificationTab />} />
                     </Route>
 
+                  
+                        {/* // staff routes */}
+                <Route path="/staff" element={<StaffDashboard />}>
+                    
+                    <Route 
+                        path="dashboard" 
+                        element={<Overview />} />
+                    <Route 
+                        path="Accepted-Orders" 
+                        element={<AcceptedOrders />} />
+                        <Route 
+                        path="Current-Orders" 
+                        element={<CurrentOrders />} />
+                    <Route 
+                        path="profile" 
+                        element={<Profile />} />
+                    <Route 
+                        path="earnings" 
+                        element={<Earnings />} />
+                    <Route 
+                        path="StaffShipmentHistory" 
+                        element={<StaffShipmentHistory />} />
+
+                    <Route 
+                        path="notifications" 
+                        element={<NotificationTab />} />    
+                </Route>
+
+                
+
+
+
+                    {/* Manager Routes */}
                     <Route
                         path="/manager/dashboard"
                         element={
