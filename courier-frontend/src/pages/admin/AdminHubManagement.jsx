@@ -12,24 +12,8 @@ import {
 } from "../../api/admin";
 
 export default function AdminHubManagement() {
-  const dummyHubs = [
-    {
-      id: 1,
-      hubName: "Mumbai Hub",
-      address: "Andheri East",
-      city: "Mumbai",
-      managerName: "Rahul Sharma",
-    },
-    {
-      id: 2,
-      hubName: "Delhi Hub",
-      address: "Dwarka",
-      city: "Delhi",
-      managerName: "Anita Verma",
-    },
-  ];
 
-  const [hubs, setHubs] = useState(dummyHubs);
+  const [hubs, setHubs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedHub, setSelectedHub] = useState(null);
 
@@ -38,8 +22,8 @@ export default function AdminHubManagement() {
   ================================ */
   const fetchHubs = async () => {
     try {
-      // const data = await getAllHubs();
-      // setHubs(data);
+      const response = await getAllHubs();
+      setHubs(response.data);
     } catch (err) {
       toast.error("Failed to load hubs");
       console.error(err);
@@ -116,7 +100,8 @@ export default function AdminHubManagement() {
         <table className="w-full text-left">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-4">Hub Name</th>
+              <th className="p-4">ID</th>
+              <th>Hub Name</th>
               <th>City</th>
               <th>Manager</th>
               <th className="text-right p-4">Action</th>
@@ -125,9 +110,10 @@ export default function AdminHubManagement() {
 
           <tbody>
             {hubs.map((hub) => (
-              <tr key={hub.id} className="border-t">
-                <td className="p-4">{hub.hubName}</td>
-                <td>{hub.city}</td>
+              <tr key={hub.hubId} className="border-t">
+                <td className="p-4">{hub.hubId}</td>
+                <td>{hub.hubName}</td>
+                <td>{hub.hubCity}</td>
                 <td>{hub.managerName}</td>
                 <td className="text-right p-4">
                   <button
