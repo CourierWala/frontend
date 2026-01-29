@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import React from 'react'
 import OrderCard from "../../components/common/Ordercard";
 import { ordersData } from "./orders";
-import { getAvailableOrders } from "../../api/staff";
+import { AcceptCustomerOrders, AcceptHubOrders, getAvailableOrders } from "../../api/staff";
 
 export default function Overview() {
   const [tab, setTab] = useState("customer");
@@ -24,20 +24,15 @@ export default function Overview() {
   const availableCustomerOrders = orders.filter(o => o.status === "CREATED");
   const availableHubOrders = orders.filter(o => o.status === "AT_DESTINATION_HUB");
 
-  const handlePickup = (id) => {
-    setOrders(prev =>
-      prev.map(o =>
-        o.id === id ? { ...o, status: "PICKED_UP" } : o
-      )
-    );
+  const CustomerhandleAccept = async (orderid) => {
+    
+    const updateResponse = await AcceptCustomerOrders(orderid);
+    console.log(updateResponse);
   };
 
-  const handleHandover = (id) => {
-    setOrders(prev =>
-      prev.map(o =>
-        o.id === id ? { ...o, status: "AT_DESTINATION_HUB" } : o
-      )
-    );
+  const HubhandleAccept = async(orderid) => {
+    const updateResponse1 = await AcceptHubOrders(orderid);
+    console.log(updateResponse1);
   };
 
   return (
@@ -80,8 +75,9 @@ export default function Overview() {
                             key={order.Orderid}
                             order={order}
                             tab={tab}
-                            onPickup={tab === "customer" ? () => handlePickup(order.id) : undefined  }
-                            onHandover={  tab === "Hub"  ? () => handleHandover(order.id)  : undefined }
+                            // onClick = {handleAccept(order.Orderid,tab)}
+                            customerOrderActions = {tab === "customer" ? () => CustomerhandleAccept(order.Orderid) : undefined  }
+                            HubOrderActions = {  tab === "Hub"  ? () => HubhandleAccept(order.Orderid)  : undefined }
                             btnInfo = {{ label1:"Accept",label2:"Accept",color1 :"bg-orange-600",color2 :"bg-orange-600"}} 
                        />
             ))}

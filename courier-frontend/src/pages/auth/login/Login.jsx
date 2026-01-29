@@ -10,11 +10,11 @@ import { useAuth } from "../../../context/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("omkar@gmail.com");
-  const [password, setPassword] = useState("Pass@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { login, } = useAuth();
+  const { login } = useAuth();
 
   const onLogin = async (e) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ const Login = () => {
       [password.length >= 6, "Password must be at least 6 characters"],
     ];
 
-    for (const [condition, message] of rules) {
+    for (const [condition, message] of rules){
       if (!condition) {
         toast.warning(message);
         return;
@@ -33,24 +33,26 @@ const Login = () => {
     }
     try {
       const response = await userLogin(email, password);
-      console.log(response)
+      console.log(response);
       const currRole = response.data.role.slice(1, -1);
 
-      const user = { email : response?.data.email, id : response.data.id, role : currRole }
+      const user = {
+        email: response?.data.email,
+        id: response.data.id,
+        role: currRole,
+      };
       login(user);
       toast.success("Login successful");
-      console.log("curr role : " , currRole)
+      console.log("curr role : ", currRole);
       if (currRole == "ROLE_CUSTOMER") navigate("/customer/dashboard");
       else if (currRole == "ROLE_ADMIN") navigate("/admin/dashboard");
       else if (currRole == "ROLE_DELIVERY_STAFF") navigate("/staff/dashboard");
-      else if (currRole == "ROLE_STAFF_MANAGER") navigate("/manager/dashboard");    // 'ROLE_ADMIN','ROLE_CUSTOMER','ROLE_DELIVERY_STAFF','ROLE_STAFF_MANAGER')
-
+      else if (currRole == "ROLE_STAFF_MANAGER") navigate("/manager/dashboard"); // 'ROLE_ADMIN','ROLE_CUSTOMER','ROLE_DELIVERY_STAFF','ROLE_STAFF_MANAGER')
     } catch (error) {
-      console.log("error : ", error)
-      console.log("error res : ", error.response)
+      console.log("error : ", error);
+      console.log("error res : ", error.response);
       setErrorMessage("Invalid Credential !!");
     }
-
   };
 
   return (
@@ -91,7 +93,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border rounded-lg pl-10 pr-3 py-2"
-              placeholder="********"
+              placeholder="enter password"
             />
           </div>
 
@@ -110,9 +112,11 @@ const Login = () => {
               Forgot password?
             </button>
           </div>
-          {
-            errorMessage && <div className="font-bold text-red-700 text-center m-2 p-2">Error : {errorMessage}</div>
-          }
+          {errorMessage && (
+            <div className="font-bold text-red-700 text-center m-2 p-2">
+              Error : {errorMessage}
+            </div>
+          )}
 
           {/* LOGIN BUTTON */}
           <button
@@ -125,7 +129,10 @@ const Login = () => {
           {/* FOOTER */}
           <p className="text-center text-gray-600 text-sm">
             Don't have an account?{" "}
-            <Link to="/signup" className="text-orange-600 hover:underline"> Sign up</Link>
+            <Link to="/signup" className="text-orange-600 hover:underline">
+              {" "}
+              Sign up
+            </Link>
           </p>
         </div>
       </div>

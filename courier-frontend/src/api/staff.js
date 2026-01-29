@@ -139,5 +139,18 @@ export const getcurrentOrders = async () => {
 };
 
 
+export const AcceptCustomerOrders = async ( orderid) => {
+  
+  return (await axiosInstance.put(`/staff/dashboard/customer/${orderid}`)).data;
+};
+
+
+export const AcceptHubOrders = async ( orderid) =>{
+  return (await axiosInstance.put(`/staff/dashboard/Hub/${orderid}`)).data;
+};
+
+
+
+
 
 
