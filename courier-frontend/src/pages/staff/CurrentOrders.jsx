@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import OrderCard from "../../components/common/Ordercard";
-import { ordersData } from "./orders";
-import { getcurrentOrders } from "../../api/staff";
+import { DeliverCustomerOrders, DeliverHubOrders, getcurrentOrders } from "../../api/staff";
+import { toast } from "react-toastify";
 
 export default function CurrentOrders() {
   const [tab, setTab] = useState("customer");
@@ -13,7 +13,7 @@ export default function CurrentOrders() {
     //setOrders(ordersData);
   }, []);
 
-  const loadorders = async() => {
+  const loadorders = async() =>{
           const temp = await getcurrentOrders();
           setOrders(temp);
           console.log(temp);
@@ -21,20 +21,20 @@ export default function CurrentOrders() {
   const customerOrders = orders.filter(o => o.status === "PICKED_UP");
   const outForDelivery = orders.filter(o => o.status === "OUT_FOR_DELIVERY");
 
-  const handlePickup = (id) => {
-    setOrders(prev =>
-      prev.map(o =>
-        o.id === id ? { ...o, status: "OUT_FOR_DELIVERY" } : o
-      )
-    );
-  };
+  const CustomerhandleHandover = async(orderid) => {
+    const updateResponse = await DeliverCustomerOrders(orderid);
 
-  const handleHandover = (id) => {
-    setOrders(prev =>
-      prev.map(o =>
-        o.id === id ? { ...o, status: "DELIVERED" } : o
-      )
-    );
+       if(updateResponse.status == "SUCCESS")
+              toast.success(updateResponse.message);
+        loadorders();
+            // console.log(updateResponse);
+  };
+  const HubhandleHandover = async (orderid) => {
+    const updateResponse = await DeliverHubOrders(orderid);
+    if(updateResponse.status == "SUCCESS")
+         toast.success(updateResponse.message);
+    loadorders();
+           // console.log(updateResponse);
   };
 
   return (
@@ -67,8 +67,8 @@ export default function CurrentOrders() {
           key={order.Orderid}
           order={order}
           tab={tab}
-          onPickup={() => handlePickup(order.id)}
-          onHandover={() => handleHandover(order.id)}
+          customerOrderActions = {tab === "customer" ? () => CustomerhandleHandover(order.Orderid) : undefined  }
+          HubOrderActions = {  tab === "Hub"  ? () => HubhandleHandover(order.Orderid)  : undefined }
           btnInfo = {{ label1:"Handover",label2:"Handover",color1 :"bg-green-600",color2 :"bg-green-600"}}
         
         />

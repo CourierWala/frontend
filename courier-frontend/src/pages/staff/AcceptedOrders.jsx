@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import React from "react";
 import OrderCard from "../../components/common/Ordercard";
 import { ordersData } from "./orders";
-import { getAcceptedOrders } from "../../api/staff";
+import { getAcceptedOrders, pickupCustomerOrders } from "../../api/staff";
+import { toast } from "react-toastify";
 
 export default function AcceptedOrders() {
   const [tab, setTab] = useState("customer");
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    loadorders();
-    // setOrders(ordersData);
+    loadorders(); 
   }, []);
 
   const loadorders = async() => {
@@ -22,20 +22,13 @@ export default function AcceptedOrders() {
   const hubOrders = orders.filter(o => o.status === "PICKUP_ASSIGNED");
   const outForDelivery = orders.filter(o => o.status === "OUT_FOR_DELIVERY");
 
-  const handlePickup = (id) => {
-    setOrders(prev =>
-      prev.map(o =>
-        o.id === id ? { ...o, status: "OUT_FOR_DELIVERY" } : o
-      )
-    );
-  };
-
-  const handleHandover = (id) => {
-    setOrders(prev =>
-      prev.map(o =>
-        o.id === id ? { ...o, status: "DELIVERED" } : o
-      )
-    );
+  const Customerhandlepickup = async (orderid) => {
+    const updateResponse = await pickupCustomerOrders(orderid);
+    if(updateResponse.status == "SUCCESS"){
+          toast.success(updateResponse.message);
+        }
+        loadorders();
+        // console.log(updateResponse);
   };
 
   return (
@@ -68,8 +61,8 @@ export default function AcceptedOrders() {
           key={order.Orderid}
           order={order}
           tab={tab}
-          onPickup={() => handlePickup(order.id)}
-          onHandover={() => handleHandover(order.id)}
+          customerOrderActions = {tab === "customer" ? () => Customerhandlepickup(order.Orderid) : undefined  }
+          HubOrderActions = {  tab === "Hub"  ? () => HubhandleAccept(order.Orderid)  : undefined }
           btnInfo = {{ label1:"Pickup",color1 :"bg-orange-600"}}
     
         />

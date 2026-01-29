@@ -3,15 +3,14 @@ import { FiMail, FiLock } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../../../components/common/NavBar";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { userLogin } from "../../../api/auth";
 import { useAuth } from "../../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("prajwal@gmail.com");
-  const [password, setPassword] = useState("prajwal@123");
+  const [email, setEmail] = useState("Harsh1@gmail.com");
+  const [password, setPassword] = useState("Harsh@123");
   const [remember, setRemember] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { login, } = useAuth();
