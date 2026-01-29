@@ -16,7 +16,7 @@ export default function ProfileTab() {
 
   const loadProfile = async () => {
       try {
-        const staff_id = 1;
+        const staff_id = 12;
         const staffProfile = await fetchStaffProfile(staff_id);
         // console.log(staffProfile);
         setFirstName(staffProfile.firstName);
@@ -57,7 +57,7 @@ export default function ProfileTab() {
       vehicleType,
       vehicleNumber,
     };
-    let staff_id = 1;
+    let staff_id = 12;
     const updateResponse = await saveStaffProfile(staff_id, staffProfile);
     // console.log("staff update"+ updateResponse.data);
     //  const response = await save(firstName,lastName,email,phone,vehicleType,vehicleNumber);
