@@ -3,7 +3,7 @@ import { FiUser, FiMail, FiPhone, FiLock } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../../../components/common/NavBar";
 import { toast } from "react-toastify";
-import { customer_signup } from "../../../api/customer";
+import { customerSignup } from "../../../api/auth";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-  const onSignUp = () => {
+  const onSignUp = async () => {
     //valiadtion
     const rules = [
       [name.trim(), "Full name is required"],
@@ -31,20 +31,23 @@ const SignUp = () => {
       [acceptedTerms, "You must accept Terms & Privacy Policy"],
     ];
 
-    // for (const [condition, message] of rules) {
-    //   if (!condition) {
-    //     toast.warning(message);
-    //     return;
-    //   }
-    // }
-
-
-    // API call later
-    //const response = await customer_signup(name,email,phone,password);
-    // signup({ name, email, phone, password })
-
-    toast.success("Account created successfully");
-    navigate("/customer/dashboard");
+    for (const [condition, message] of rules) {
+      if (!condition) {
+        toast.warning(message);
+        return;
+      }
+    }
+    const body = { name, email, phone, password }
+    // API call 
+    try {
+      const response = await customerSignup(body);
+      console.log(response)
+      toast.success("Account created successfully");
+      navigate("/login");
+    } catch (error) {
+      console.log(error.response);
+      toast.error(error.response.data.message);
+    }
   };
 
   return (

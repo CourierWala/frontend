@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { callOlaAutoCompleteApi } from "../../api/customer";
 
 const styles = {
   wrapper: {
@@ -51,7 +52,7 @@ const OlaAutocomplete = (props) => {
   const [suggestions, setSuggestions] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
   const debounceRef = useRef(null);
-  
+
 
   useEffect(() => {
     if (isSelected) return;
@@ -60,20 +61,23 @@ const OlaAutocomplete = (props) => {
       return;
     }
 
-    debounceRef.current = setTimeout(async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:8080/api/customer/location/autocomplete",
-          { params: { input: query } }
-        );
-        setSuggestions(res.data.predictions || []);
-      } catch (err) {
-        console.error(err);
-      }
+    debounceRef.current = setTimeout( () => {
+            autoCompleteApi(query)
     }, 400);
 
     return () => clearTimeout(debounceRef.current);
   }, [query, isSelected]);
+
+  const autoCompleteApi = async (query) => {
+     try {
+        const res = await callOlaAutoCompleteApi(query)
+        console.log(res)
+        setSuggestions(res?.data?.predictions || []);
+      } catch (err) {
+        console.log(err.response);
+        console.error(err);
+      }
+  }
 
   const handleSelect = (item) => {
     const selectedAddress = item.description;

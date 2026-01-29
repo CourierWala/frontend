@@ -27,7 +27,7 @@ const NavBar = () => {
           </Link>
 
           <Link
-            to="/signup"
+            // to="/signup"
             className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
           >
             Sign Up
@@ -68,13 +68,13 @@ const NavBar = () => {
             Login
           </Link>
 
-          {/* <Link
+          <Link
             onClick={() => setOpen(false)}
             className="block text-gray-700 text-lg hover:text-orange-600"
             to="/staff/dashboard"
           >
             Staff
-          </Link> */}
+          </Link>
 
           <Link
             onClick={() => setOpen(false)}
@@ -87,7 +87,7 @@ const NavBar = () => {
           <Link
             onClick={() => setOpen(false)}
             className="block px-4 py-2 bg-orange-600 text-white rounded-lg text-center hover:bg-orange-700"
-            to="/register"
+            to="/signup"
           >
             Sign Up
           </Link>

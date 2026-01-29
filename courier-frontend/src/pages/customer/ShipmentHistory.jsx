@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomerLayout from "../../layouts/CustomerLayout";
 import { HiOutlineCube } from "react-icons/hi";
 import { FiSearch, FiEye } from "react-icons/fi";
+import { callShipmentHistory } from "../../api/customer";
 
 const shipmentData = [
   {
@@ -79,6 +80,17 @@ const shipmentData = [
 ];
 
 const ShipmentHistory = () => {
+
+  useEffect(() => {
+         getShipmentHistory();
+  }, [])
+
+  async function getShipmentHistory(){
+    const response = await callShipmentHistory(); 
+    console.log("after calling !!")
+    console.log(response.data);
+  }
+
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
   const [serviceFilter, setServiceFilter] = useState("All Services");

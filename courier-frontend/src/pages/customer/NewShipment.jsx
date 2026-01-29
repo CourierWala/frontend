@@ -9,6 +9,7 @@ import { loadRazorpay } from "../../utils/loadRazorpay";
 import axios from "axios";
 import { createPaymentOrder, handlePaymentResponse } from "../../api/payment";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const NewShipment = () => {
   const [form, setForm] = useState({
@@ -28,6 +29,10 @@ const NewShipment = () => {
     deliveryLatitude: "",
     deliveryLongitude: "",
   });
+
+  const { user } = useAuth();
+
+  const [paymentAmount, setPaymentAmount] = useState(0.0);
 
   const [pickupLocation, setPickupLocation] = useState({});
   const [deliveryLocation, setDeliveryLocation] = useState({});
@@ -123,7 +128,7 @@ const NewShipment = () => {
     handlePaymentResponse(res);
     nav("/customer/dashboard");
   };
-  const handlePlaceOrder = async (order_id) => {
+  const handlePlaceOrder = async (order_id, payAmount) => {
     // 1. Load Razorpay script
     const isLoaded = await loadRazorpay();
     if (!isLoaded) {
@@ -138,8 +143,7 @@ const NewShipment = () => {
     //   { params: { amount: 100, order_id: order_id } },
     // );
 
-    let amt = 150;
-    const paymentRes = await createPaymentOrder(amt, order_id);
+    const paymentRes = await createPaymentOrder(payAmount, order_id);
 
     console.log("PaymentRes", paymentRes);
 
@@ -151,7 +155,7 @@ const NewShipment = () => {
       amount: amount * 100, // paise
       currency: "INR",
       name: "CourierWala",
-      recript: "dudhmalprashantkumar@gmail.com",
+      recript: user?.email,
       description: "Courier Delivery Payment",
       order_id: razorpayOrderId,
 
@@ -190,8 +194,11 @@ const NewShipment = () => {
     try {
       const res = await createShipment(shipmentData);
       console.log("res :", res);
-      res.data.order_id;
-      handlePlaceOrder(res.data.order_id);
+
+      setPaymentAmount(res?.data?.amount);
+      console.log(parseInt(res.data.amount))
+
+      handlePlaceOrder(res.data.order_id, parseInt(res.data.amount));
 
       toast.success("Shipment booked successfully 🚚");
     } catch (error) {
