@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {BarChart,Bar,LineChart,Line,XAxis,YAxis,Tooltip,ResponsiveContainer} from "recharts";
 import EarningsDetails from "./EarningsDetails";
 
@@ -30,7 +30,13 @@ const monthlyEarningsData = [
   { month: "Dec", amount: 3400 },
 ];
 
+
+
+
 export default function Earnings() {
+  useEffect(() => {
+    console.log("earnings");
+  }, []);
   return (
     <div className="p-4 md:p-8 space-y-6">
       <h1 className="text-xl font-semibold">CURRENT EARNINGS</h1>

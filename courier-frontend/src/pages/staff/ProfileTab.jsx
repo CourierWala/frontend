@@ -11,20 +11,14 @@ export default function ProfileTab() {
   const [vehicleNumber, setVehicleNumber] = useState("");
 
   useEffect(() => {
-    const loadProfile = async () => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
       try {
         const staff_id = 1;
         const staffProfile = await fetchStaffProfile(staff_id);
-        console.log(staffProfile);
-        //       {
-        //   "firstName": "Rohit",
-        //   "lastName": "Patil",
-        //   "email": "ds22@courierwala.com",
-        //   "phone": "9876543222",
-        //   "address": null,
-        //   "vehicleType": "BIKE",
-        //   "vehicleNumber": "MH12AB1234"
-        // }
+        // console.log(staffProfile);
         setFirstName(staffProfile.firstName);
         setLastName(staffProfile.lastName);
         setEmail(staffProfile.email);
@@ -35,9 +29,6 @@ export default function ProfileTab() {
         console.error(err);
       }
     };
-
-    loadProfile();
-  }, []);
 
   const saveChanges = async () => {
     const rules = [
@@ -68,14 +59,11 @@ export default function ProfileTab() {
     };
     let staff_id = 1;
     const updateResponse = await saveStaffProfile(staff_id, staffProfile);
-    console.log(updateResponse);
-    toast.success("Profile updated successfully");
-    // const response = await save(firstName,lastName,email,phone,vehicleType,vehicleNumber);
-
-    // if (response['status'] === 'success') {
-
-    //     window.alert("save changes sucessfully");
-    //   }
+    // console.log("staff update"+ updateResponse.data);
+    //  const response = await save(firstName,lastName,email,phone,vehicleType,vehicleNumber);
+     if (updateResponse.data.status === 'success') 
+        toast.success(updateResponse.data.message);  
+       
   };
 
   return (
@@ -110,6 +98,7 @@ export default function ProfileTab() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 text-sm"
               defaultValue={email}
+              readOnly
             />
           </div>
           <div>
@@ -122,14 +111,14 @@ export default function ProfileTab() {
               defaultValue={phone}
             />
           </div>
-          <div className="md:col-span-2">
+          {/* <div className="md:col-span-2">
             <label className="block text-xs text-slate-500 mb-1">Address</label>
             <input
               onChange={(e) => setFirstName(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 text-sm"
               defaultValue=""
             />
-          </div>
+          </div> */}
           <div>
             <label className="block text-xs text-slate-500 mb-1">
               Vehicle Type

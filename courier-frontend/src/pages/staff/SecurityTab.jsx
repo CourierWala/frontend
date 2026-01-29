@@ -8,10 +8,9 @@ export default function SecurityTab() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async() => {
       const passwordRegex =
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
             const rules = [
                 [currentPassword, "Current password is required"],
                 [newPassword, "New password is required"],
@@ -28,15 +27,16 @@ export default function SecurityTab() {
         return; 
       }
     }
-    toast.success("Password changed successfully");
-    // staffid from session
-       // const response = await changePassword(staffid,currentPassword,newPassword);
-
-    //     if (response['status'] === 'success') {
-    //         console.log("sucessful");
-    //    }
-
    
+    // staffid from session
+       let staffid = 1;
+       const body = {currentPassword, newPassword };
+        const response = await changePassword(staffid,body);
+        console.log(response);
+         toast.success("Password changed successfully");
+      //    if (response['status'] === 'success'){
+      //       console.log("sucessful");
+      //  }
   };
   
   return (

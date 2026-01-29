@@ -7,8 +7,12 @@ export const fetchStaffProfile = async (staff_id) => {
 };
 
 export const saveStaffProfile = async (staff_id, staffProfile) => {
-  return (await axiosInstance.post(`/staff/profile/${staff_id}`, staffProfile))
-    .data;
+  return (await axiosInstance.post(`/staff/profile/${staff_id}`, staffProfile));
+};
+
+export const changePassword = async (staffId, body) => {
+  // const body = {currentPassword, newPassword };
+  return (await axiosInstance.post(`/staff/profile/changepassword/${staffId}`,body)).data;
 };
 
 export async function save(
@@ -93,18 +97,9 @@ export async function fetchShipmentHistory() {
   }
 }
 
-export async function changePassword(staffid, currentPassword, newPassword) {
-  try {
-    const url = `${config.server}/staff/Profile/changepassword`;
-    const body = { staffid, currentPassword, newPassword };
-    const response = await axios.post(url, body);
-    return response.data;
-  } catch (error) {
-    console.error("Error in changing password", error);
-  }
-}
 
-export async function staff_signup(
+export const staff_signup = async (
+
   name,
   email,
   phone,
@@ -113,10 +108,8 @@ export async function staff_signup(
   vehicleNumber,
   licenseNumber,
   hubId,
-) {
-  try {
-    const url = `${config.server}/staff/signup`;
-    const body = {
+) => {
+  const body = {
       name,
       email,
       phone,
@@ -126,9 +119,25 @@ export async function staff_signup(
       licenseNumber,
       hubId,
     };
-    const response = await axios.post(url, body);
-    return response.data;
-  } catch (error) {
-    console.error("Error in changing password", error);
-  }
-}
+  // const body = {currentPassword, newPassword };
+  return (await axiosInstance.post(`/staff/applyforjob`,body));
+};
+
+export const getAvailableOrders = async () => {
+  
+  return (await axiosInstance.get(`/staff/dashboard`)).data;
+};
+
+export const getAcceptedOrders = async () => {
+  let staffid = 1;
+  return (await axiosInstance.get(`/staff/accepted-orders/${staffid}`)).data;
+};
+
+export const getcurrentOrders = async () => {
+  let staffid = 1;
+  return (await axiosInstance.get(`/staff/current-orders/${staffid}`)).data;
+};
+
+
+
+

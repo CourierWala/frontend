@@ -31,7 +31,9 @@ import AdminInvestorRelations from '../pages/admin/AdminInvestorRelations'
 import Admin from '../pages/admin/Admin'
 import NotificationTab from '../pages/staff/NotificationTab'
 import StaffSignUp from '../pages/auth/signup/Staffsignup'
-import HubOrders from '../pages/staff/Huborders'
+import HubOrders from '../pages/staff/AcceptedOrders'
+import AcceptedOrders from '../pages/staff/AcceptedOrders'
+import CurrentOrders from '../pages/staff/CurrentOrders'
 
 
 const AppRoutes = () => {

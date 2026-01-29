@@ -1,38 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { fetchShipmentHistory } from "../../api/staff";
+import { ordersData } from "./orders";
 
 export default function StaffShipmentHistory() {
   const [orderHistory, setOrderHistory] = useState([]);
-
-  const historyorders =[
-  {
-    "id": "ORDER-2",
-    "customer": "Om Kharmate",
-    "pickup": "123 Vaduj, Satara",
-    "delivery": "45 Ram Charan, Raigad",
-    "distance": "100 km",
-    "weight": "2.5 kg",
-    "amount": 45,
-    "status": "DELIVERED"
-  },
-  {
-    "id": "ORDER-3",
-    "customer": "Ram Charan",
-    "pickup": "Kolhapur",
-    "delivery": "Mumbai",
-    "distance": "210 km",
-    "weight": "3 kg",
-    "amount": 60,
-    "status": "DELIVERED"
-  }
-]
+  
+//   const historyorders =[
+//   {
+//     "id": "ORDER-2",
+//     "customer": "Om Kharmate",
+//     "pickup": "123 Vaduj, Satara",
+//     "delivery": "45 Ram Charan, Raigad",
+//     "distance": "100 km",
+//     "weight": "2.5 kg",
+//     "amount": 45,
+//     "status": "DELIVERED"
+//   },
+//   {
+//     "id": "ORDER-3",
+//     "customer": "Ram Charan",
+//     "pickup": "Kolhapur",
+//     "delivery": "Mumbai",
+//     "distance": "210 km",
+//     "weight": "3 kg",
+//     "amount": 60,
+//     "status": "DELIVERED"
+//   }
+// ]
 
 
 
   useEffect(() => {
-    //loadHistory();
-    setOrderHistory(historyorders);
-    window.alert("history loaded");
+    console.log("staffshipmentHistory");
+     const deliveredOrders = ordersData.filter(
+      (o) => o.status === "DELIVERED"
+    );
+    setOrderHistory(deliveredOrders);
+    //later call api
+    //loadhistory()
   }, []);
 
   const loadHistory = async () => {
