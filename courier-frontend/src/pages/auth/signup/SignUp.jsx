@@ -37,11 +37,11 @@ const SignUp = () => {
         return;
       }
     }
-    const body = { name, email, phone, password }
-    // API call 
+    const body = { name, email, phone, password };
+    // API call
     try {
       const response = await customerSignup(body);
-      console.log(response)
+      console.log(response);
       toast.success("Account created successfully");
       navigate("/login");
     } catch (error) {
@@ -72,6 +72,7 @@ const SignUp = () => {
             <div className="relative mt-1">
               <FiUser className="absolute left-3 top-3 text-gray-400" />
               <input
+                placeholder="enter full name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -86,6 +87,7 @@ const SignUp = () => {
             <div className="relative mt-1">
               <FiMail className="absolute left-3 top-3 text-gray-400" />
               <input
+                placeholder="enter email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -100,6 +102,7 @@ const SignUp = () => {
             <div className="relative mt-1">
               <FiPhone className="absolute left-3 top-3 text-gray-400" />
               <input
+                placeholder="enter phone no"
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -114,6 +117,7 @@ const SignUp = () => {
             <div className="relative mt-1">
               <FiLock className="absolute left-3 top-3 text-gray-400" />
               <input
+                placeholder="enter password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -128,6 +132,7 @@ const SignUp = () => {
             <div className="relative mt-1">
               <FiLock className="absolute left-3 top-3 text-gray-400" />
               <input
+                placeholder="rerenter password"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -145,13 +150,18 @@ const SignUp = () => {
             />
             I agree to the Terms of Service and Privacy Policy
           </label>
-          <button onClick={onSignUp} className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg mt-6">
+          <button
+            onClick={onSignUp}
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg mt-6"
+          >
             Create Account →
           </button>
 
           <p className="text-center text-gray-600 text-sm mt-4">
             Already have an account?{" "}
-            <Link to="/login" className="text-orange-600 hover:underline">Sign in</Link>
+            <Link to="/login" className="text-orange-600 hover:underline">
+              Sign in
+            </Link>
           </p>
         </div>
       </div>

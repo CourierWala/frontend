@@ -36,7 +36,7 @@ export const getManagerById = (managerId) => {
 export const createManager = (data) => {
   try {
     const response = axiosInstance.post("/admin/manager", data);
-    console.dir("From axios : " + response)
+    console.dir("From axios : " + response);
     return response;
   } catch (ex) {
     console.error(
@@ -86,8 +86,8 @@ export const updateManagerStatus = (managerId, status) => {
 // Get all hubs
 export const getAllHubs = () => {
   try {
-    const response = axiosInstance.get("/admin/hub");
-    return response.data;
+    const response = axiosInstance.get("/admin/hubs");
+    return response;
   } catch (ex) {
     console.error(`Exception in GET all hubs in admin.js\n`);
   }
@@ -144,7 +144,6 @@ export const updateHubStatus = (hubId, status) => {
   }
 };
 
-
 /* =====================================================
    ADMIN DASHBOARD APIs
 ===================================================== */
@@ -161,47 +160,87 @@ export const getFinanceByHub = async () => {
   }
 };
 
-
 // Get parcel delivery status ratio
 export const getParcelDeliveryStats = async () => {
   try {
-    const response = await axiosInstance.get(
-      "/admin/dashboard/parcel-status"
-    );
+    const response = await axiosInstance.get("/admin/dashboard/parcel-status");
     return response.data;
   } catch (ex) {
-    console.error(
-      "Exception in GET parcel delivery stats for admin dashboard"
-    );
+    console.error("Exception in GET parcel delivery stats for admin dashboard");
   }
 };
-
 
 // Get employees count per hub
 export const getEmployeesByHub = async () => {
   try {
-    const response = await axiosInstance.get(
-      "/admin/dashboard/employees"
-    );
+    const response = await axiosInstance.get("/admin/dashboard/employees");
     return response.data;
   } catch (ex) {
-    console.error(
-      "Exception in GET employees by hub for admin dashboard"
-    );
+    console.error("Exception in GET employees by hub for admin dashboard");
   }
 };
-
 
 // Get admin dashboard summary metrics
 export const getAdminDashboardSummary = async () => {
   try {
+    const response = await axiosInstance.get("/admin/dashboard/summary");
+    return response.data;
+  } catch (ex) {
+    console.error("Exception in GET admin dashboard summary metrics");
+  }
+};
+
+export const getPricingConfig = async () => {
+  try {
+    const response = await axiosInstance.get("/admin/priceconfig");
+    return response.data;
+  } catch (ex) {
+    console.error("Exception in GET pricing config for admin");
+  }
+};
+
+/* ---------- POST ---------- */
+export const updatePricingConfig = async (data) => {
+  try {
+    const response = await axiosInstance.post("/admin/pricechange", data);
+    return response.data;
+  } catch (ex) {
+    console.error("Exception in POST update pricing config for admin");
+  }
+};
+
+
+/* =====================================================
+   ADMIN PROFILE APIs
+===================================================== */
+
+/* ---------- GET ---------- */
+export const getAdminProfile = async (adminId) => {
+  try {
     const response = await axiosInstance.get(
-      "/admin/dashboard/summary"
+      `/admin/profile/${adminId}`
     );
     return response.data;
   } catch (ex) {
     console.error(
-      "Exception in GET admin dashboard summary metrics"
+      `Exception in GET admin profile (adminId=${adminId})`
     );
+    throw ex;
+  }
+};
+
+/* ---------- PUT ---------- */
+export const updateAdminProfile = async (adminId, data) => {
+  try {
+    const response = await axiosInstance.put(
+      `/admin/profile/${adminId}`,
+      data
+    );
+    return response.data;
+  } catch (ex) {
+    console.error(
+      `Exception in PUT admin profile (adminId=${adminId})`
+    );
+    throw ex;
   }
 };
