@@ -15,7 +15,6 @@ import TrackPackage from '../pages/customer/TrackPackage'
 import ShipmentHistory from '../pages/customer/ShipmentHistory'
 import ProfileSettings from '../pages/customer/ProfileSettings'
 import ManageStaff from '../pages/manager/ManageStaff'
-import MonitorDeliveries from '../pages/manager/MonitorDeliveries'
 import ManagerProfileSettings from '../pages/manager/ManagerProfileSettings'
 import Earnings from '../pages/staff/Earnings'
 import Profile from '../pages/staff/Profile'
@@ -141,17 +140,6 @@ const AppRoutes = () => {
                             <ProtectedRoute>
                                 <RoleBasedRoute allowedRoles={["ROLE_STAFF_MANAGER"]}>
                                     <ManageStaff />
-                                </RoleBasedRoute>
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/manager/analytics"
-                        element={
-                            <ProtectedRoute>
-                                <RoleBasedRoute allowedRoles={["ROLE_STAFF_MANAGER"]}>
-                                    <MonitorDeliveries />
                                 </RoleBasedRoute>
                             </ProtectedRoute>
                         }
