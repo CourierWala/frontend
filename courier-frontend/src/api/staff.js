@@ -7,7 +7,7 @@ export const fetchStaffProfile = async () => {
 };
 
 export const saveStaffProfile = async (staffProfile) => {
-  return (await axiosInstance.post(`/staff/profile`, staffProfile));
+  return (await axiosInstance.patch(`/staff/profile`, staffProfile));
 };
 
 export const changePassword = async (body) => {
@@ -58,23 +58,23 @@ export const getDeliveredOrders = async () => {
 
 export const AcceptCustomerOrders = async ( orderid) => {
   
-  return (await axiosInstance.put(`/staff/dashboard/customer/${orderid}`)).data;
+  return (await axiosInstance.patch(`/staff/dashboard/customer/${orderid}`)).data;
 };
 
 
 export const AcceptHubOrders = async ( orderid) =>{
-  return (await axiosInstance.put(`/staff/dashboard/Hub/${orderid}`)).data;
+  return (await axiosInstance.patch(`/staff/dashboard/Hub/${orderid}`)).data;
 };
 
 export const pickupCustomerOrders = async (orderid) =>{
-  return (await axiosInstance.put(`/staff/accepted-orders/${orderid}`)).data;
+  return (await axiosInstance.patch(`/staff/accepted-orders/${orderid}`)).data;
 };
 
 export const DeliverCustomerOrders = async ( orderid) =>{
-  return (await axiosInstance.put(`/staff/Current-Orders/customer/${orderid}`)).data;
+  return (await axiosInstance.patch(`/staff/Current-Orders/customer/${orderid}`)).data;
 };
 export const DeliverHubOrders = async ( orderid) =>{
-  return (await axiosInstance.put(`/staff/Current-Orders/Hub/${orderid}`)).data;
+  return (await axiosInstance.patch(`/staff/Current-Orders/Hub/${orderid}`)).data;
 };
 
 

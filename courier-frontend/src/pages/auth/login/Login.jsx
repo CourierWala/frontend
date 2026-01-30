@@ -8,7 +8,10 @@ import { useAuth } from "../../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+<<<<<<< HEAD
+=======
 
+>>>>>>> 3a7dc89d3bfac5ebc3fac935dfc95411155f3be1
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
