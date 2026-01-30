@@ -36,26 +36,38 @@ const monthlyEarningsData = [
 
 export default function Earnings() {
   const [dailyEarningsData, setDailyEarningsData] = useState([]);
+  const [totalEarningThiWeek, setTotalEarningThiWeek] = useState(0);
+  const [todayEarning, setTodayEarning] = useState(0);
+  const dayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const today = dayMap[new Date().getDay()];
+
   useEffect(() => {
     const fetchEarnings = async () => {
       console.log("earnings");
 
-      const data = await loadWeeklyEarnings(); // wait for backend
+      const data = await loadWeeklyEarnings();
       setDailyEarningsData(data);
+      setTodayEarning(data.find((item) => item.day === today)?.amount ?? 0);
+      setTotalEarningThiWeek(data.reduce((sum, item) => sum + item.amount, 0));
     };
 
     fetchEarnings();
   }, []);
+
   return (
     <div className="p-4 md:p-8 space-y-6">
       <h1 className="text-xl font-semibold">CURRENT EARNINGS</h1>
 
       {/* Stat Cards */}
       <div className="grid md:grid-cols-4 gap-4">
-        <StatCard title="Today" amount="$145" subtitle="12 deliveries" />
+        <StatCard
+          title="Today"
+          amount={todayEarning}
+          subtitle="12 deliveries"
+        />
         <StatCard
           title="This Week"
-          amount="$1,087"
+          amount={totalEarningThiWeek}
           subtitle="+12% from last week"
         />
         <StatCard title="This Month" amount="$2,340" subtitle="87 deliveries" />
@@ -105,40 +117,7 @@ export default function Earnings() {
         </div>
       </div>
 
-      <EarningsDetails />
-
-      {/* Transactions Table */}
-      <div className="bg-white rounded-xl border shadow-sm p-4 overflow-x-auto">
-        <h2 className="text-sm font-semibold mb-3">Recent Transactions</h2>
-
-        <table className="min-w-full text-xs">
-          <thead className="text-slate-500">
-            <tr>
-              <th className="text-left py-1.5">TRANSACTION ID</th>
-              <th className="text-left py-1.5">ORDER ID</th>
-              <th className="text-left py-1.5">DATE</th>
-              <th className="text-left py-1.5">AMOUNT</th>
-              <th className="text-left py-1.5">STATUS</th>
-            </tr>
-          </thead>
-
-          <tbody className="text-slate-700">
-            {["2847", "2846", "2845", "2844"].map((id, i) => (
-              <tr key={id} className="border-t">
-                <td className="py-2">TXN-123{i}</td>
-                <td className="py-2 text-orange-600">ORDER-{id}</td>
-                <td className="py-2">2025-12-0{i + 4}</td>
-                <td className="py-2 text-green-600">$4{i + 1}.00</td>
-                <td className="py-2">
-                  <span className="px-2 py-0.5 rounded-full bg-green-50 text-green-700 text-[11px]">
-                    Completed
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <EarningsDetails todayEarning={todayEarning} />
     </div>
   );
 }
