@@ -13,3 +13,6 @@ export const customerSignup = (body) => {
   return axiosInstance.post("/auth/signup", body);
 }
 
+export const signOutUser = () => {
+  return axiosInstance.post("/auth/logout")
+}

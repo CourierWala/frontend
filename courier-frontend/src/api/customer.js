@@ -16,10 +16,18 @@ export const callShipmentHistory = () => {
 
 export const callOlaAutoCompleteApi = (query) => {
 
-  const res =  axiosInstance.get(
+  const res = axiosInstance.get(
     "/customer/location/autocomplete",
     {
       params: { input: query },
     });
   return res;
+}
+
+export const getUserData = () => {
+  return axiosInstance.get("/customer/profile")
+}
+
+export const updateUserProfile = (body) => {
+  return axiosInstance.put("/customer/profile", body)
 }
