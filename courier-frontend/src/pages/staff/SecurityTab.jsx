@@ -19,7 +19,7 @@ export default function SecurityTab() {
                     "Password must be at least 8 characters and include uppercase, lowercase, number & special character",
                 ],
                 [confirmPassword, "Confirm password is required"],
-                [newPassword === confirmPassword, "Passwords do not match"],
+                 [newPassword === confirmPassword, "Passwords do not match"],
             ];
     for (const [condition, message] of rules){
       if (!condition) {
@@ -30,8 +30,7 @@ export default function SecurityTab() {
        const body = {currentPassword, newPassword , confirmPassword };
         const response = await changePassword(body);
          if (response.status === 'success')
-             toast.success(response.message)
-       
+             toast.success(response.message)   
   };
   
   return (

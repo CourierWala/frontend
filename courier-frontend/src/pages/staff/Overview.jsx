@@ -17,7 +17,6 @@ export default function Overview() {
   const loadorders = async() => {
       const temp = await getAvailableOrders();
       setOrders(temp);
-      //console.log(temp);
     }
 
   const availableCustomerOrders = orders.filter(o => o.status === "CREATED");
@@ -55,7 +54,7 @@ export default function Overview() {
               : "text-slate-500"
           }`}
         >
-          Available Customer Orders
+          Available Customer Orders ({availableCustomerOrders.length}) 
         </button>
 
         <button
@@ -80,7 +79,7 @@ export default function Overview() {
                             key={order.Orderid}
                             order={order}
                             tab={tab}
-                            // onClick = {handleAccept(order.Orderid,tab)}
+                            
                             customerOrderActions = {tab === "customer" ? () => CustomerhandleAccept(order.Orderid) : undefined  }
                             HubOrderActions = {  tab === "Hub"  ? () => HubhandleAccept(order.Orderid)  : undefined }
                             btnInfo = {{ label1:"Accept",label2:"Accept",color1 :"bg-orange-600",color2 :"bg-orange-600"}} 
