@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
+import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+import { signOutUser } from "../../api/auth";
 
 export default function Sidebar({ links, title = "Courier Wala" }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
 
   const linkClass = ({ isActive }) =>
     `block px-6 py-2.5 text-sm font-medium rounded-xl transition
@@ -12,8 +16,16 @@ export default function Sidebar({ links, title = "Courier Wala" }) {
       : "text-slate-300 hover:bg-slate-800"
     }`;
 
-  const onSignOut = () => {
-    window.alert("signout successful");
+  const onSignOut = async () => {
+    try {
+      console.log("logout user !!")
+      const responce = await signOutUser();
+      console.log(responce.data);
+      toast.success("signout successful");
+      logout();
+    } catch (error) {
+      console.log(error.responce);
+    }
   };
 
   return (
