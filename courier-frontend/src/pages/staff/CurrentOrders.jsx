@@ -16,7 +16,7 @@ export default function CurrentOrders() {
   const loadorders = async() =>{
           const temp = await getcurrentOrders();
           setOrders(temp);
-          console.log(temp);
+          //console.log(temp);
         }
   const customerOrders = orders.filter(o => o.status === "PICKED_UP");
   const outForDelivery = orders.filter(o => o.status === "OUT_FOR_DELIVERY");
