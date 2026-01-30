@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getDeliveredOrders } from "../../api/staff";
-import { ordersData } from "./orders";
 
 export default function StaffShipmentHistory() {
   const [orderHistory, setOrderHistory] = useState([]);

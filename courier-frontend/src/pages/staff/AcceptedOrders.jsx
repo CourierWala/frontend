@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import OrderCard from "../../components/common/Ordercard";
-import { ordersData } from "./orders";
 import { getAcceptedOrders, pickupCustomerOrders } from "../../api/staff";
 import { toast } from "react-toastify";
 
@@ -19,8 +18,10 @@ export default function AcceptedOrders() {
         //console.log(temp);
       }
 
+      
+
   const hubOrders = orders.filter(o => o.status === "PICKUP_ASSIGNED");
-  const outForDelivery = orders.filter(o => o.status === "OUT_FOR_DELIVERY");
+  const Delivery_parcels = orders.filter(o => o.status === "OUT_FOR_DELIVERY");
 
   const Customerhandlepickup = async (orderid) => {
     const updateResponse = await pickupCustomerOrders(orderid);
@@ -42,7 +43,7 @@ export default function AcceptedOrders() {
               ? "bg-white border-b-2 border-orange-600"
               : "text-slate-500"
           }`}>
-           Accepted Customers Orders
+           Accepted Customers Orders ({hubOrders.length})
         </button>
 
         <button
@@ -52,11 +53,11 @@ export default function AcceptedOrders() {
               ? "bg-white border-b-2 border-orange-600"
               : "text-slate-500"
           }`}>
-           Accepted Hub Orders ({outForDelivery.length})
+           Accepted Hub Orders ({Delivery_parcels.length})
         </button>
       </div>
 
-      {(tab === "customer" ? hubOrders : outForDelivery).map(order => (
+      {(tab === "customer" ? hubOrders : Delivery_parcels).map(order => (
         <OrderCard
           key={order.Orderid}
           order={order}

@@ -7,8 +7,8 @@ import Sidebar from '../../components/common/sidebar';
 const StaffDashboard = () => {
   const staffLinks = [
     { to: '/staff/dashboard', label: 'Available Orders' },
-    { to: '/staff/Accepted-Orders', label: 'Accepted Orders' },
-    { to: '/staff/Current-Orders', label: 'Current Orders' },
+    { to: '/staff/accepted-Orders', label: 'Accepted Orders' },
+    { to: '/staff/current-Orders', label: 'Current Orders' },
     { to: '/staff/profile', label: 'Profile' },
     { to: '/staff/earnings', label: 'Current Earnings' },
     { to: '/staff/StaffShipmentHistory', label: 'Shipment History' },

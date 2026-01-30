@@ -4,6 +4,7 @@ import { FiMenu } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { signOutUser } from "../../api/auth";
+import { HiOutlineCube } from "react-icons/hi";
 
 export default function Sidebar({ links, title = "Courier Wala" }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,6 +36,7 @@ export default function Sidebar({ links, title = "Courier Wala" }) {
         <span className="text-lg font-semibold">{title}</span>
         <button onClick={() => setIsOpen(true)}>
           <FiMenu className="text-2xl" />
+          
         </button>
       </div>
 
@@ -57,7 +59,7 @@ export default function Sidebar({ links, title = "Courier Wala" }) {
         <Link to="/" onClick={() => setIsOpen(false)}>
           <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-800 cursor-pointer hover:bg-slate-800 transition">
             <div className="h-9 w-9 rounded-xl bg-dark-600 flex items-center justify-center text-2xl">
-              📦
+              <HiOutlineCube className="text-orange-500 text-3xl" />
             </div>
             <span className="text-lg font-semibold">{title}</span>
           </div>

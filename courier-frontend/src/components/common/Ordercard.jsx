@@ -58,12 +58,6 @@ export default function OrderCard({order,tab,customerOrderActions,HubOrderAction
           </button>
         )}
 
-        {/* <button
-          onClick={onOverview}
-          className="flex-1 py-2 rounded-lg bg-slate-100 text-sm"
-        >
-          Overview
-        </button> */}
       </div>
     </div>
   );

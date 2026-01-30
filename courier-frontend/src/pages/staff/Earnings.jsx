@@ -42,7 +42,7 @@ export default function Earnings() {
   const today = dayMap[new Date().getDay()];
 
   useEffect(() => {
-    const fetchEarnings = async () => {
+    const fetchEarnings = async () =>{
       console.log("earnings");
 
       const data = await loadWeeklyEarnings();

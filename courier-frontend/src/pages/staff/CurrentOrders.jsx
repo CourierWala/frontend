@@ -18,8 +18,8 @@ export default function CurrentOrders() {
           setOrders(temp);
           //console.log(temp);
         }
-  const customerOrders = orders.filter(o => o.status === "PICKED_UP");
-  const outForDelivery = orders.filter(o => o.status === "OUT_FOR_DELIVERY");
+  const hubOrders = orders.filter(o => o.status === "PICKED_UP");
+  const Delivery_parcels = orders.filter(o => o.status === "OUT_FOR_DELIVERY");
 
   const CustomerhandleHandover = async(orderid) => {
     const updateResponse = await DeliverCustomerOrders(orderid);
@@ -48,7 +48,7 @@ export default function CurrentOrders() {
               ? "bg-white border-b-2 border-orange-600"
               : "text-slate-500"
           }`}>
-          Current Customer Orders
+          Current Customer Orders ({hubOrders.length})
         </button>
 
         <button
@@ -58,11 +58,11 @@ export default function CurrentOrders() {
               ? "bg-white border-b-2 border-orange-600"
               : "text-slate-500"
           }`}>
-           Current Hub Orders ({outForDelivery.length})
+           Current Hub Orders ({Delivery_parcels.length})
         </button>
       </div>
 
-      {(tab === "customer" ? customerOrders : outForDelivery).map(order => (
+      {(tab === "customer" ? hubOrders : Delivery_parcels).map(order => (
         <OrderCard
           key={order.Orderid}
           order={order}
