@@ -27,16 +27,11 @@ export default function SecurityTab() {
         return; 
       }
     }
-   
-    // staffid from session
-       let staffid = 1;
-       const body = {currentPassword, newPassword };
-        const response = await changePassword(staffid,body);
-        console.log(response);
-         toast.success("Password changed successfully");
-      //    if (response['status'] === 'success'){
-      //       console.log("sucessful");
-      //  }
+       const body = {currentPassword, newPassword , confirmPassword };
+        const response = await changePassword(body);
+         if (response.status === 'success')
+             toast.success(response.message)
+       
   };
   
   return (
