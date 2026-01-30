@@ -104,6 +104,8 @@ export default function AdminHubManagement() {
               <th>Hub Name</th>
               <th>City</th>
               <th>Manager</th>
+              <th>Email</th>
+              <th>Phone</th>
               <th className="text-right p-4">Action</th>
             </tr>
           </thead>
@@ -115,6 +117,8 @@ export default function AdminHubManagement() {
                 <td>{hub.hubName}</td>
                 <td>{hub.hubCity}</td>
                 <td>{hub.managerName}</td>
+                <td>{hub.managerEmail}</td>
+                <td>{hub.managerPhone}</td>
                 <td className="text-right p-4">
                   <button
                     onClick={() => openEditModal(hub)}
