@@ -24,8 +24,7 @@ const StaffSignUp = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onSignUp = async() => {
-    
+  const onSignUp = async () => {
     const rules = [
       [form.name.trim(), "Full name is required"],
       [form.email.trim(), "Email is required"],
@@ -42,26 +41,34 @@ const StaffSignUp = () => {
       [form.hubId, "Select hub"],
     ];
 
-    for (const [condition, message] of rules){
+    for (const [condition, message] of rules) {
       if (!condition) {
         toast.warning(message);
         return;
       }
     }
+    const response = await staff_signup(
+      form.name,
+      form.email,
+      form.phone,
+      form.password,
+      form.vehicleType,
+      form.vehicleNumber,
+      form.licenseNumber,
+      form.hubId,
+    );
     
-    const response = await staff_signup(form.name,form.email,form.phone,form.password,form.vehicleType,form.vehicleNumber,form.licenseNumber,form.hubId);
-    console.log("yes2");
-    if(response.data.status === "success"){
-        toast.success(response.data.message);
-        navigate("/staff/dashboard");
+    console.log(response);
+    if (response.data.status === "success") {
+      toast.success(response.data.message);
+      navigate("/");
     }
-      
   };
 
-  return(
+  return (
     <div className="min-h-screen bg-[#FFF7EE] flex flex-col">
       <NavBar />
-        {/* //main container */}
+      {/* //main container */}
       <div className="flex-1 flex items-center justify-center px-4 py-10 mt-20">
         <div className="w-full max-w-xl bg-white border rounded-xl p-8 shadow-sm">
           <h2 className="text-2xl font-semibold mb-1">Staff Registration</h2>
@@ -83,7 +90,7 @@ const StaffSignUp = () => {
           </div>
 
           {/* Email */}
-          <div className="mb-4"> 
+          <div className="mb-4">
             <label className="text-gray-700 text-sm">Email</label>
             <div className="relative mt-1">
               <FiMail className="absolute left-3 top-3 text-gray-400" />
@@ -178,7 +185,11 @@ const StaffSignUp = () => {
           {/* Hub */}
           <div className="mb-4">
             <label className="text-gray-700 text-sm">Hub</label>
-            <select name="hubId" onChange={onChange}className="w-full border rounded-lg px-3 py-2 mt-1">
+            <select
+              name="hubId"
+              onChange={onChange}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
+            >
               <option value="">Select Hub</option>
               <option value="1">Mumbai Hub</option>
               <option value="2">Pune Hub</option>
@@ -186,13 +197,18 @@ const StaffSignUp = () => {
             </select>
           </div>
 
-          <button onClick={onSignUp} className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg mt-6">
+          <button
+            onClick={onSignUp}
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg mt-6"
+          >
             Register as Staff →
           </button>
 
           <p className="text-center text-gray-600 text-sm mt-4">
             Already registered?{" "}
-            <Link to="/login" className="text-orange-600 hover:underline">Sign in</Link>
+            <Link to="/login" className="text-orange-600 hover:underline">
+              Sign in
+            </Link>
           </p>
         </div>
       </div>
