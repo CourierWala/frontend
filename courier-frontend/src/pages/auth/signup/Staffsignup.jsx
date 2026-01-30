@@ -12,8 +12,6 @@ const StaffSignUp = () => {
     name: "",
     email: "",
     phone: "",
-    password: "",
-    confirmPassword: "",
     vehicleType: "",
     vehicleNumber: "",
     licenseNumber: "",
@@ -31,10 +29,6 @@ const StaffSignUp = () => {
       [/^\S+@\S+\.\S+$/.test(form.email), "Invalid email format"],
       [form.phone.trim(), "Phone number is required"],
       [/^\d{10}$/.test(form.phone), "Phone must be 10 digits"],
-      [form.password.trim(), "Password is required"],
-      [form.password.length >= 8, "Password must be at least 8 characters"],
-      [form.confirmPassword.trim(), "Confirm password is required"],
-      [form.password === form.confirmPassword, "Passwords do not match"],
       [form.vehicleType, "Select vehicle type"],
       [form.vehicleNumber.trim(), "Vehicle number is required"],
       [form.licenseNumber.trim(), "License number is required"],
@@ -51,7 +45,6 @@ const StaffSignUp = () => {
       form.name,
       form.email,
       form.phone,
-      form.password,
       form.vehicleType,
       form.vehicleNumber,
       form.licenseNumber,
@@ -110,34 +103,6 @@ const StaffSignUp = () => {
               <FiPhone className="absolute left-3 top-3 text-gray-400" />
               <input
                 name="phone"
-                onChange={onChange}
-                className="w-full border rounded-lg pl-10 pr-3 py-2 focus:ring focus:ring-orange-200"
-              />
-            </div>
-          </div>
-
-          {/* Password */}
-          <div className="mb-4">
-            <label className="text-gray-700 text-sm">Password</label>
-            <div className="relative mt-1">
-              <FiLock className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="password"
-                name="password"
-                onChange={onChange}
-                className="w-full border rounded-lg pl-10 pr-3 py-2 focus:ring focus:ring-orange-200"
-              />
-            </div>
-          </div>
-
-          {/* Confirm Password */}
-          <div className="mb-4">
-            <label className="text-gray-700 text-sm">Confirm Password</label>
-            <div className="relative mt-1">
-              <FiLock className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="password"
-                name="confirmPassword"
                 onChange={onChange}
                 className="w-full border rounded-lg pl-10 pr-3 py-2 focus:ring focus:ring-orange-200"
               />

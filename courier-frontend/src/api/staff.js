@@ -18,22 +18,20 @@ export const staff_signup = async (
   name,
   email,
   phone,
-  password,
   vehicleType,
   vehicleNumber,
   licenseNumber,
   hubId,
 ) => {
   const body = {
-    name,
-    email,
-    phone,
-    password,
-    vehicleType,
-    vehicleNumber,
-    licenseNumber,
-    hubId,
-  };
+      name,
+      email,
+      phone,
+      vehicleType,
+      vehicleNumber,
+      licenseNumber,
+      hubId,
+    };
   // const body = {currentPassword, newPassword };
   return await axiosInstance.post(`/staff/applyforjob`, body);
 };

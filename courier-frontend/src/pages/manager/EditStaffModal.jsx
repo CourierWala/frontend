@@ -10,6 +10,17 @@ export default function EditStaffModal({
 }) {
   const [form, setForm] = useState({});
 
+  
+    /*
+     private Long Id;
+      private String Name;
+      private String Email;
+      private String Phone;
+      private String Location;
+      private String VehicleType;
+      private String VehicleNum;
+    */
+  
   useEffect(() => {
     setForm(data || {});
   }, [data]);
@@ -25,7 +36,7 @@ export default function EditStaffModal({
             : "Edit Staff Member"}
         </h2>
 
-        {["name", "email", "phone", "role", "location", "vehicle_type", "vehicle_num"].map((field) => (
+        {["Id", "Name", "Email", "Phone", "Location", "VehicleType", "VehicleNum"].map((field) => (
           <>
             <label htmlFor={field} className="text-xl font-medium">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
             <input

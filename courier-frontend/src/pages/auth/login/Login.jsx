@@ -8,10 +8,7 @@ import { useAuth } from "../../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-<<<<<<< HEAD
-=======
 
->>>>>>> 3a7dc89d3bfac5ebc3fac935dfc95411155f3be1
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -35,7 +32,11 @@ const Login = () => {
     }
     try {
       const response = await userLogin(email, password);
-      console.log(response);
+      if(response.data.status === "failure"){
+        toast.error(response.data.message)
+        return;
+      }
+
       const currRole = response.data.role.slice(1, -1);
 
       const user = {
