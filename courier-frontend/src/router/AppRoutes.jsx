@@ -124,39 +124,6 @@ const AppRoutes = () => {
                         <Route path="notifications" element={<NotificationTab />} />
                     </Route>
 
-                  
-                        {/* // staff routes */}
-                <Route path="/staff" element={<StaffDashboard />}>
-                    
-                    <Route 
-                        path="dashboard" 
-                        element={<Overview />} />
-                    <Route 
-                        path="Accepted-Orders" 
-                        element={<AcceptedOrders />} />
-                        <Route 
-                        path="Current-Orders" 
-                        element={<CurrentOrders />} />
-                    <Route 
-                        path="profile" 
-                        element={<Profile />} />
-                    <Route 
-                        path="earnings" 
-                        element={<Earnings />} />
-                    <Route 
-                        path="StaffShipmentHistory" 
-                        element={<StaffShipmentHistory />} />
-
-                    <Route 
-                        path="notifications" 
-                        element={<NotificationTab />} />    
-                </Route>
-
-                
-
-
-
-                    {/* Manager Routes */}
                     <Route
                         path="/manager/dashboard"
                         element={

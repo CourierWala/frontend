@@ -2,14 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { HiOutlineCube } from "react-icons/hi";
 import { FiMenu } from "react-icons/fi";
+import { signOutUser } from "../api/auth";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const CustomerLayout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth()
   const navigate = useNavigate();
 
-  const onSignOut = () => {
-         navigate('/');
-  }
+  const onSignOut = async () => {
+    try {
+      console.log("logout user !!")
+      const responce = await signOutUser();
+      toast.success("signout successful");
+      logout();
+      navigate("/")
+    } catch (error) {
+      console.log(error.responce);
+    }
+  };
 
   // Disable scroll when sidebar is open (mobile)
   useEffect(() => {
@@ -71,9 +83,9 @@ const CustomerLayout = ({ children }) => {
         <div className="mt-10">
           <div className="w-full h-[1px] bg-white/30 mb-8"></div>
 
-          <button 
-          onClick={onSignOut}
-          className="text-gray-400 hover:text-white flex gap-2 items-center">
+          <button
+            onClick={onSignOut}
+            className="text-gray-400 hover:text-white flex gap-2 items-center">
             <span>⏻</span>
             <span>Sign Out</span>
           </button>
@@ -93,11 +105,10 @@ const SidebarLink = ({ to, label }) => {
   return (
     <Link
       to={to}
-      className={`block px-3 py-2 rounded-md transition font-medium ${
-        isActive
+      className={`block px-3 py-2 rounded-md transition font-medium ${isActive
           ? "bg-orange-600 text-white"
           : "text-gray-300 hover:bg-gray-800 hover:text-white"
-      }`}
+        }`}
     >
       {label}
     </Link>
