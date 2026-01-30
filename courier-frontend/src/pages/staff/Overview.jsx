@@ -1,38 +1,43 @@
 import { useEffect, useState } from "react";
 import React from 'react'
 import OrderCard from "../../components/common/Ordercard";
-import { ordersData } from "./orders";
 import { AcceptCustomerOrders, AcceptHubOrders, getAvailableOrders } from "../../api/staff";
+import { toast } from "react-toastify";
 
 export default function Overview() {
   const [tab, setTab] = useState("customer");
   const [orders, setOrders] = useState([]);
  
   useEffect(() => {
-    console.log("overview");
+    //console.log("overview");
     loadorders();
-    
   }, []);
 
 
   const loadorders = async() => {
       const temp = await getAvailableOrders();
       setOrders(temp);
-      console.log(temp);
+      //console.log(temp);
     }
 
   const availableCustomerOrders = orders.filter(o => o.status === "CREATED");
   const availableHubOrders = orders.filter(o => o.status === "AT_DESTINATION_HUB");
 
   const CustomerhandleAccept = async (orderid) => {
-    
     const updateResponse = await AcceptCustomerOrders(orderid);
-    console.log(updateResponse);
+    if(updateResponse.status == "SUCCESS"){
+      toast.success(updateResponse.message);
+    }
+    loadorders();
   };
 
   const HubhandleAccept = async(orderid) => {
-    const updateResponse1 = await AcceptHubOrders(orderid);
-    console.log(updateResponse1);
+    const updateResponse = await AcceptHubOrders(orderid);
+    if(updateResponse.status == "SUCCESS"){
+          toast.success(updateResponse.message);
+    }
+    loadorders();
+    // console.log(updateResponse);
   };
 
   return (

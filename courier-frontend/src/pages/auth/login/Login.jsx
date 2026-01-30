@@ -3,7 +3,6 @@ import { FiMail, FiLock } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../../../components/common/NavBar";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { userLogin } from "../../../api/auth";
 import { useAuth } from "../../../context/AuthContext";
 
