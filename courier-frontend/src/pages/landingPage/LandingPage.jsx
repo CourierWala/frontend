@@ -7,7 +7,7 @@ import "aos/dist/aos.css";
 
 import TruckScene from "../../components/Three Fiber/truckScene"; // 🚚 your 3D truck component
 import TrackPackagePopup from "../../components/common/TrackPackagePopup";
-import MobileTrackPackage from "../../components/customer/mobileTrackPackage";
+import MobileTrackPackage from "../../components/customer/MobileTrackPackage";
 
 const LandingPage = () => {
   useEffect(() => {
