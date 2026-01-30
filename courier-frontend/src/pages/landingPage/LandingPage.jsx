@@ -5,9 +5,9 @@ import { FiTruck, FiShield, FiActivity, FiStar } from "react-icons/fi";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-
-import TruckScene from "../../components/Three Fiber/truckScene" // 🚚 your 3D truck component
+import TruckScene from "../../components/Three Fiber/truckScene"; // 🚚 your 3D truck component
 import TrackPackagePopup from "../../components/common/TrackPackagePopup";
+import MobileTrackPackage from "../../components/customer/mobileTrackPackage";
 
 const LandingPage = () => {
   useEffect(() => {
@@ -16,17 +16,23 @@ const LandingPage = () => {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-[#FFF7EE] overflow-hidden">
-      {/* Navbar */}
       <NavBar />
 
-      {/* 🚚 BACKGROUND TRUCK ANIMATION */}
-      <div className="absolute hidden md:block top-28 right-0 w-full h-[200px] mb-20 opacity-90 pointer-events-none">
-        <TruckScene />
-        <div><TrackPackagePopup /> </div>
-      </div>
-      {/* ---------------- HERO SECTION ---------------- */}
+      <div className="relative">
+        {/* Desktop */}
+        <div className="absolute hidden md:block top-28 right-0 w-full h-[200px] pointer-events-none">
+          <TruckScene />
+          <TrackPackagePopup />
+        </div>
 
-      <div className="mt-180"></div>
+        {/* Mobile */}
+        <div className="absolute block md:hidden top-28 right-0 w-full">
+          <MobileTrackPackage />
+        </div>
+
+        {/* Spacer */}
+        <div className="h-[220px] md:mt-160" />
+      </div>
 
       {/* ---------------- FEATURES SECTION ---------------- */}
       <section className="mt-24 px-10  md:px-20 ">
@@ -105,7 +111,8 @@ const LandingPage = () => {
       {/* ---------------- FOOTER ---------------- */}
       <footer className="mt-20 py-6 bg-black text-center text-gray-300">
         © {new Date().getFullYear()}{" "}
-        <span className="text-orange-500">Courier wala</span>. All rights reserved.
+        <span className="text-orange-500">Courier wala</span>. All rights
+        reserved.
       </footer>
     </div>
   );

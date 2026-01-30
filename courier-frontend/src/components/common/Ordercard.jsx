@@ -1,5 +1,5 @@
 import React from 'react'
-export default function OrderCard({order,tab,onPickup,onHandover,btnInfo}) 
+export default function OrderCard({order,tab,customerOrderActions,HubOrderActions,btnInfo}) 
 {
   return(
     <div className="bg-white rounded-xl border p-4 space-y-2 mb-4">
@@ -42,7 +42,7 @@ export default function OrderCard({order,tab,onPickup,onHandover,btnInfo})
       <div className="flex gap-2 mt-2">
         {tab === "customer" && (
           <button
-            onClick={onPickup}
+            onClick={customerOrderActions}
             className={`flex-1 py-2 rounded-lg  ${btnInfo?.color1} text-white text-sm`}
           >
             {btnInfo?.label1}
@@ -51,7 +51,7 @@ export default function OrderCard({order,tab,onPickup,onHandover,btnInfo})
 
         {tab === "Hub" && (
           <button
-            onClick={onHandover}
+            onClick={HubOrderActions}
             className= {`flex-1 py-2 rounded-lg ${btnInfo?.color2} text-white text-sm`}
           >
             {btnInfo?.label2}

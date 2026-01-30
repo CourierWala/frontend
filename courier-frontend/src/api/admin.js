@@ -189,3 +189,58 @@ export const getAdminDashboardSummary = async () => {
     console.error("Exception in GET admin dashboard summary metrics");
   }
 };
+
+export const getPricingConfig = async () => {
+  try {
+    const response = await axiosInstance.get("/admin/priceconfig");
+    return response.data;
+  } catch (ex) {
+    console.error("Exception in GET pricing config for admin");
+  }
+};
+
+/* ---------- POST ---------- */
+export const updatePricingConfig = async (data) => {
+  try {
+    const response = await axiosInstance.post("/admin/pricechange", data);
+    return response.data;
+  } catch (ex) {
+    console.error("Exception in POST update pricing config for admin");
+  }
+};
+
+
+/* =====================================================
+   ADMIN PROFILE APIs
+===================================================== */
+
+/* ---------- GET ---------- */
+export const getAdminProfile = async (adminId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/admin/profile/${adminId}`
+    );
+    return response.data;
+  } catch (ex) {
+    console.error(
+      `Exception in GET admin profile (adminId=${adminId})`
+    );
+    throw ex;
+  }
+};
+
+/* ---------- PUT ---------- */
+export const updateAdminProfile = async (adminId, data) => {
+  try {
+    const response = await axiosInstance.put(
+      `/admin/profile/${adminId}`,
+      data
+    );
+    return response.data;
+  } catch (ex) {
+    console.error(
+      `Exception in PUT admin profile (adminId=${adminId})`
+    );
+    throw ex;
+  }
+};
