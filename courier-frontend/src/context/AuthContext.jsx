@@ -1,55 +1,30 @@
-// import React, { createContext, useContext, useEffect, useState } from "react";
-
-// const AuthContext = createContext();
-
-// export const AuthProvider = ({ children }) => {
-//     const [user, setUser] = useState(null);
-//     const [role, setRole] = useState(null);
-//     const [loading, setLoading] = useState(true);
-
-//     // Load data when app starts
-//     useEffect(() => {
-//         // Example: restore from localStorage (optional)
-//         // const savedUser = localStorage.getItem("user");
-//         // if(savedUser) setUser(JSON.parse(savedUser));
-
-//         setLoading(false);
-//     }, []);
-
-//     const login = (userData, role) => {
-//         setUser(userData);
-//         setRole(role);
-//     };
-
-//     const logout = () => {
-//         setUser(null);
-//         setRole(null);
-//     };
-
-//     return (
-//         <AuthContext.Provider value={{ user, role, loading, login, logout }}>
-//             {children}
-//         </AuthContext.Provider>
-//     );
-// };
-
-// // Custom hook (CORRECT)
-// export const useAuth = () => useContext(AuthContext);
-
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); 
-  // user = { id, email, role }
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // 🔁 Restore user on refresh
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
+    setLoading(false);
+  }, []);
 
   const login = (userData) => {
     setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
@@ -57,14 +32,14 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         isAuthenticated: !!user,
+        loading,
         login,
         logout,
       }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
 
-// custom hook (clean usage)
 export const useAuth = () => useContext(AuthContext);
