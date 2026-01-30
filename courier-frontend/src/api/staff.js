@@ -11,13 +11,10 @@ export const saveStaffProfile = async (staffProfile) => {
 };
 
 export const changePassword = async (body) => {
-  return (await axiosInstance.post(`/staff/profile/changepassword`,body)).data;
+  return (await axiosInstance.post(`/staff/profile/changepassword`, body)).data;
 };
 
-
-
 export const staff_signup = async (
-
   name,
   email,
   phone,
@@ -36,7 +33,7 @@ export const staff_signup = async (
       hubId,
     };
   // const body = {currentPassword, newPassword };
-  return (await axiosInstance.post(`/staff/applyforjob`,body));
+  return await axiosInstance.post(`/staff/applyforjob`, body);
 };
 
 export const getAvailableOrders = async () => {
@@ -76,12 +73,6 @@ export const DeliverCustomerOrders = async ( orderid) =>{
 export const DeliverHubOrders = async ( orderid) =>{
   return (await axiosInstance.patch(`/staff/Current-Orders/Hub/${orderid}`)).data;
 };
-
-
-
-
-
-
-
-
-
+export const fetchWeeklyEarnings = async (staffId) => {
+  return (await axiosInstance.get(`/staff/earnings/${staffId}/weekly`)).data;
+};

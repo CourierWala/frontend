@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Edit, Trash2, Mail, Phone, MapPin } from "lucide-react";
 import ManagerLayout from "../../layouts/ManagerLayout";
-import EditStaffModal from './EditStaffModal';
-import { acceptStaff, getAllCurrentStaff, getAllJobApplications } from "../../api/manager";
+import EditStaffModal from "./EditStaffModal";
+import {
+  acceptStaff,
+  getAllCurrentStaff,
+  getAllJobApplications,
+  rejectStaff
+} from "../../api/manager";
+import { toast } from "react-toastify";
 /* ---------------- Main Page ---------------- */
 
 export default function ManageStaff() {
@@ -23,7 +29,7 @@ export default function ManageStaff() {
       setStaffList(current.data);
       const jobApplications = await getAllJobApplications();
       // console.dir(jobApplications)
-      setApplicants(jobApplications.data)
+      setApplicants(jobApplications.data);
     } catch (error) {
       console.error("Failed to fetch staff", error);
     }
@@ -38,19 +44,18 @@ export default function ManageStaff() {
 
   const handleAccept = async (applicant) => {
     const response = await acceptStaff(applicant.Id);
-    setStaffList((prev) => [...prev, applicant]);
-    setApplicants((prev) => prev.filter((a) => a.Id !== applicant.Id));
+    toast.success(response.data.message);
+    fetchStaff();
+    // setStaffList((prev) => [...prev, applicant]);
+    // setApplicants((prev) => prev.filter((a) => a.Id !== applicant.Id));
     setIsModalOpen(false);
   };
 
-  const handleRemove = (Id) => {
-    if (confirm("Are you sure you want to remove this staff member?")) {
-      setStaffList((prev) => prev.filter((s) => s.id !== id));
-    }
-  };
-
-  const handleReject = (selected) => {
-    setApplicants((prev) => prev.filter((s) => s.id !== selected.id));
+  const handleReject = async (rejected) => {
+    const response = await rejectStaff(rejected.Id);
+    toast.warning(response.data.message);
+    fetchStaff();
+    // setApplicants((prev) => prev.filter((s) => s.Id !== Id));
     setIsModalOpen(false);
   };
 
@@ -85,7 +90,13 @@ export default function ManageStaff() {
         {/* List */}
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="divide-y divide-gray-200">
-            {listToRender.map((item) => (
+            {
+            listToRender.length == 0
+            ?
+              <>
+                <pre><h3>   No entries found   </h3></pre>
+              </>
+            :listToRender.map((item) => (
               <div
                 key={item.Id}
                 onClick={() => {
@@ -116,17 +127,6 @@ export default function ManageStaff() {
                     </div>
                   </div>
 
-                  {activeTab === "STAFF" && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemove(item.id);
-                      }}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg h-fit"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  )}
                 </div>
               </div>
             ))}

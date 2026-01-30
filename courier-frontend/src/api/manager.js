@@ -29,3 +29,7 @@ export const getAllJobApplications = async () => {
 export const acceptStaff = async (applicationId) => {
   return (await axiosInstance.get(`/manager/acceptStaff/${applicationId}`));
 }
+
+export const rejectStaff = async (rejectedId) => {
+  return (await axiosInstance.get(`/manager/rejectStaff/${rejectedId}`));
+}
