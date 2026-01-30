@@ -1,18 +1,22 @@
-import React, { useEffect } from "react";
-import {BarChart,Bar,LineChart,Line,XAxis,YAxis,Tooltip,ResponsiveContainer} from "recharts";
+import React, { useEffect, useState } from "react";
+import {
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import EarningsDetails from "./EarningsDetails";
+import { fetchWeeklyEarnings } from "../../api/staff";
 
-
+let dailyEarningsData;
+const loadWeeklyEarnings = async () => {
+  return await fetchWeeklyEarnings(4);
+};
 // Daily earnings (weekly)
-const dailyEarningsData = [
-  { day: "Mon", amount: 120 },
-  { day: "Tue", amount: 180 },
-  { day: "Wed", amount: 150 },
-  { day: "Thu", amount: 200 },
-  { day: "Fri", amount: 220 },
-  { day: "Sat", amount: 90 },
-  { day: "Sun", amount: 60 },
-];
 
 // Monthly earnings (yearly trend)
 const monthlyEarningsData = [
@@ -30,12 +34,17 @@ const monthlyEarningsData = [
   { month: "Dec", amount: 3400 },
 ];
 
-
-
-
 export default function Earnings() {
+  const [dailyEarningsData, setDailyEarningsData] = useState([]);
   useEffect(() => {
-    console.log("earnings");
+    const fetchEarnings = async () => {
+      console.log("earnings");
+
+      const data = await loadWeeklyEarnings(); // wait for backend
+      setDailyEarningsData(data);
+    };
+
+    fetchEarnings();
   }, []);
   return (
     <div className="p-4 md:p-8 space-y-6">
@@ -75,9 +84,7 @@ export default function Earnings() {
 
         {/* Monthly Earnings Line Chart */}
         <div className="bg-white rounded-xl border shadow-sm p-4">
-          <h2 className="text-sm font-semibold mb-2">
-            Monthly Earnings Trend
-          </h2>
+          <h2 className="text-sm font-semibold mb-2">Monthly Earnings Trend</h2>
 
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
@@ -98,9 +105,7 @@ export default function Earnings() {
         </div>
       </div>
 
-
-      <EarningsDetails
-      />
+      <EarningsDetails />
 
       {/* Transactions Table */}
       <div className="bg-white rounded-xl border shadow-sm p-4 overflow-x-auto">
