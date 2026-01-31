@@ -51,7 +51,12 @@ axiosInstance.interceptors.response.use(
     }
 
     if (status === 500) {
-      toast.error("Server error. Try again later");
+      if (error?.response?.data?.message) {
+        toast(error?.response?.data?.message)
+      }
+      else {
+        toast.error("Server error. Try again later");
+      }
     }
 
     // IMPORTANT: rethrow error so component can handle if needed
