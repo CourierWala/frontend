@@ -46,6 +46,7 @@ export default function Earnings() {
       console.log("earnings");
 
       const data = await loadWeeklyEarnings();
+      console.log(data);
       setDailyEarningsData(data);
       setTodayEarning(data.find((item) => item.day === today)?.amount ?? 0);
       setTotalEarningThiWeek(data.reduce((sum, item) => sum + item.amount, 0));
