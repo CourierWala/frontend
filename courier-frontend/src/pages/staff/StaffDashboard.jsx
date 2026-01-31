@@ -31,7 +31,7 @@ const StaffDashboard = () => {
         </header>
         <main className="flex-1 w-full overflow-x-hidden">
           {/* childpages */}
-          <Outlet />
+          <Outlet />  
         </main>
       </div>
     </div>
