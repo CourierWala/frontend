@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import {
   ResponsiveContainer,
   BarChart,
@@ -11,7 +13,7 @@ import {
   Pie,
   Cell,
   LineChart,
-  Line
+  Line,
 } from "recharts";
 import ManagerLayout from "../../layouts/ManagerLayout";
 
@@ -20,15 +22,28 @@ import {
   getVehicleTypeRatio,
   getDispatchTrend,
   getStaffLoad,
+  getAllJobApplications,
 } from "../../api/manager";
 
 export default function ManagerDashboard() {
+  const navigate = useNavigate();
   const [orderStatusData, setOrderStatusData] = useState([]);
   const [vehicleRatioData, setVehicleRatioData] = useState([]);
   const [dispatchTrend, setDispatchTrend] = useState([]);
   const [staffLoad, setStaffLoad] = useState([]);
+  const [applicants, setApplicants] = useState(0);
+  const { user } = useAuth();
 
   const VEHICLE_COLORS = ["#3b82f6", "#10b981", "#f97316", "#ef4444"];
+
+  const fetchStaff = async () => {
+    try {
+      const jobApplications = await getAllJobApplications(user.id);
+      setApplicants(jobApplications.data.length);
+    } catch (error) {
+      console.error("Failed to fetch staff", error);
+    }
+  };
 
   useEffect(() => {
     fetchDashboardData();
@@ -43,15 +58,15 @@ export default function ManagerDashboard() {
 
       setOrderStatusData(orderStatusRes || []);
 
-      // ✅ MINIMAL FIX: map backend data for PieChart
-      const vehiclePieData = (vehicleRatioRes || []).map(v => ({
+      // map backend data for PieChart
+      const vehiclePieData = (vehicleRatioRes || []).map((v) => ({
         name: v.vehicleType,
         value: v.count,
       }));
       setVehicleRatioData(vehiclePieData);
 
       // dispatch trend mapping
-      const trend = (dispatchTrendRes || []).map(d => ({
+      const trend = (dispatchTrendRes || []).map((d) => ({
         day: d.date,
         dispatched: d.count,
       }));
@@ -67,8 +82,13 @@ export default function ManagerDashboard() {
     <ManagerLayout>
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-8 rounded-xl shadow mb-8">
         <h1 className="text-3xl font-bold">Welcome back, Manager!</h1>
-        <p className="mt-2 text-orange-100">You have 3 new actions to take</p>
-        <button className="mt-4 bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold shadow hover:bg-orange-50">
+        <p className="mt-2 text-orange-100">You have {applicants} new actions to take</p>
+        <button
+          className="mt-4 bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold shadow hover:bg-orange-50"
+          onClick={() =>
+            navigate("/manager/staff", { state: { activeTab: "APPLICANTS" } })
+          }
+        >
           See the actions
         </button>
       </div>
@@ -76,7 +96,6 @@ export default function ManagerDashboard() {
       <div className="space-y-6">
         {/* ===== TOP ROW ===== */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
           {/* ORDER STATUS */}
           <div className="bg-white p-6 rounded-xl shadow-sm">
             <h3 className="mb-4 font-semibold">Orders by Status (My Hub)</h3>

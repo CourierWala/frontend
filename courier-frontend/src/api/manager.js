@@ -28,12 +28,12 @@ export const getAllJobApplications = async (id) => {
   return (await axiosInstance.get(`/manager/applications/${id}`));
 }
 
-export const acceptStaff = async (applicationId) => {
-  return (await axiosInstance.get(`/manager/acceptStaff/${applicationId}`));
+export const acceptStaff = async (applicationId, applicantEmail) => {
+  return (await axiosInstance.get(`/manager/acceptStaff/${applicationId}/${applicantEmail}`));
 }
 
-export const rejectStaff = async (rejectedId) => {
-  return (await axiosInstance.get(`/manager/rejectStaff/${rejectedId}`));
+export const rejectStaff = async (rejectedId, applicantEmail) => {
+  return (await axiosInstance.get(`/manager/rejectStaff/${rejectedId}/${applicantEmail}`));
 }
 
 // ===== ORDERS BY STATUS =====
