@@ -23,7 +23,7 @@ const Login = () => {
       [password.length >= 6, "Password must be at least 6 characters"],
     ];
 
-    for (const [condition, message] of rules){
+    for (const [condition, message] of rules) {
       if (!condition) {
         toast.warning(message);
         return;
@@ -44,6 +44,8 @@ const Login = () => {
         role: currRole,
       };
       login(user);
+      localStorage.setItem("user", JSON.stringify(user));
+
       toast.success("Login successful");
       console.log("curr role : ", currRole);
       if (currRole == "ROLE_CUSTOMER") navigate("/customer/dashboard");
