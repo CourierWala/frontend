@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Edit, Trash2, Mail, Phone, MapPin } from "lucide-react";
 import ManagerLayout from "../../layouts/ManagerLayout";
 import EditStaffModal from "./EditStaffModal";
+import { useAuth } from "../../context/AuthContext";
 import {
   acceptStaff,
   getAllCurrentStaff,
@@ -17,6 +18,8 @@ export default function ManageStaff() {
   const [staffList, setStaffList] = useState([]);
 
   const [applicants, setApplicants] = useState([]);
+  
+  const {user} = useAuth();
 
   useEffect(() => {
     fetchStaff();
@@ -24,10 +27,10 @@ export default function ManageStaff() {
 
   const fetchStaff = async () => {
     try {
-      const current = await getAllCurrentStaff();
+      const current = await getAllCurrentStaff(user.id);
       // console.dir(current)
       setStaffList(current.data);
-      const jobApplications = await getAllJobApplications();
+      const jobApplications = await getAllJobApplications(user.id);
       // console.dir(jobApplications)
       setApplicants(jobApplications.data);
     } catch (error) {

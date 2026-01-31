@@ -18,12 +18,14 @@ export async function save(firstName, lastName, email, phone, vehicleType, vehic
   }
 }
 
-export const getAllCurrentStaff = async () => {
-  return (await axiosInstance.get(`/manager/current-staff`));
+export const getAllCurrentStaff = async (id) => {
+  console.log("In getAllCurrentStaff : " + id + "type : " + typeof(id));
+  return (await axiosInstance.get(`/manager/current-staff/${id}`));
 }
 
-export const getAllJobApplications = async () => {
-  return (await axiosInstance.get(`/manager/applications`));
+export const getAllJobApplications = async (id) => {
+  console.log("In getAllJobApplications : " + id + "type : " + typeof(id));
+  return (await axiosInstance.get(`/manager/applications/${id}`));
 }
 
 export const acceptStaff = async (applicationId) => {

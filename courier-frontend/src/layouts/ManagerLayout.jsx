@@ -16,7 +16,7 @@ const ManagerLayout = ({ children }) => {
   const links = [
     { to: "/manager/dashboard", label: "Dashboard" },
     { to: "/manager/staff", label: "Staff Management" },
-    { to: "/manager/analytics", label: "Analytics" },
+    // { to: "/manager/analytics", label: "Analytics" },
     { to: "/manager/profile", label: "Profile" },
   ];
 
