@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IndianRupee, Warehouse, Users, AlertTriangle } from "lucide-react";
 
 import {
-  LineChart,
-  Line,
   PieChart,
   Pie,
   BarChart,
@@ -17,7 +15,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import AdminLayout from "../../layouts/AdminLayout";
 import ChartCard from "../../components/common/ChartCard";
 
 import {
@@ -28,30 +25,11 @@ import {
 } from "../../api/admin";
 
 export default function AdminDashboard() {
-  const dummyFinanceData = [
-    { hub: "Mumbai", revenue: 420000, expenses: 310000 },
-    { hub: "Delhi", revenue: 380000, expenses: 260000 },
-    { hub: "Bangalore", revenue: 450000, expenses: 300000 },
-    { hub: "Hyderabad", revenue: 290000, expenses: 210000 },
-  ];
-
-  const dummyParcelStatus = [
-    { name: "Successful", value: 82, color: "#10b981" },
-    { name: "Failed", value: 18, color: "#ef4444" },
-  ];
-
-  const dummyEmployeesByHub = [
-    { hub: "Mumbai", delivery: 60, warehouse: 30, support: 20 },
-    { hub: "Delhi", delivery: 55, warehouse: 25, support: 18 },
-    { hub: "Bangalore", delivery: 70, warehouse: 35, support: 22 },
-    { hub: "Hyderabad", delivery: 40, warehouse: 20, support: 15 },
-  ];
-
   /* ================= STATE ================= */
 
-  const [financeData, setFinanceData] = useState(dummyFinanceData);
-  const [parcelStatus, setParcelStatus] = useState(dummyParcelStatus);
-  const [employeesByHub, setEmployeesByHub] = useState(dummyEmployeesByHub);
+  const [financeData, setFinanceData] = useState([]);
+  const [parcelStatus, setParcelStatus] = useState([]);
+  const [employeesByHub, setEmployeesByHub] = useState([]);
   const [summary, setSummary] = useState({
     totalRevenue: 0,
     totalExpenses: 0,
@@ -59,46 +37,62 @@ export default function AdminDashboard() {
     managers: 0,
   });
 
-  const totalRevenue = financeData.reduce((s, h) => s + h.revenue, 0);
-  const totalExpenses = financeData.reduce((s, h) => s + h.expenses, 0);
+  /* ================= DERIVED TOTALS ================= */
+
+  const totalRevenue = financeData.reduce(
+    (sum, h) => sum + (h.revenue || 0),
+    0
+  );
+
+  const totalExpenses = financeData.reduce(
+    (sum, h) => sum + (h.expenses || 0),
+    0
+  );
 
   /* ================= FETCH DASHBOARD DATA ================= */
 
   useEffect(() => {
-    // fetchDashboardData();
+    fetchDashboardData();
   }, []);
 
   const fetchDashboardData = async () => {
     try {
-      const financeRes = getFinanceByHub();
-      const parcelRes = getParcelDeliveryStats();
-      const employeesRes = getEmployeesByHub();
-      const summaryRes = getAdminDashboardSummary();
+      // const [
+      //   financeRes,
+      //   parcelRes,
+      //   employeesRes,
+      //   summaryRes,
+      // ] = await Promise.all([
+      //   getFinanceByHub(),
+      //   getParcelDeliveryStats(),
+      //   getEmployeesByHub(),
+      //   getAdminDashboardSummary(),
+      // ]);
 
-      /* -------- normalize responses -------- */
-
-      setFinanceData(financeRes?.data ?? []);
+      const parcelRes = await getParcelDeliveryStats();
+      const employeesRes = await getEmployeesByHub();
+      const summaryRes = await getAdminDashboardSummary();
 
       setParcelStatus([
         {
           name: "Successful",
-          value: parcelRes?.data?.successful ?? 0,
+          value: parcelRes?.successful || 0,
           color: "#10b981",
         },
         {
           name: "Failed",
-          value: parcelRes?.data?.failed ?? 0,
+          value: parcelRes?.failed || 0,
           color: "#ef4444",
         },
       ]);
 
-      setEmployeesByHub(employeesRes?.data ?? []);
+      setEmployeesByHub(employeesRes || []);
 
       setSummary({
-        totalRevenue: summaryRes?.data?.totalRevenue ?? 0,
-        totalExpenses: summaryRes?.data?.totalExpenses ?? 0,
-        activeHubs: summaryRes?.data?.activeHubs ?? 0,
-        managers: summaryRes?.data?.managers ?? 0,
+        totalRevenue: summaryRes?.totalRevenue || 0,
+        totalExpenses: summaryRes?.totalExpenses || 0,
+        activeHubs: summaryRes?.activeHubs || 0,
+        managers: summaryRes?.managers || 0,
       });
     } catch (error) {
       console.error("Failed to load admin dashboard data", error);
@@ -112,13 +106,13 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
             title="Total Revenue"
-            value={`₹${summary.totalRevenue == 0 ? totalRevenue : summary.totalRevenue}`}
+            value={`₹${summary.totalRevenue || totalRevenue}`}
             icon={<IndianRupee className="text-green-500" />}
           />
 
           <MetricCard
             title="Total Expenses"
-            value={`₹${summary.totalExpenses == 0 ? totalExpenses : summary.totalExpenses}`}
+            value={`₹${summary.totalExpenses || totalExpenses}`}
             icon={<AlertTriangle className="text-red-500" />}
           />
 
@@ -135,27 +129,32 @@ export default function AdminDashboard() {
           />
         </div>
 
-        {/* ================= LINE CHART ================= */}
-        <ChartCard title="Revenue vs Expenses per Hub">
-          <ResponsiveContainer width="100%" height={430}>
-            <LineChart data={financeData}>
+        {/* ================= PIE + BAR ================= */}
+        {/* EMPLOYEES BY HUB */}
+        <ChartCard title="Employees per Hub">
+          <ResponsiveContainer width="100%" height={380}>
+            <BarChart data={employeesByHub}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="hub" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line dataKey="revenue" stroke="#10b981" />
-              <Line dataKey="expenses" stroke="#ef4444" />
-            </LineChart>
+              <Bar dataKey="delivery" fill="#f97316" />
+            </BarChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        {/* ================= PIE + BAR ================= */}
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* PARCEL STATUS */}
           <ChartCard title="Parcel Delivery Ratio">
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={380}>
               <PieChart>
-                <Pie data={parcelStatus} dataKey="value" innerRadius={60}>
+                <Pie
+                  data={parcelStatus}
+                  dataKey="value"
+                  innerRadius={60}
+                >
                   {parcelStatus.map((d, i) => (
                     <Cell key={i} fill={d.color} />
                   ))}
@@ -163,21 +162,6 @@ export default function AdminDashboard() {
                 <Tooltip />
                 <Legend />
               </PieChart>
-            </ResponsiveContainer>
-          </ChartCard>
-
-          <ChartCard title="Employees per Hub">
-            <ResponsiveContainer width="100%" height={400}>
-              <BarChart data={employeesByHub}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hub" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="delivery" fill="#f97316" />
-                <Bar dataKey="warehouse" fill="#3b82f6" />
-                <Bar dataKey="support" fill="#8b5cf6" />
-              </BarChart>
             </ResponsiveContainer>
           </ChartCard>
         </div>
@@ -195,3 +179,6 @@ const MetricCard = ({ title, value, icon }) => (
     <div className="text-2xl font-semibold">{value}</div>
   </div>
 );
+
+
+
