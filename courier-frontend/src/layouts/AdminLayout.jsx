@@ -4,6 +4,7 @@ import { HiOutlineCube } from "react-icons/hi";
 import { FiMenu } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
 import { signOutUser } from "../api/auth";
+import { toast } from "react-toastify";
 
 const AdminLayout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
