@@ -4,6 +4,7 @@ import CustomerLayout from "../../layouts/CustomerLayout";
 import { HiOutlineCube } from "react-icons/hi";
 import { FiSearch } from "react-icons/fi";
 import { BsCheckCircleFill } from "react-icons/bs";
+import { TRACK_URL } from "../../api/config";
 
 const TrackPackage = () => {
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -23,7 +24,7 @@ const TrackPackage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8082/api/tracking/${trackingNumber}`
+        TRACK_URL + trackingNumber
       );
       console.log(response?.data)
       setData(response.data);
