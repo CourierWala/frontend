@@ -1,10 +1,11 @@
 import React from "react";
 const MobileTrackPackage = () => {
   return (
-    <div className="flex items-center justify-center h-[200px] px-4 bg-gradient-to-r from-orange-50 to-orange-100">
+    <div className="flex items-center justify-center h-[200px] px-4 mb-10 md:mb-0">
       <div
         className="
-          bg-white w-full max-w-sm rounded-2xl shadow-xl border p-4
+          bg-white/40 backdrop-blur-md
+          w-full max-w-sm rounded-2xl shadow-xl border p-4
           flex flex-col items-center text-center gap-3
           [@media(min-width:430px)]:flex-row
           [@media(min-width:430px)]:text-left
