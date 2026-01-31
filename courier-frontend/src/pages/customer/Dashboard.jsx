@@ -22,7 +22,7 @@ const Dashboard = () => {
   ).length;
 
   const transit = shipments.filter(
-    (s) => s.orderStatus === "IN_TRANSIT"
+    (s) =>  ["PICKUP_ASSIGNED", "PICKED_UP", "AT_SOURCE_HUB", "IN_TRANSIT", "AT_DESTINATION_HUB"].includes(s.orderStatus),
   ).length;
 
   const delivered = shipments.filter(
