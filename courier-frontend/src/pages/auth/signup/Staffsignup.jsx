@@ -121,6 +121,7 @@ const StaffSignUp = () => {
               <option value="BIKE">Bike</option>
               <option value="VAN">Van</option>
               <option value="CAR">Car</option>
+              <option value="SCOOTER">SCOOTER</option>
             </select>
           </div>
 
@@ -156,9 +157,26 @@ const StaffSignUp = () => {
               className="w-full border rounded-lg px-3 py-2 mt-1"
             >
               <option value="">Select Hub</option>
-              <option value="1">Mumbai Hub</option>
-              <option value="2">Pune Hub</option>
-              <option value="3">Delhi Hub</option>
+              <option value="1">Delhi Central Hub</option>
+              <option value="2">Mumbai Central Hub</option>
+              <option value="3">Bengaluru Central Hub</option>
+              <option value="4">Chennai Central Hub</option>
+              <option value="5">Hyderabad Central Hub</option>
+              <option value="6">Kolkata Central Hub</option>
+              <option value="7">Pune Central Hub</option>
+              <option value="8">Ahmedabad Central Hub</option>
+              <option value="9">Jaipur Central Hub</option>
+              <option value="10">Lucknow Central Hub</option>
+              <option value="11">Bhopal Central Hub</option>
+              <option value="12">Indore Central Hub</option>
+              <option value="13">Nagpur Central Hub</option>
+              <option value="14">Patna Central Hub</option>
+              <option value="15">Guwahati Central Hub</option>
+              <option value="16">Surat Central Hub</option>
+              <option value="17">Vadodara Central Hub</option>
+              <option value="18">Noida Central Hub</option>
+              <option value="19">Gurgaon Central Hub</option>
+              <option value="20">Faridabad Central Hub</option>
             </select>
           </div>
 

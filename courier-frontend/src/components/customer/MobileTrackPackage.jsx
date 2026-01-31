@@ -1,5 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 const MobileTrackPackage = () => {
+  const navigate = useNavigate();
+
+  const onTrackNow = () => {
+    navigate("/customer/track")
+  }
+
   return (
     <div className="flex items-center justify-center h-[200px] px-4 mb-10 md:mb-0">
       <div
@@ -28,7 +35,9 @@ const MobileTrackPackage = () => {
             Live location & delivery updates
           </p>
 
-          <button className="mt-3 w-full bg-orange-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-orange-700 transition">
+          <button
+            onClick={onTrackNow}
+            className="mt-3 w-full bg-orange-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-orange-700 transition">
             Track Now
           </button>
         </div>

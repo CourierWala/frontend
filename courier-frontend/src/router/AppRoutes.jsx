@@ -47,6 +47,7 @@ const AppRoutes = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="signup" element={<SignUp />} />
                     <Route path="staffsignup" element={<StaffSignUp />} />
+                    <Route path="/customer/track" element={<TrackPackage />} />
 
 
                     {/* Customer Routes */}
@@ -121,8 +122,8 @@ const AppRoutes = () => {
                         <Route path="earnings" element={<Earnings />} />
                         <Route path="StaffShipmentHistory" element={<StaffShipmentHistory />} />
                         <Route path="notifications" element={<NotificationTab />} />
-                        <Route path='accepted-Orders'  element={<AcceptedOrders/>} />
-                        <Route path='current-Orders'  element={<CurrentOrders/>} />
+                        <Route path='accepted-Orders' element={<AcceptedOrders />} />
+                        <Route path='current-Orders' element={<CurrentOrders />} />
                     </Route>
 
                     <Route

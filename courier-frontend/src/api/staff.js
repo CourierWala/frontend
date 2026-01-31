@@ -24,14 +24,14 @@ export const staff_signup = async (
   hubId,
 ) => {
   const body = {
-      name,
-      email,
-      phone,
-      vehicleType,
-      vehicleNumber,
-      licenseNumber,
-      hubId,
-    };
+    name,
+    email,
+    phone,
+    vehicleType,
+    vehicleNumber,
+    licenseNumber,
+    hubId,
+  };
   // const body = {currentPassword, newPassword };
   return await axiosInstance.post(`/staff/applyforjob`, body);
 };
@@ -53,24 +53,24 @@ export const getDeliveredOrders = async () => {
 };
 
 
-export const AcceptCustomerOrders = async ( orderid) => {
-  
+export const AcceptCustomerOrders = async (orderid) => {
+
   return (await axiosInstance.patch(`/staff/dashboard/customer/${orderid}`)).data;
 };
 
 
-export const AcceptHubOrders = async ( orderid) =>{
+export const AcceptHubOrders = async (orderid) => {
   return (await axiosInstance.patch(`/staff/dashboard/Hub/${orderid}`)).data;
 };
 
-export const pickupCustomerOrders = async (orderid) =>{
+export const pickupCustomerOrders = async (orderid) => {
   return (await axiosInstance.patch(`/staff/accepted-orders/${orderid}`)).data;
 };
 
-export const DeliverCustomerOrders = async ( orderid) =>{
+export const DeliverCustomerOrders = async (orderid) => {
   return (await axiosInstance.patch(`/staff/Current-Orders/customer/${orderid}`)).data;
 };
-export const DeliverHubOrders = async ( orderid) =>{
+export const DeliverHubOrders = async (orderid) => {
   return (await axiosInstance.patch(`/staff/Current-Orders/Hub/${orderid}`)).data;
 };
 export const fetchWeeklyEarnings = async (staffId) => {

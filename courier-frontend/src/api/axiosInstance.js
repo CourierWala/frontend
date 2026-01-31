@@ -37,13 +37,13 @@ axiosInstance.interceptors.response.use(
 
     const status = error.response?.status;
 
-    
+
     if (status === 401) {
       toast.error("Session expired. Please login again");
 
       // optional cleanup
-      localStorage.clear();
-      window.location.href = "/login";
+      // localStorage.clear();
+      // window.location.href = "/login";
     }
 
     if (status === 403) {
