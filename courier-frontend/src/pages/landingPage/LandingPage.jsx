@@ -1,17 +1,24 @@
 import { Link } from "react-router-dom";
 import NavBar from "../../components/common/NavBar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FiTruck, FiShield, FiActivity, FiStar } from "react-icons/fi";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 import TruckScene from "../../components/Three Fiber/truckScene"; // 🚚 your 3D truck component
-import TrackPackagePopup from "../../components/common/TrackPackagePopup";
 import MobileTrackPackage from "../../components/customer/MobileTrackPackage";
 
 const LandingPage = () => {
+  const [showTrackCard, setShowTrackCard] = useState(false);
+
   useEffect(() => {
-    AOS.init({ duration: 900, easing: "ease-in-out" });
+    AOS.init({ duration: 500, easing: "ease-in-out" });
+
+    const timer = setTimeout(() => {
+      setShowTrackCard(true);
+    }, 4300); // 4.3 seconds
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -20,24 +27,29 @@ const LandingPage = () => {
 
       <div className="relative">
         {/* Desktop */}
-        <div className="absolute hidden md:block top-28 right-0 w-full h-[200px] pointer-events-none">
+        <div className="absolute hidden md:block top-28 right-0 w-full h-[0px] pointer-events-none">
+          {/* Truck Scene (background) */}
           <TruckScene />
-          <TrackPackagePopup />
+
+          {showTrackCard && (
+          <div className="absolute inset-0 top-80 right-80 flex items-center justify-center pointer-events-auto transition ease-in-out">
+            <MobileTrackPackage />
+          </div>)}
         </div>
 
         {/* Mobile */}
-        <div className="absolute block md:hidden top-28 right-0 w-full">
+        <div className="block md:hidden mt-30 mb-0 w-full">
           <MobileTrackPackage />
         </div>
 
         {/* Spacer */}
-        <div className="h-[220px] md:mt-160" />
+        <div className="h-[20px] md:mt-160" />
       </div>
 
       {/* ---------------- FEATURES SECTION ---------------- */}
       <section className="mt-24 px-10  md:px-20 ">
         <h2
-          className="text-4xl font-bold text-center text-gray-900"
+          className="text-4xl md:text-4xl font-bold text-center text-gray-900"
           data-aos="fade-up"
         >
           Why Choose <span className="text-orange-600">Courier Wala?</span>
@@ -74,7 +86,7 @@ const LandingPage = () => {
       {/* ---------------- TESTIMONIALS SECTION ---------------- */}
       <section className="mt-28 px-10 md:px-20">
         <h2
-          className="text-4xl font-bold text-center text-gray-900"
+          className="text-3xl md:text-4xl font-bold text-center text-gray-900"
           data-aos="zoom-in"
         >
           What Our Customers Say

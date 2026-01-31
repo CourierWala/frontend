@@ -2,12 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { HiOutlineCube } from "react-icons/hi";
 import { FiMenu } from "react-icons/fi";
+import { useAuth } from "../context/AuthContext";
+import { signOutUser } from "../api/auth";
+import { toast } from "react-toastify";
 
 const AdminLayout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
-  const onSignOut = () => navigate("/");
+  const onSignOut = async () => {
+    try {
+      console.log("logout user !!");
+      await signOutUser();
+      toast.success("signout successful");
+      logout();
+      navigate("/");
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   useEffect(() => {
     document.body.classList.toggle("overflow-hidden", isOpen);
