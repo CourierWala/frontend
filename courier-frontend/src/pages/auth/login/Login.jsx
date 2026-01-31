@@ -31,8 +31,7 @@ const Login = () => {
     }
     try {
       const response = await userLogin(email, password);
-      if(response.data.status === "failure"){
-        toast.error(response.data.message)
+      if (response.data.status === "failure") {
         return;
       }
 
@@ -46,14 +45,13 @@ const Login = () => {
       login(user);
       localStorage.setItem("user", JSON.stringify(user));
 
-      toast.success("Login successful");
+      toast.success("Login successfull  !!");
       console.log("curr role : ", currRole);
       if (currRole == "ROLE_CUSTOMER") navigate("/customer/dashboard");
       else if (currRole == "ROLE_ADMIN") navigate("/admin/dashboard");
       else if (currRole == "ROLE_DELIVERY_STAFF") navigate("/staff/dashboard");
       else if (currRole == "ROLE_STAFF_MANAGER") navigate("/manager/dashboard"); // 'ROLE_ADMIN','ROLE_CUSTOMER','ROLE_DELIVERY_STAFF','ROLE_STAFF_MANAGER')
     } catch (error) {
-      console.log("error : ", error);
       console.log("error res : ", error.response);
       setErrorMessage("Invalid Credential !!");
     }
