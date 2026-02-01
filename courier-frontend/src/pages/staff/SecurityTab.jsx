@@ -8,10 +8,9 @@ export default function SecurityTab() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async() => {
       const passwordRegex =
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
             const rules = [
                 [currentPassword, "Current password is required"],
                 [newPassword, "New password is required"],
@@ -20,7 +19,7 @@ export default function SecurityTab() {
                     "Password must be at least 8 characters and include uppercase, lowercase, number & special character",
                 ],
                 [confirmPassword, "Confirm password is required"],
-                [newPassword === confirmPassword, "Passwords do not match"],
+                 [newPassword === confirmPassword, "Passwords do not match"],
             ];
     for (const [condition, message] of rules){
       if (!condition) {
@@ -28,15 +27,10 @@ export default function SecurityTab() {
         return; 
       }
     }
-    toast.success("Password changed successfully");
-    // staffid from session
-       // const response = await changePassword(staffid,currentPassword,newPassword);
-
-    //     if (response['status'] === 'success') {
-    //         console.log("sucessful");
-    //    }
-
-   
+       const body = {currentPassword, newPassword , confirmPassword };
+        const response = await changePassword(body);
+         if (response.status === 'success')
+             toast.success(response.message)   
   };
   
   return (

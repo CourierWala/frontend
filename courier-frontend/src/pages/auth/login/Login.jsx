@@ -3,16 +3,19 @@ import { FiMail, FiLock } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../../../components/common/NavBar";
 import { toast } from "react-toastify";
-import { customer_login } from "../../../api/customer";
+import { userLogin } from "../../../api/auth";
+import { useAuth } from "../../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const [email, setEmail] = useState("hapos@gmail.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("Pass@123");
   const [remember, setRemember] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { login } = useAuth();
 
-  const onLogin = () => {
+  const onLogin = async (e) => {
+    e.preventDefault();
     const rules = [
       [email.trim(), "Email is required"],
       [/^\S+@\S+\.\S+$/.test(email), "Invalid email format"],
@@ -26,12 +29,32 @@ const Login = () => {
         return;
       }
     }
+    try {
+      const response = await userLogin(email, password);
+      if (response.data.status === "failure") {
+        return;
+      }
 
+      const currRole = response.data.role.slice(1, -1);
 
-    // API call later
-    //const response = await customer_login(email, password)
-    toast.success("Login successful");
-    navigate("/customer/dashboard");
+      const user = {
+        email: response?.data.email,
+        id: response.data.id,
+        role: currRole,
+      };
+      login(user);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      toast.success("Login successfull  !!");
+      console.log("curr role : ", currRole);
+      if (currRole == "ROLE_CUSTOMER") navigate("/customer/dashboard");
+      else if (currRole == "ROLE_ADMIN") navigate("/admin/dashboard");
+      else if (currRole == "ROLE_DELIVERY_STAFF") navigate("/staff/dashboard");
+      else if (currRole == "ROLE_STAFF_MANAGER") navigate("/manager/dashboard"); // 'ROLE_ADMIN','ROLE_CUSTOMER','ROLE_DELIVERY_STAFF','ROLE_STAFF_MANAGER')
+    } catch (error) {
+      console.log("error res : ", error.response);
+      setErrorMessage("Invalid Credential !!");
+    }
   };
 
   return (
@@ -72,7 +95,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border rounded-lg pl-10 pr-3 py-2"
-              placeholder="********"
+              placeholder="enter password"
             />
           </div>
 
@@ -91,10 +114,15 @@ const Login = () => {
               Forgot password?
             </button>
           </div>
+          {errorMessage && (
+            <div className="font-bold text-red-700 text-center m-2 p-2">
+              Error : {errorMessage}
+            </div>
+          )}
 
           {/* LOGIN BUTTON */}
           <button
-            onClick={onLogin}
+            onClick={(e) => onLogin(e)}
             className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg mb-4"
           >
             Sign In →
@@ -103,7 +131,10 @@ const Login = () => {
           {/* FOOTER */}
           <p className="text-center text-gray-600 text-sm">
             Don't have an account?{" "}
-            <Link to="/signup" className="text-orange-600 hover:underline"> Sign up</Link>
+            <Link to="/signup" className="text-orange-600 hover:underline">
+              {" "}
+              Sign up
+            </Link>
           </p>
         </div>
       </div>

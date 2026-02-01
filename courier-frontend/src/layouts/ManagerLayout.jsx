@@ -2,12 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { HiOutlineCube } from "react-icons/hi";
 import { FiMenu } from "react-icons/fi";
+import { signOutUser } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const ManagerLayout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuth()
 
-  const onSignOut = () => navigate("/");
+  const onSignOut = async () => {
+    try {
+      console.log("logout user !!");
+      await signOutUser();
+      toast.success("signout successful");
+      logout();
+      navigate("/");
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   useEffect(() => {
     document.body.classList.toggle("overflow-hidden", isOpen);
@@ -16,7 +30,7 @@ const ManagerLayout = ({ children }) => {
   const links = [
     { to: "/manager/dashboard", label: "Dashboard" },
     { to: "/manager/staff", label: "Staff Management" },
-    { to: "/manager/analytics", label: "Analytics" },
+    // { to: "/manager/analytics", label: "Analytics" },
     { to: "/manager/profile", label: "Profile" },
   ];
 
@@ -48,7 +62,7 @@ const ManagerLayout = ({ children }) => {
         transition-transform duration-300
         md:translate-x-0 md:static md:flex md:flex-col md:justify-between`}
       >
-        <div>
+        <div className="sticky top-0 pt-[15px] ...">
           <div className="flex items-center gap-3 mb-6">
             <HiOutlineCube className="text-orange-500 text-3xl" />
             <h2 className="text-2xl font-bold">Courier wala</h2>

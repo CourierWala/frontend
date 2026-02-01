@@ -12,8 +12,6 @@ const StaffSignUp = () => {
     name: "",
     email: "",
     phone: "",
-    password: "",
-    confirmPassword: "",
     vehicleType: "",
     vehicleNumber: "",
     licenseNumber: "",
@@ -24,38 +22,46 @@ const StaffSignUp = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onSignUp = () => {
+  const onSignUp = async () => {
     const rules = [
       [form.name.trim(), "Full name is required"],
       [form.email.trim(), "Email is required"],
       [/^\S+@\S+\.\S+$/.test(form.email), "Invalid email format"],
       [form.phone.trim(), "Phone number is required"],
       [/^\d{10}$/.test(form.phone), "Phone must be 10 digits"],
-      [form.password.trim(), "Password is required"],
-      [form.password.length >= 8, "Password must be at least 8 characters"],
-      [form.confirmPassword.trim(), "Confirm password is required"],
-      [form.password === form.confirmPassword, "Passwords do not match"],
       [form.vehicleType, "Select vehicle type"],
       [form.vehicleNumber.trim(), "Vehicle number is required"],
       [form.licenseNumber.trim(), "License number is required"],
       [form.hubId, "Select hub"],
     ];
 
-    // for (const [condition, message] of rules) {
-    //   if (!condition) {
-    //     toast.warning(message);
-    //     return;
-    //   }
-    // }
-    //const response = await staff_signup(form.name,form.email,form.phone,form.password,form.vehicleType,form.vehicleNumber,form.licenseNumber,form.hubId);
-    toast.success("Staff registered successfully");
-    navigate("/staff/dashboard");
+    for (const [condition, message] of rules) {
+      if (!condition) {
+        toast.warning(message);
+        return;
+      }
+    }
+    const response = await staff_signup(
+      form.name,
+      form.email,
+      form.phone,
+      form.vehicleType,
+      form.vehicleNumber,
+      form.licenseNumber,
+      form.hubId,
+    );
+    
+    console.log(response);
+    if (response.data.status === "success") {
+      toast.success(response.data.message);
+      navigate("/");
+    }
   };
 
-  return(
+  return (
     <div className="min-h-screen bg-[#FFF7EE] flex flex-col">
       <NavBar />
-        {/* //main container */}
+      {/* //main container */}
       <div className="flex-1 flex items-center justify-center px-4 py-10 mt-20">
         <div className="w-full max-w-xl bg-white border rounded-xl p-8 shadow-sm">
           <h2 className="text-2xl font-semibold mb-1">Staff Registration</h2>
@@ -77,7 +83,7 @@ const StaffSignUp = () => {
           </div>
 
           {/* Email */}
-          <div className="mb-4"> 
+          <div className="mb-4">
             <label className="text-gray-700 text-sm">Email</label>
             <div className="relative mt-1">
               <FiMail className="absolute left-3 top-3 text-gray-400" />
@@ -103,34 +109,6 @@ const StaffSignUp = () => {
             </div>
           </div>
 
-          {/* Password */}
-          <div className="mb-4">
-            <label className="text-gray-700 text-sm">Password</label>
-            <div className="relative mt-1">
-              <FiLock className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="password"
-                name="password"
-                onChange={onChange}
-                className="w-full border rounded-lg pl-10 pr-3 py-2 focus:ring focus:ring-orange-200"
-              />
-            </div>
-          </div>
-
-          {/* Confirm Password */}
-          <div className="mb-4">
-            <label className="text-gray-700 text-sm">Confirm Password</label>
-            <div className="relative mt-1">
-              <FiLock className="absolute left-3 top-3 text-gray-400" />
-              <input
-                type="password"
-                name="confirmPassword"
-                onChange={onChange}
-                className="w-full border rounded-lg pl-10 pr-3 py-2 focus:ring focus:ring-orange-200"
-              />
-            </div>
-          </div>
-
           {/* Vehicle Type */}
           <div className="mb-4">
             <label className="text-gray-700 text-sm">Vehicle Type</label>
@@ -143,6 +121,7 @@ const StaffSignUp = () => {
               <option value="BIKE">Bike</option>
               <option value="VAN">Van</option>
               <option value="CAR">Car</option>
+              <option value="SCOOTER">SCOOTER</option>
             </select>
           </div>
 
@@ -172,21 +151,47 @@ const StaffSignUp = () => {
           {/* Hub */}
           <div className="mb-4">
             <label className="text-gray-700 text-sm">Hub</label>
-            <select name="hubId" onChange={onChange}className="w-full border rounded-lg px-3 py-2 mt-1">
+            <select
+              name="hubId"
+              onChange={onChange}
+              className="w-full border rounded-lg px-3 py-2 mt-1"
+            >
               <option value="">Select Hub</option>
-              <option value="1">Mumbai Hub</option>
-              <option value="2">Pune Hub</option>
-              <option value="3">Delhi Hub</option>
+              <option value="1">Delhi Central Hub</option>
+              <option value="2">Mumbai Central Hub</option>
+              <option value="3">Bengaluru Central Hub</option>
+              <option value="4">Chennai Central Hub</option>
+              <option value="5">Hyderabad Central Hub</option>
+              <option value="6">Kolkata Central Hub</option>
+              <option value="7">Pune Central Hub</option>
+              <option value="8">Ahmedabad Central Hub</option>
+              <option value="9">Jaipur Central Hub</option>
+              <option value="10">Lucknow Central Hub</option>
+              <option value="11">Bhopal Central Hub</option>
+              <option value="12">Indore Central Hub</option>
+              <option value="13">Nagpur Central Hub</option>
+              <option value="14">Patna Central Hub</option>
+              <option value="15">Guwahati Central Hub</option>
+              <option value="16">Surat Central Hub</option>
+              <option value="17">Vadodara Central Hub</option>
+              <option value="18">Noida Central Hub</option>
+              <option value="19">Gurgaon Central Hub</option>
+              <option value="20">Faridabad Central Hub</option>
             </select>
           </div>
 
-          <button onClick={onSignUp} className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg mt-6">
+          <button
+            onClick={onSignUp}
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg mt-6"
+          >
             Register as Staff →
           </button>
 
           <p className="text-center text-gray-600 text-sm mt-4">
             Already registered?{" "}
-            <Link to="/login" className="text-orange-600 hover:underline">Sign in</Link>
+            <Link to="/login" className="text-orange-600 hover:underline">
+              Sign in
+            </Link>
           </p>
         </div>
       </div>

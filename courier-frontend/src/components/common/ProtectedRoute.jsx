@@ -1,17 +1,17 @@
-import React from 'react'
-import { useAuth } from '../../context/AuthContext'
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import React from "react";
 
 const ProtectedRoute = ({ children }) => {
-     
-    const { user , loading} = useAuth();
+  const { isAuthenticated, loading } = useAuth();
 
-    if (loading) return <h1 className='flex justify-center '>Loading...</h1>
+  if (loading) return null; // wait for auth restore
 
-    if (!user) return <Navigate to="/login" />
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
-    // if no user authorized
-    return children;
-}
+  return children;
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

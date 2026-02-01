@@ -1,47 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { fetchShipmentHistory } from "../../api/staff";
+import { getDeliveredOrders } from "../../api/staff";
 
 export default function StaffShipmentHistory() {
   const [orderHistory, setOrderHistory] = useState([]);
-
-  const historyorders =[
-  {
-    "id": "ORDER-2",
-    "customer": "Om Kharmate",
-    "pickup": "123 Vaduj, Satara",
-    "delivery": "45 Ram Charan, Raigad",
-    "distance": "100 km",
-    "weight": "2.5 kg",
-    "amount": 45,
-    "status": "DELIVERED"
-  },
-  {
-    "id": "ORDER-3",
-    "customer": "Ram Charan",
-    "pickup": "Kolhapur",
-    "delivery": "Mumbai",
-    "distance": "210 km",
-    "weight": "3 kg",
-    "amount": 60,
-    "status": "DELIVERED"
-  }
-]
-
-
-
+  
   useEffect(() => {
-    //loadHistory();
-    setOrderHistory(historyorders);
-    window.alert("history loaded");
+    loadHistory()
   }, []);
 
   const loadHistory = async () => {
-    try {
-      const data = await fetchShipmentHistory();
+      const data = await getDeliveredOrders();
+      //console.log(data);
       setOrderHistory(data);
-    } catch (error) {
-      console.error("Unable to load shipment history");
-    }
   };
 
   return (
@@ -66,16 +36,16 @@ export default function StaffShipmentHistory() {
       <div className="space-y-4">
         {orderHistory.map((order) => (
           <div
-            key={order.id}
+            key={order.Orderid}
             className="bg-white rounded-xl border shadow-sm p-4 md:p-5 flex flex-col gap-2"
           >
             <div className="flex justify-between items-start gap-2">
               <div>
                 <p className="text-xs font-semibold text-orange-600">
-                  {order.id}
+                  {order.Orderid}
                 </p>
                 <p className="text-sm font-medium text-slate-800">
-                  {order.customer}
+                  {order.customerName}
                 </p>
               </div>
 
@@ -84,7 +54,7 @@ export default function StaffShipmentHistory() {
                   {order.status}
                 </span>
                 <span className="text-green-600 font-medium">
-                  ₹{order.amount}
+                  ₹{order.price}
                 </span>
               </div>
             </div>
@@ -92,17 +62,17 @@ export default function StaffShipmentHistory() {
             <div className="text-xs text-slate-600 space-y-1">
               <p>
                 <span className="mr-1">📍</span>
-                <span className="font-medium">Pickup:</span> {order.pickup}
+                <span className="font-medium">Pickup:</span> {order.pickupAddress}
               </p>
               <p>
                 <span className="mr-1">📦</span>
-                <span className="font-medium">Delivery:</span> {order.delivery}
+                <span className="font-medium">Delivery:</span> {order.deliveryAddress}
               </p>
             </div>
 
             <div className="flex justify-between items-center text-xs text-slate-500 mt-1">
               <span>
-                {order.distance} • {order.weight}
+                {order.distanceKm} • {order.packageWeight}
               </span>
               <button className="text-orange-600 font-medium">
                 View Details

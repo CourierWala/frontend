@@ -1,37 +1,45 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [role, setRole] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    // Load data when app starts
-    useEffect(() => {
-        // Example: restore from localStorage (optional)
-        // const savedUser = localStorage.getItem("user");
-        // if(savedUser) setUser(JSON.parse(savedUser));
+  // 🔁 Restore user on refresh
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
 
-        setLoading(false);
-    }, []);
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
 
-    const login = (userData, role) => {
-        setUser(userData);
-        setRole(role);
-    };
+    setLoading(false);
+  }, []);
 
-    const logout = () => {
-        setUser(null);
-        setRole(null);
-    };
+  const login = (userData) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, role, loading, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        loading,
+        login,
+        logout,
+      }}
+    >
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 };
 
-// Custom hook (CORRECT)
 export const useAuth = () => useContext(AuthContext);

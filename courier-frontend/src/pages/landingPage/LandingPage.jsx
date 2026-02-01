@@ -1,37 +1,55 @@
 import { Link } from "react-router-dom";
 import NavBar from "../../components/common/NavBar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FiTruck, FiShield, FiActivity, FiStar } from "react-icons/fi";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-
-import TruckScene from "../../components/Three Fiber/truckScene" // 🚚 your 3D truck component
-import TrackPackagePopup from "../../components/common/TrackPackagePopup";
+import TruckScene from "../../components/Three Fiber/truckScene"; // 🚚 your 3D truck component
+import MobileTrackPackage from "../../components/customer/MobileTrackPackage";
 
 const LandingPage = () => {
+  const [showTrackCard, setShowTrackCard] = useState(false);
+
   useEffect(() => {
-    AOS.init({ duration: 900, easing: "ease-in-out" });
+    AOS.init({ duration: 500, easing: "ease-in-out" });
+
+    const timer = setTimeout(() => {
+      setShowTrackCard(true);
+    }, 4300); // 4.3 seconds
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="relative min-h-screen flex flex-col bg-[#FFF7EE] overflow-hidden">
-      {/* Navbar */}
       <NavBar />
 
-      {/* 🚚 BACKGROUND TRUCK ANIMATION */}
-      <div className="absolute hidden md:block top-28 right-0 w-full h-[200px] mb-20 opacity-90 pointer-events-none">
-        <TruckScene />
-        <div><TrackPackagePopup /> </div>
-      </div>
-      {/* ---------------- HERO SECTION ---------------- */}
+      <div className="relative">
+        {/* Desktop */}
+        <div className="absolute hidden md:block top-28 right-0 w-full h-[0px] pointer-events-none">
+          {/* Truck Scene (background) */}
+          <TruckScene />
 
-      <div className="mt-180"></div>
+          {showTrackCard && (
+          <div className="absolute inset-0 top-80 right-80 flex items-center justify-center pointer-events-auto transition ease-in-out">
+            <MobileTrackPackage />
+          </div>)}
+        </div>
+
+        {/* Mobile */}
+        <div className="block md:hidden mt-30 mb-0 w-full">
+          <MobileTrackPackage />
+        </div>
+
+        {/* Spacer */}
+        <div className="h-[20px] md:mt-160" />
+      </div>
 
       {/* ---------------- FEATURES SECTION ---------------- */}
       <section className="mt-24 px-10  md:px-20 ">
         <h2
-          className="text-4xl font-bold text-center text-gray-900"
+          className="text-4xl md:text-4xl font-bold text-center text-gray-900"
           data-aos="fade-up"
         >
           Why Choose <span className="text-orange-600">Courier Wala?</span>
@@ -68,7 +86,7 @@ const LandingPage = () => {
       {/* ---------------- TESTIMONIALS SECTION ---------------- */}
       <section className="mt-28 px-10 md:px-20">
         <h2
-          className="text-4xl font-bold text-center text-gray-900"
+          className="text-3xl md:text-4xl font-bold text-center text-gray-900"
           data-aos="zoom-in"
         >
           What Our Customers Say
@@ -105,7 +123,8 @@ const LandingPage = () => {
       {/* ---------------- FOOTER ---------------- */}
       <footer className="mt-20 py-6 bg-black text-center text-gray-300">
         © {new Date().getFullYear()}{" "}
-        <span className="text-orange-500">Courier wala</span>. All rights reserved.
+        <span className="text-orange-500">Courier wala</span>. All rights
+        reserved.
       </footer>
     </div>
   );

@@ -4,31 +4,38 @@ import { HiLocationMarker, HiOutlineCube } from "react-icons/hi";
 import { MdLocalShipping } from "react-icons/md";
 import OlaAutocomplete from "../../components/common/OlaAutocomplete";
 import { toast } from "react-toastify";
+import { createShipment } from "../../api/customer";
+import { loadRazorpay } from "../../utils/loadRazorpay";
+import axios from "axios";
+import { createPaymentOrder, handlePaymentResponse } from "../../api/payment";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const NewShipment = () => {
   const [form, setForm] = useState({
-    pickupLocation: null,
-    deliveryLocation: null,
-    pickupCity: "",
-    pickupPincode: "",
+    pickupAddress: "satara",
+    pickupCity: "satara",
+    pickupPincode: "415519",
     pickupDate: "",
-    deliveryAddress: "",
-    deliveryCity: "",
-    deliveryPincode: "",
-    packageSize: "",
-    weight: "",
-    deliveryType: "",
-    description: "",
+    deliveryAddress: "delhi",
+    deliveryCity: "delhi",
+    deliveryPincode: "500600",
+    packageSize: "MEDIUM",
+    weight: "22",
+    deliveryType: "STANDARD",
+    description: "this is deleivery",
     pickupLatitude: "",
     pickupLongitude: "",
     deliveryLatitude: "",
-    deliveryLongitude: ""
-
+    deliveryLongitude: "",
   });
 
-  const [pickupLocation, setPickupLocation] = useState({})
-  const [deliveryLocation, setDeliveryLocation] = useState({})
+  const { user } = useAuth();
 
+  const [paymentAmount, setPaymentAmount] = useState(0.0);
+
+  const [pickupLocation, setPickupLocation] = useState({});
+  const [deliveryLocation, setDeliveryLocation] = useState({});
 
   const isFutureOrToday = (dateStr) => {
     const today = new Date();
@@ -47,8 +54,6 @@ const NewShipment = () => {
     return latDiff < 0.0001 && lngDiff < 0.0001;
   };
 
-
-
   const validateForm = () => {
     if (!form.pickupAddress.trim()) {
       toast.error("Pickup address is required");
@@ -59,7 +64,6 @@ const NewShipment = () => {
       toast.error("Pickup and delivery locations cannot be the same");
       return false;
     }
-
 
     if (!form.pickupCity.trim()) {
       toast.error("Pickup city is required");
@@ -75,7 +79,6 @@ const NewShipment = () => {
       toast.error("Pickup date must be today or a future date");
       return false;
     }
-
 
     if (!/^\d{6}$/.test(form.pickupPincode)) {
       toast.error("Pickup pincode must be 6 digits");
@@ -120,7 +123,61 @@ const NewShipment = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const nav = useNavigate();
+  const successPaymentHandler = (res) => {
+    handlePaymentResponse(res);
+    nav("/customer/dashboard");
+  };
+  const handlePlaceOrder = async (order_id, payAmount) => {
+    // 1. Load Razorpay script
+    const isLoaded = await loadRazorpay();
+    if (!isLoaded) {
+      alert("Razorpay SDK failed to load");
+      return;
+    }
+
+    // 2. Call backend to create payment order
+    // const paymentRes = await axios.post(
+    //   "http://localhost:8080/api/payments/create",
+    //   null,
+    //   { params: { amount: 100, order_id: order_id } },
+    // );
+
+    const paymentRes = await createPaymentOrder(payAmount, order_id);
+
+    console.log("PaymentRes", paymentRes);
+
+    const { razorpayOrderId, amount } = paymentRes.data;
+
+    // 3. Configure Razorpay options
+    const options = {
+      key: "rzp_test_S7hQkOvlt6yfQ1", // TEST KEY ID (safe on frontend)
+      amount: amount * 100, // paise
+      currency: "INR",
+      name: "CourierWala",
+      recript: user?.email,
+      description: "Courier Delivery Payment",
+      order_id: razorpayOrderId,
+
+      handler: successPaymentHandler,
+
+      prefill: {
+        name: "Test User",
+        email: "test@example.com",
+        contact: "9999999999",
+      },
+
+      theme: {
+        color: "#ef5706",
+      },
+    };
+
+    // 5. Open Razorpay checkout
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -134,16 +191,25 @@ const NewShipment = () => {
     };
 
     console.log(shipmentData);
+    try {
+      const res = await createShipment(shipmentData);
+      console.log("res :", res);
 
-    // axios.post(...)
-    toast.success("Shipment booked successfully 🚚");
+      setPaymentAmount(res?.data?.amount);
+      console.log(parseInt(res.data.amount))
+
+      handlePlaceOrder(res.data.order_id, parseInt(res.data.amount));
+
+      toast.success("Shipment booked successfully 🚚");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Booking failed");
+    }
   };
-
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
 
   return (
     <CustomerLayout>
@@ -165,12 +231,11 @@ const NewShipment = () => {
               setLocation={setPickupLocation}
             />
             <TwoColumn>
-              <OlaAutocomplete
-                label="Pickup Address"
-                value={form.pickupLocation?.address || ""}
-                onSelect={(data) =>
-                  setForm((prev) => ({ ...prev, pickupLocation: data }))
-                }
+              <InputField
+                label="Street Address"
+                name="pickupAddress"
+                value={form.pickupAddress}
+                onChange={handleChange}
               />
               <InputField
                 label="PIN Code"
@@ -179,20 +244,15 @@ const NewShipment = () => {
                 onChange={handleChange}
                 isPin
               />
-
-
-
             </TwoColumn>
 
             <TwoColumn>
-              <SelectField
-                label="Pickup City"
+              <InputField
+                label="City"
                 name="pickupCity"
-                options={CITY_OPTIONS}
                 value={form.pickupCity}
                 onChange={handleChange}
               />
-
               <InputField
                 label="Pickup Date"
                 name="pickupDate"
@@ -213,12 +273,11 @@ const NewShipment = () => {
               setLocation={setDeliveryLocation}
             />
             <TwoColumn>
-              <OlaAutocomplete
-                label="Delivery Address"
-                value={form.deliveryLocation?.address || ""}
-                onSelect={(data) =>
-                  setForm((prev) => ({ ...prev, deliveryLocation: data }))
-                }
+              <InputField
+                label="Street Address"
+                name="deliveryAddress"
+                value={form.deliveryAddress}
+                onChange={handleChange}
               />
               <InputField
                 label="PIN Code"
@@ -227,14 +286,12 @@ const NewShipment = () => {
                 onChange={handleChange}
                 isPin
               />
-
             </TwoColumn>
 
             <TwoColumn>
-              <SelectField
-                label="Delivery City"
+              <InputField
+                label="City"
                 name="deliveryCity"
-                options={CITY_OPTIONS}
                 value={form.deliveryCity}
                 onChange={handleChange}
               />
@@ -291,7 +348,6 @@ const NewShipment = () => {
             <button
               type="submit"
               className="flex-1 sm:flex-none px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 shadow"
-              onClick={handleSubmit}
             >
               Book Shipment →
             </button>
@@ -324,14 +380,7 @@ const TwoColumn = ({ children }) => (
   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{children}</div>
 );
 
-const InputField = ({
-  label,
-  name,
-  type,
-  value,
-  onChange,
-  isPin = false
-}) => (
+const InputField = ({ label, name, type, value, onChange, isPin = false }) => (
   <label className="block">
     <p className="text-gray-700 mb-1">{label}</p>
     <input
@@ -343,7 +392,7 @@ const InputField = ({
           const onlyDigits = e.target.value.replace(/\D/g, "");
           if (onlyDigits.length <= 6) {
             onChange({
-              target: { name, value: onlyDigits }
+              target: { name, value: onlyDigits },
             });
           }
         } else {
@@ -359,7 +408,6 @@ const InputField = ({
     />
   </label>
 );
-
 
 const SelectField = ({ label, name, options, value, onChange }) => (
   <label className="block">
@@ -394,24 +442,3 @@ const TextareaField = ({ label, name, value, onChange, placeholder }) => (
     />
   </label>
 );
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-
-  const payload = {
-    ...form,
-    pickupLocation: {
-      address: form.pickupLocation.address,
-      lat: form.pickupLocation.lat,
-      lng: form.pickupLocation.lng,
-    },
-    deliveryLocation: {
-      address: form.deliveryLocation.address,
-      lat: form.deliveryLocation.lat,
-      lng: form.deliveryLocation.lng,
-    },
-  };
-
-  console.dir("FINAL PAYLOAD:\n", payload);
-};
-

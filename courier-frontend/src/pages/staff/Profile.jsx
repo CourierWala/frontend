@@ -1,8 +1,6 @@
-
 import React, { useState } from "react";
 import ProfileTab from "./ProfileTab";
 import SecurityTab from "./SecurityTab";
-import NotificationTab from "./NotificationTab";
 
 
 export default function Profile() {
@@ -32,8 +30,6 @@ export default function Profile() {
 
       
 </div>
-
-
       {/* Tabs */}
       {tab === "profile" && <ProfileTab />}
       {tab === "security" && <SecurityTab />}

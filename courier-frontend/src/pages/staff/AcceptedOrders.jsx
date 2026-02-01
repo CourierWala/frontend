@@ -1,0 +1,73 @@
+import { useEffect, useState } from "react";
+import React from "react";
+import OrderCard from "../../components/common/Ordercard";
+import { getAcceptedOrders, pickupCustomerOrders } from "../../api/staff";
+import { toast } from "react-toastify";
+
+export default function AcceptedOrders() {
+  const [tab, setTab] = useState("customer");
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    loadorders(); 
+  }, []);
+
+  const loadorders = async() => {
+        const temp = await getAcceptedOrders();
+        setOrders(temp);
+        //console.log(temp);
+      }
+
+      
+
+  const hubOrders = orders.filter(o => o.status === "PICKUP_ASSIGNED");
+  const Delivery_parcels = orders.filter(o => o.status === "OUT_FOR_DELIVERY");
+
+  const Customerhandlepickup = async (orderid) => {
+    const updateResponse = await pickupCustomerOrders(orderid);
+    if(updateResponse.status == "SUCCESS"){
+          toast.success(updateResponse.message);
+        }
+        loadorders();
+        // console.log(updateResponse);
+  };
+
+  return (
+    <div className="p-4 md:p-8">
+      <h1 className="text-2xl font-semibold mb-4">Accepted  Orders</h1>
+      <div className="bg-slate-50 rounded-xl border mb-4 flex overflow-hidden">
+        <button
+          onClick={() => setTab("customer")}
+          className={`flex-1 py-2.5 text-sm font-medium ${
+            tab === "customer"
+              ? "bg-white border-b-2 border-orange-600"
+              : "text-slate-500"
+          }`}>
+           Accepted Customers Orders ({hubOrders.length})
+        </button>
+
+        <button
+          onClick={() => setTab("Hub")}
+          className={`flex-1 py-2.5 text-sm font-medium ${
+            tab === "Hub"
+              ? "bg-white border-b-2 border-orange-600"
+              : "text-slate-500"
+          }`}>
+           Accepted Hub Orders ({Delivery_parcels.length})
+        </button>
+      </div>
+
+      {(tab === "customer" ? hubOrders : Delivery_parcels).map(order => (
+        <OrderCard
+          key={order.Orderid}
+          order={order}
+          tab={tab}
+          customerOrderActions = {tab === "customer" ? () => Customerhandlepickup(order.Orderid) : undefined  }
+          HubOrderActions = {  tab === "Hub"  ? () => HubhandleAccept(order.Orderid)  : undefined }
+          btnInfo = {{ label1:"Pickup",color1 :"bg-orange-600"}}
+    
+        />
+      ))}
+    </div>
+  );
+}
