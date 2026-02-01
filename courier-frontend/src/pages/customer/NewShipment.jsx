@@ -13,17 +13,17 @@ import { useAuth } from "../../context/AuthContext";
 
 const NewShipment = () => {
   const [form, setForm] = useState({
-    pickupAddress: "satara",
-    pickupCity: "satara",
-    pickupPincode: "415519",
+    pickupAddress: "",
+    pickupCity: "",
+    pickupPincode: "",
     pickupDate: "",
-    deliveryAddress: "delhi",
-    deliveryCity: "delhi",
-    deliveryPincode: "500600",
-    packageSize: "MEDIUM",
-    weight: "22",
-    deliveryType: "STANDARD",
-    description: "this is deleivery",
+    deliveryAddress: "",
+    deliveryCity: "",
+    deliveryPincode: "",
+    packageSize: "",
+    weight: "",
+    deliveryType: "",
+    description: "",
     pickupLatitude: "",
     pickupLongitude: "",
     deliveryLatitude: "",
@@ -196,7 +196,7 @@ const NewShipment = () => {
       console.log("res :", res);
 
       setPaymentAmount(res?.data?.amount);
-      console.log(parseInt(res.data.amount))
+      console.log(parseInt(res.data.amount));
 
       handlePlaceOrder(res.data.order_id, parseInt(res.data.amount));
 
