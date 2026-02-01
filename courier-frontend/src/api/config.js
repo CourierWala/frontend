@@ -1,3 +1,5 @@
 export const config = {
-  server: 'http://localhost:8080',
-}
+  BASE_URL: "/api/",
+};
+
+export const TRACK_URL = "/api/tracking/";
